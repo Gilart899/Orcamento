@@ -2,64 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orçamento de Festa</title>
-</head>
-<body>
-  <h1>Faça seu orçamento</h1>
-
-  <form id="form-orcamento">
-    <label>
-      Nome:
-      <input type="text" name="nome" required>
-    </label>
-    <br><br>
-    
-    <label>
-      Escolha os serviços:
-      <br>
-      <input type="checkbox" name="item" value="Algodão doce (copo 300ml) - R$2,50"> Algodão doce (copo 300ml) - R$2,50<br>
-      <input type="checkbox" name="item" value="Decoração com balões - R$80"> Decoração com balões - R$80<br>
-      <input type="checkbox" name="item" value="Pula-pula com escorregador - R$150"> Pula-pula com escorregador - R$150<br>
-      <input type="checkbox" name="item" value="Pula-pula master - R$180"> Pula-pula master - R$180<br>
-      <input type="checkbox" name="item" value="Combo (pula-pula + algodão + pipoca) - R$450"> Combo - R$450<br>
-      <input type="checkbox" name="item" value="Cascata grande - R$1200"> Cascata de chocolate grande - R$1200<br>
-      <input type="checkbox" name="item" value="Cascata pequena - R$399"> Cascata pequena - R$399<br>
-      <input type="checkbox" name="item" value="Convite animado - R$50"> Convite animado - R$50<br>
-      <input type="checkbox" name="item" value="Piscina de bolinhas - R$150"> Piscina de bolinhas - R$150<br>
-      <input type="checkbox" name="item" value="Churros - R$399"> Churros - R$399<br>
-      <input type="checkbox" name="item" value="Crepe suíço - R$399"> Crepe suíço - R$399<br>
-      <input type="checkbox" name="item" value="Algodão doce no evento - R$200"> Algodão doce no evento - R$200<br>
-      <input type="checkbox" name="item" value="Algodão e Pipoca à vontade - R$300"> Algodão doce e Pipoca à vontade - R$300<br>
-    </label>
-
-    <br><br>
-    <button type="submit">Enviar orçamento via WhatsApp</button>
-  </form>
-
-  <script>
-    document.getElementById('form-orcamento').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const nome = this.nome.value;
-      const itensSelecionados = Array.from(this.item)
-        .filter(i => i.checked)
-        .map(i => i.value)
-        .join('\n');
-
-      const mensagem = `Olá, me chamo ${nome} e gostaria de um orçamento com os seguintes itens:\n\n${itensSelecionados}`;
-      const telefone = '5579999145044'; // seu número com DDD e código do país (55)
-
-      const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
-    });
-  </script>
-</body>
-        </html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
   <title>Orçamento de Festa - Gil Fest</title>
   <style>
     body {
@@ -225,4 +167,4 @@ function enviarWhatsApp() {
 </script>
 
 </body>
-</html>
+      </html>
