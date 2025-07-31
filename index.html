@@ -1,199 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="stylesheet" href="style.css">
-  <meta charset="UTF-8">
-  <title>Gil Fest - Orçamento de Festas</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orçamento Gil Fest</title>
   <style>
-    <style>
-
-  button {
-    background-color: #ffcc00; /* amarelo */
-    color: #0033cc; /* azul escuro */
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-    }
-
-    header {
-      background-color: #0077cc;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('IMG-20250125-WA0002.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 0;
+      padding: 0;
+      backdrop-filter: brightness(0.9);
     }
 
     .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      margin: 40px auto;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
 
-    .produto {
-      background: white;
-      border: 2px solid #ffd700;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    h1 {
+      text-align: center;
+      color: #003366;
     }
 
-    .produto label {
+    label {
+      display: block;
+      margin-top: 10px;
       font-weight: bold;
     }
 
-    .produto input[type="number"] {
+    input[type="number"] {
       width: 60px;
-      padding: 5px;
       margin-left: 10px;
+    }
+
+    button {
+      background-color: #ffc107;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
     }
 
     #total {
       font-size: 18px;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #0077cc;
-    }
-
-    button {
-      background-color: #ffd700;
-      border: none;
-      padding: 10px 15px;
-      margin: 10px 5px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #003366;
-    }
-
-    button:hover {
-      background-color: #ffcc00;
+      margin-top: 10px;
+      color: #333;
     }
   </style>
 </head>
 <body>
-
-  <header>🎉 Gil Fest - Orçamento de Festas 🎉</header>
-
   <div class="container">
-    <form id="orcamentoForm">
-      <div class="produto">
-        <label>Algodão doce (copo 300ml) - R$2,50</label>
-        <input type="number" name="algodaoCopo" min="0" value="0" data-preco="2.5">
-      </div>
+    <h1>Orçamento Gil Fest</h1>
 
-      <div class="produto">
-        <label>Algodão doce (máquina no evento) - R$200</label>
-        <input type="number" name="algodaoMaquina" min="0" value="0" data-preco="200">
-      </div>
+    <label>Algodão doce (copo 300ml) R$2,50
+      <input type="number" id="algodao" min="0" value="0" />
+    </label>
 
-      <div class="produto">
-        <label>Algodão doce e Pipoca à vontade - R$300</label>
-        <input type="number" name="comboDocePipoca" min="0" value="0" data-preco="300">
-      </div>
+    <label>Decoração com balões R$80
+      <input type="checkbox" id="baloes" />
+    </label>
 
-      <div class="produto">
-        <label>Decoração com balões - R$80</label>
-        <input type="number" name="baloes" min="0" value="0" data-preco="80">
-      </div>
+    <label>Pula-pula com escorregador 3,8m R$150
+      <input type="checkbox" id="pula1" />
+    </label>
 
-      <div class="produto">
-        <label>Pula-pula com escorregador 3,8m - R$150</label>
-        <input type="number" name="pulaPula1" min="0" value="0" data-preco="150">
-      </div>
+    <label>Pula-pula master 6m R$180
+      <input type="checkbox" id="pula2" />
+    </label>
 
-      <div class="produto">
-        <label>Pula-pula Master 6m - R$180</label>
-        <input type="number" name="pulaPula2" min="0" value="0" data-preco="180">
-      </div>
+    <label>Combo (pula-pula + algodão + pipoca) R$450
+      <input type="checkbox" id="combo" />
+    </label>
 
-      <div class="produto">
-        <label>Combo (Pula-pula + Algodão Doce + Pipoca) - R$450</label>
-        <input type="number" name="combo" min="0" value="0" data-preco="450">
-      </div>
+    <label>Cascata de chocolate grande R$1200
+      <input type="checkbox" id="cascataG" />
+    </label>
 
-      <div class="produto">
-        <label>Cascata de chocolate grande - R$1200</label>
-        <input type="number" name="cascataGrande" min="0" value="0" data-preco="1200">
-      </div>
+    <label>Cascata de chocolate pequena R$399
+      <input type="checkbox" id="cascataP" />
+    </label>
 
-      <div class="produto">
-        <label>Cascata de chocolate pequena - R$399</label>
-        <input type="number" name="cascataPequena" min="0" value="0" data-preco="399">
-      </div>
+    <label>Convite animado R$50
+      <input type="checkbox" id="convite" />
+    </label>
 
-      <div class="produto">
-        <label>Convite animado e interativo - R$50</label>
-        <input type="number" name="convite" min="0" value="0" data-preco="50">
-      </div>
+    <label>Piscina de bolinhas R$150
+      <input type="checkbox" id="piscina" />
+    </label>
 
-      <div class="produto">
-        <label>Piscina de bolinhas - R$150</label>
-        <input type="number" name="piscina" min="0" value="0" data-preco="150">
-      </div>
+    <label>Churros R$399
+      <input type="checkbox" id="churros" />
+    </label>
 
-      <div class="produto">
-        <label>Churros - R$399</label>
-        <input type="number" name="churros" min="0" value="0" data-preco="399">
-      </div>
+    <label>Crepe suíço R$399
+      <input type="checkbox" id="crepe" />
+    </label>
 
-      <div class="produto">
-        <label>Crepe suíço - R$399</label>
-        <input type="number" name="crepe" min="0" value="0" data-preco="399">
-      </div>
+    <label>Algodão doce no evento R$200
+      <input type="checkbox" id="maquinaAlgodao" />
+    </label>
 
-      <div id="total">Total: R$ 0,00</div>
+    <label>Algodão doce e pipoca à vontade R$300
+      <input type="checkbox" id="aVontade" />
+    </label>
 
-      <button type="button" onclick="calcularTotal()">Calcular Total</button>
-     <button class="botao-festa" onclick="enviarOrcamento()">📲 Enviar para o WhatsApp</button>
-    </form>
+    <button onclick="calcular()">Calcular total</button>
+    <div id="total">Total: R$ 0,00</div>
+    <button onclick="enviarWhatsapp()">Enviar pelo WhatsApp</button>
   </div>
 
   <script>
-    function calcularTotal() {
-      const inputs = document.querySelectorAll("input[type='number']");
-      let total = 0;
-
-      inputs.forEach(input => {
-        const preco = parseFloat(input.getAttribute("data-preco"));
-        const quantidade = parseInt(input.value);
-        if (!isNaN(quantidade)) {
-          total += preco * quantidade;
-        }
-      });
+    function calcular() {
+      const algodao = parseInt(document.getElementById("algodao").value) * 2.5;
+      const total =
+        algodao +
+        (document.getElementById("baloes").checked ? 80 : 0) +
+        (document.getElementById("pula1").checked ? 150 : 0) +
+        (document.getElementById("pula2").checked ? 180 : 0) +
+        (document.getElementById("combo").checked ? 450 : 0) +
+        (document.getElementById("cascataG").checked ? 1200 : 0) +
+        (document.getElementById("cascataP").checked ? 399 : 0) +
+        (document.getElementById("convite").checked ? 50 : 0) +
+        (document.getElementById("piscina").checked ? 150 : 0) +
+        (document.getElementById("churros").checked ? 399 : 0) +
+        (document.getElementById("crepe").checked ? 399 : 0) +
+        (document.getElementById("maquinaAlgodao").checked ? 200 : 0) +
+        (document.getElementById("aVontade").checked ? 300 : 0);
 
       document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
     }
 
-    function enviarWhatsApp() {
-      const inputs = document.querySelectorAll("input[type='number']");
-      let mensagem = "Olá, quero fazer um orçamento:\n";
-      let total = 0;
-
-      inputs.forEach(input => {
-        const nome = input.name;
-        const quantidade = parseInt(input.value);
-        const preco = parseFloat(input.getAttribute("data-preco"));
-
-        if (quantidade > 0) {
-          mensagem += `- ${input.previousElementSibling.innerText}: ${quantidade}\n`;
-          total += preco * quantidade;
-        }
-      });
-
-      mensagem += `\nTotal: R$ ${total.toFixed(2)}`;
-
-      const telefone = "5599999999999"; // Altere para seu número com DDI
-      const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
+    function enviarWhatsapp() {
+      const total = document.getElementById("total").innerText;
+      const msg = encodeURIComponent("Olá, quero fazer um orçamento. " + total);
+      const numero = "5579999145044";
+      window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
     }
   </script>
-
 </body>
-  </html>
+</html>
