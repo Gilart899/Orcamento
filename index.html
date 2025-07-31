@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Orçamento GilFest</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #fefefe;
       padding: 20px;
+      background-size: cover;
+      background-position: center;
     }
 
     h1 {
@@ -58,7 +60,6 @@
 
     .botoes {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
       margin-top: 20px;
     }
@@ -70,24 +71,24 @@
   <div class="formulario">
     <p><strong>Preencha seus dados:</strong></p>
     <label for="nomeCliente">Nome:</label>
-    <input type="text" id="nomeCliente" placeholder="Digite seu nome" />
+    <input type="text" id="nomeCliente" placeholder="Digite seu nome">
     <label for="telefoneCliente">Telefone:</label>
-    <input type="text" id="telefoneCliente" placeholder="Digite seu telefone" />
+    <input type="text" id="telefoneCliente" placeholder="Digite seu telefone">
     <label for="dataEvento">Data do Evento:</label>
-    <input type="date" id="dataEvento" />
+    <input type="date" id="dataEvento">
 
     <p><strong>Itens do Orçamento:</strong></p>
     <label>Churros (R$ 150)</label>
-    <input type="number" id="qtdChurros" placeholder="Quantidade" />
+    <input type="number" id="qtdChurros" placeholder="Quantidade">
 
     <label>Algodão Doce (R$ 100)</label>
-    <input type="number" id="qtdAlgodao" placeholder="Quantidade" />
+    <input type="number" id="qtdAlgodao" placeholder="Quantidade">
 
     <label>Pipoca (R$ 120)</label>
-    <input type="number" id="qtdPipoca" placeholder="Quantidade" />
+    <input type="number" id="qtdPipoca" placeholder="Quantidade">
 
     <label>Frete (R$ 50)</label>
-    <input type="number" id="qtdFrete" placeholder="Quantidade" />
+    <input type="number" id="qtdFrete" placeholder="Quantidade">
 
     <div class="botoes">
       <button onclick="calcularTotal()">Calcular Total</button>
