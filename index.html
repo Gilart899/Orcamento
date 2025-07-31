@@ -2,228 +2,161 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Orçamento GilFest</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      background-color: #f1f1f1;
+      color: #333;
       margin: 0;
       padding: 0;
     }
 
     header {
-      background: linear-gradient(to right, #0057a8, #f5b400);
+      background: linear-gradient(to right, #007BFF, #FFD700);
       color: white;
+      padding: 20px;
       text-align: center;
-      padding: 20px 10px;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .container {
+      padding: 20px;
       max-width: 700px;
       margin: auto;
-      background: white;
-      padding: 20px;
+      background-color: white;
       border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    label {
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
       display: block;
-      margin: 10px 0 5px;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    input[type="text"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="number"] {
+    .input-group input {
       width: 100%;
       padding: 8px;
-      border: 1px solid #ccc;
       border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     .item {
-      margin-top: 15px;
-      border-top: 1px solid #eee;
-      padding-top: 10px;
-    }
-
-    button {
-      background-color: #f5b400;
-      color: #000;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      margin-top: 15px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #ffd95e;
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
     }
 
     .total {
-      margin-top: 15px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 10px 5px 0 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <header>Orçamento GilFest</header>
 
-  <div class="container">
-    <label for="nome">Nome do Cliente:</label>
-    <input type="text" id="nome" placeholder="Digite o nome">
+<header>
+  Orçamento GilFest 🎉
+</header>
 
-    <label for="telefone">Telefone:</label>
-    <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX">
+<div class="container">
 
-    <label for="data">Data do Evento:</label>
-    <input type="date" id="data">
-
-    <div class="item">
-      <label>Algodão doce (copo 300ml) - R$ 2,50:</label>
-      <input type="number" id="algodao" placeholder="Quantidade" min="0">
-    </div>
-
-    <div class="item">
-      <label>Decoração com balões - R$ 80:</label>
-      <input type="checkbox" id="baloes">
-    </div>
-
-    <div class="item">
-      <label>Pula-pula com escorregador 3,8m - R$ 150:</label>
-      <input type="checkbox" id="pula1">
-    </div>
-
-    <div class="item">
-      <label>Pula-pula master 6m - R$ 180:</label>
-      <input type="checkbox" id="pula2">
-    </div>
-
-    <div class="item">
-      <label>Combo (pula-pula, algodão doce, pipoqueira) - R$ 450:</label>
-      <input type="checkbox" id="combo">
-    </div>
-
-    <div class="item">
-      <label>Cascata de chocolate grande - R$ 1200:</label>
-      <input type="checkbox" id="cascataG">
-    </div>
-
-    <div class="item">
-      <label>Cascata de chocolate pequena - R$ 399:</label>
-      <input type="checkbox" id="cascataP">
-    </div>
-
-    <div class="item">
-      <label>Convite animado e interativo - R$ 50:</label>
-      <input type="checkbox" id="convite">
-    </div>
-
-    <div class="item">
-      <label>Piscina de bolinhas - R$ 150:</label>
-      <input type="checkbox" id="piscina">
-    </div>
-
-    <div class="item">
-      <label>Churros (locação) - R$ 399:</label>
-      <input type="checkbox" id="churros">
-    </div>
-
-    <div class="item">
-      <label>Crepe suíço (locação) - R$ 399:</label>
-      <input type="checkbox" id="crepe">
-    </div>
-
-    <div class="item">
-      <label>Algodão doce (máquina no evento) - R$ 200:</label>
-      <input type="checkbox" id="algodaoEvento">
-    </div>
-
-    <div class="item">
-      <label>Algodão doce + Pipoca à vontade - R$ 300:</label>
-      <input type="checkbox" id="algodaoPipoca">
-    </div>
-
-    <button onclick="calcularTotal()">Calcular Total</button>
-    <div class="total" id="resultado"></div>
-
-    <button onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
-    <button onclick="gerarPDF()">Salvar PDF</button>
+  <div class="input-group">
+    <label for="nomeCliente">Nome do Cliente</label>
+    <input type="text" id="nomeCliente" placeholder="Digite o nome" />
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    function calcularTotal() {
-      const preco = {
-        algodao: 2.5,
-        baloes: 80,
-        pula1: 150,
-        pula2: 180,
-        combo: 450,
-        cascataG: 1200,
-        cascataP: 399,
-        convite: 50,
-        piscina: 150,
-        churros: 399,
-        crepe: 399,
-        algodaoEvento: 200,
-        algodaoPipoca: 300
-      };
+  <div class="input-group">
+    <label for="telefoneCliente">Telefone</label>
+    <input type="tel" id="telefoneCliente" placeholder="(00) 00000-0000" />
+  </div>
 
-      let total = 0;
-      total += (parseInt(document.getElementById("algodao").value) || 0) * preco.algodao;
-      total += document.getElementById("baloes").checked ? preco.baloes : 0;
-      total += document.getElementById("pula1").checked ? preco.pula1 : 0;
-      total += document.getElementById("pula2").checked ? preco.pula2 : 0;
-      total += document.getElementById("combo").checked ? preco.combo : 0;
-      total += document.getElementById("cascataG").checked ? preco.cascataG : 0;
-      total += document.getElementById("cascataP").checked ? preco.cascataP : 0;
-      total += document.getElementById("convite").checked ? preco.convite : 0;
-      total += document.getElementById("piscina").checked ? preco.piscina : 0;
-      total += document.getElementById("churros").checked ? preco.churros : 0;
-      total += document.getElementById("crepe").checked ? preco.crepe : 0;
-      total += document.getElementById("algodaoEvento").checked ? preco.algodaoEvento : 0;
-      total += document.getElementById("algodaoPipoca").checked ? preco.algodaoPipoca : 0;
+  <div class="input-group">
+    <label for="dataEvento">Data do Evento</label>
+    <input type="date" id="dataEvento" />
+  </div>
 
-      document.getElementById("resultado").innerText = "Total: R$ " + total.toFixed(2);
-    }
+  <hr>
 
-    function enviarWhatsApp() {
-      const nome = document.getElementById("nome").value;
-      const tel = document.getElementById("telefone").value;
-      const data = document.getElementById("data").value;
-      const total = document.getElementById("resultado").innerText;
-      const msg = `Orçamento GilFest%0A%0ANome: ${nome}%0ATelefone: ${tel}%0AData: ${data}%0A${total}`;
+  <div class="item"><span>Algodão doce (copo)</span><input type="number" min="0" id="algodao" value="0" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Balões</span><input type="checkbox" id="baloes" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Pula-pula 3.8m</span><input type="checkbox" id="pp38" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Pula-pula 6m</span><input type="checkbox" id="pp6" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Combo (pula-pula + algodão + pipoca)</span><input type="checkbox" id="combo" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Cascata chocolate (grande)</span><input type="checkbox" id="cascataG" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Cascata chocolate (pequena)</span><input type="checkbox" id="cascataP" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Convite animado</span><input type="checkbox" id="convite" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Piscina de bolinhas</span><input type="checkbox" id="piscina" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Churros</span><input type="checkbox" id="churros" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Crepe suíço</span><input type="checkbox" id="crepe" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Algodão doce (máquina)</span><input type="checkbox" id="maquinaAlgodao" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Algodão doce e pipoca à vontade</span><input type="checkbox" id="avontade" onchange="calcularTotal()" /></div>
 
-      const url = `https://wa.me/5579999145044?text=${msg}`;
-      window.open(url, '_blank');
-    }
+  <div class="total" id="total">Total: R$ 0,00</div>
 
-    async function gerarPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+  <button onclick="enviarWhatsapp()">Enviar WhatsApp</button>
+  <button onclick="gerarPDF()">Gerar PDF</button>
+</div>
 
-      const nome = document.getElementById("nome").value;
-      const tel = document.getElementById("telefone").value;
-      const data = document.getElementById("data").value;
-      const total = document.getElementById("resultado").innerText;
+<script>
+  function calcularTotal() {
+    let total = 0;
+    total += Number(document.getElementById('algodao').value) * 2.5;
+    if (document.getElementById('baloes').checked) total += 80;
+    if (document.getElementById('pp38').checked) total += 150;
+    if (document.getElementById('pp6').checked) total += 180;
+    if (document.getElementById('combo').checked) total += 450;
+    if (document.getElementById('cascataG').checked) total += 1200;
+    if (document.getElementById('cascataP').checked) total += 399;
+    if (document.getElementById('convite').checked) total += 50;
+    if (document.getElementById('piscina').checked) total += 150;
+    if (document.getElementById('churros').checked) total += 399;
+    if (document.getElementById('crepe').checked) total += 399;
+    if (document.getElementById('maquinaAlgodao').checked) total += 200;
+    if (document.getElementById('avontade').checked) total += 300;
 
-      doc.text("Orçamento GilFest", 20, 20);
-      doc.text(`Nome: ${nome}`, 20, 30);
-      doc.text(`Telefone: ${tel}`, 20, 40);
-      doc.text(`Data do Evento: ${data}`, 20, 50);
-      doc.text(total, 20, 60);
+    document.getElementById('total').innerText = `Total: R$ ${total.toFixed(2)}`;
+  }
 
-      doc.save("orcamento-gilfest.pdf");
-    }
-  </script>
+  function enviarWhatsapp() {
+    const nome = document.getElementById('nomeCliente').value;
+    const telefone = document.getElementById('telefoneCliente').value;
+    const data = document.getElementById('dataEvento').value;
+    const total = document.getElementById('total').innerText;
+
+    const texto = `Olá! Meu nome é ${nome}\nTelefone: ${telefone}\nData do evento: ${data}\n${total}`;
+    const mensagem = encodeURIComponent(texto);
+    const link = `https://wa.me/557999145044?text=${mensagem}`;
+    window.open(link, '_blank');
+  }
+
+  function gerarPDF() {
+    alert("📄 Recurso de PDF em breve! (Vamos implementar na próxima etapa)");
+  }
+</script>
+
 </body>
 </html>
