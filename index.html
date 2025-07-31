@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Font Awesome para ícones -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- jsPDF para gerar PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Orçamento GilFest</title>
@@ -115,16 +109,55 @@
     </div>
 
     <div class="form-section">
-      <button onclick=>Enviar via WhatsApp</button>
-      <button onclick="gerarPDF()">Gerar PDF</button
-        <div style="margin-top: 20px;">
-  <!-- Botão do WhatsApp -->
-  <button onclick="enviarWhatsApp()" class="botao" style="background-color: #25D366; color: white;">
-    <i class="fab fa-whatsapp"></i> Enviar pelo WhatsApp
-  </button>
+      <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
+      <button onclick="gerarPDF()">Gerar PDF</button>
+    </div>
+  </main>
 
-  <!-- Botão de Gerar PDF -->
-  <button onclick="gerarPDF()" class="botao" style="background-color: #f44336; color: white;">
-    <i class="fas fa-file-pdf"></i> Gerar PDF
-  </button>
-</div>                                      
+  <script>
+    function calcularTotal() {
+      const valores = {
+        pulaPula: 100,
+        piscina: 120,
+        algodao: 50,
+        crepe: 70,
+        pipoca: 60
+      };
+
+      const qtdPulaPula = parseInt(document.getElementById("qtdPulaPula").value) || 0;
+      const qtdPiscina = parseInt(document.getElementById("qtdPiscina").value) || 0;
+      const qtdAlgodao = parseInt(document.getElementById("qtdAlgodao").value) || 0;
+      const qtdCrepe = parseInt(document.getElementById("qtdCrepe").value) || 0;
+      const qtdPipoca = parseInt(document.getElementById("qtdPipoca").value) || 0;
+
+      const total = (
+        qtdPulaPula * valores.pulaPula +
+        qtdPiscina * valores.piscina +
+        qtdAlgodao * valores.algodao +
+        qtdCrepe * valores.crepe +
+        qtdPipoca * valores.pipoca
+      );
+
+      document.getElementById("resultadoTotal").innerText = "Total: R$ " + total.toFixed(2);
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById("nomeCliente").value;
+      const telefone = document.getElementById("telefoneCliente").value;
+      const data = document.getElementById("dataEvento").value;
+      const total = document.getElementById("resultadoTotal").innerText;
+
+      const texto = `Olá, sou ${nome}. Meu telefone é ${telefone}. Evento em ${data}. ${total}`;
+      const numeroDestino = "SEU_NUMERO_AQUI"; // Coloque seu número aqui, ex: 5599999999999
+      const link = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
+
+      window.open(link, '_blank');
+    }
+
+    function gerarPDF() {
+      alert("Função de gerar PDF em construção.");
+      // Aqui futuramente pode ser inserido código para gerar PDF.
+    }
+  </script>
+</body>
+</html>
