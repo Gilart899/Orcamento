@@ -142,6 +142,7 @@
   <div class="total" id="total">Total: R$ 0,00</div>
 
   <button onclick="enviarWhatsapp()">Enviar WhatsApp</button>
+  <button onclick="gerarPDF()">Gerar PDF</button>
   <button onclick="gerarPDF()">Gerar PDF do Orçamento</button>
   <button onclick="gerarPDF()">Gerar PDF</button>
 </div>
@@ -182,6 +183,28 @@
     alert("📄 Recurso de PDF em breve! (Vamos implementar na próxima etapa)");
   }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  async function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
+    const nome = document.getElementById("clienteNome").value;
+    const telefone = document.getElementById("clienteTelefone").value;
+    const data = document.getElementById("clienteData").value;
+    const orcamento = document.getElementById("orcamento").innerText;
+
+    doc.setFontSize(16);
+    doc.text("Orçamento Gilfeste", 20, 20);
+    doc.setFontSize(12);
+    doc.text("Nome: " + nome, 20, 30);
+    doc.text("Telefone: " + telefone, 20, 40);
+    doc.text("Data do Evento: " + data, 20, 50);
+    doc.text("Itens selecionados:", 20, 60);
+    doc.text(orcamento, 20, 70);
+
+    doc.save("orcamento-gilfeste.pdf");
+  }
+</script>
 </body>
 </html>
