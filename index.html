@@ -6,6 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Orçamento GilFest</title>
   <style>
+  .marca-dagua {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('Screenshot_20250509_230620_Gallery.jpg') no-repeat center center;
+    background-size: contain;
+    opacity: 0.07;
+    z-index: -1;
+    pointer-events: none;
+  }
+</style>
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
   async function gerarPDF() {
@@ -32,6 +46,7 @@
   }
 </script>
     body {
+     <div class="marca-dagua"></div>
       font-family: Arial, sans-serif;
       background-color: #f1f1f1;
       color: #333;
