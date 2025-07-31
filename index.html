@@ -116,9 +116,14 @@
   <div class="item"><span>Algodão doce e pipoca à vontade</span><input type="checkbox" id="avontade" onchange="calcularTotal()" /></div>
 
   <div class="total" id="total">Total: R$ 0,00</div>
-
-  <button onclick="enviarWhatsapp()">Enviar WhatsApp</button>
-  <button onclick="gerarPDF()">Gerar PDF</button>
+<button onclick="enviarOrcamentoWhatsApp()" style="display: flex; align-items: center; gap: 5px;">
+  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp" width="20" height="20">
+  Enviar pelo WhatsApp
+</button>
+<button onclick="gerarPDF()" style="display: flex; align-items: center; gap: 5px;">
+  <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF" width="20" height="20">
+  Gerar PDF
+</button>
 </div>
 
 <script>
