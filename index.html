@@ -162,6 +162,16 @@
     alert("📄 Recurso de PDF em breve! (Vamos implementar na próxima etapa)");
   }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  async function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
+    let conteudo = document.getElementById("orcamento").innerText;
+    doc.text(conteudo, 10, 10);
+    doc.save("orcamento_gilfest.pdf");
+  }
+</script>
 </body>
 </html>
