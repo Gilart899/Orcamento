@@ -6,6 +6,30 @@
   <title>Orçamento GilFest</title>
   <style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+  async function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const nome = document.getElementById("nomeCliente").value || "";
+    const telefone = document.getElementById("telefoneCliente").value || "";
+    const data = document.getElementById("dataEvento").value || "";
+
+    let texto = `Orçamento GilFest\n\nNome: ${nome}\nTelefone: ${telefone}\nData: ${data}\n\nItens escolhidos:\n`;
+
+    const checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
+    checkboxes.forEach((checkbox) => {
+      const quantidade = document.getElementById("qtd_" + checkbox.id)?.value || "1";
+      texto += `- ${checkbox.value} x ${quantidade}\n`;
+    });
+
+    const total = document.getElementById("valorTotal")?.textContent || "";
+    texto += `\n${total}`;
+
+    doc.text(texto, 10, 10);
+    doc.save("orcamento-gilfest.pdf");
+  }
+</script>
     body {
       font-family: Arial, sans-serif;
       background-color: #f1f1f1;
