@@ -1,133 +1,162 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Orçamento GilFest</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fefefe;
-      padding: 20px;
-      background-size: cover;
-      background-position: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f9ff;
+      color: #333;
     }
 
-    h1 {
-      background-color: #0077cc;
+    header {
+      background-color: #007BFF;
       color: white;
       padding: 20px;
-      border-radius: 12px;
       text-align: center;
+      font-size: 28px;
+      font-weight: bold;
     }
 
-    .formulario {
-      margin-top: 20px;
-      background-color: #fffbe6;
+    main {
       padding: 20px;
-      border-radius: 12px;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     label {
+      font-weight: bold;
       display: block;
-      margin: 10px 0 5px;
+      margin-bottom: 5px;
     }
 
-    input[type="text"],
-    input[type="date"],
-    input[type="number"] {
+    input, select {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
+      margin-bottom: 15px;
       border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
     button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      background-color: #ffcc00;
+      background-color: #ffc107;
       color: black;
       border: none;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
+      margin-right: 10px;
     }
 
     button:hover {
-      background-color: #ffdd33;
+      background-color: #e0a800;
     }
 
-    .botoes {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
+    .resultado {
+      font-size: 18px;
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
     }
+
   </style>
 </head>
 <body>
-  <h1>Orçamento GilFest</h1>
+  <header>Orçamento GilFest</header>
 
-  <div class="formulario">
-    <p><strong>Preencha seus dados:</strong></p>
-    <label for="nomeCliente">Nome:</label>
-    <input type="text" id="nomeCliente" placeholder="Digite seu nome">
-    <label for="telefoneCliente">Telefone:</label>
-    <input type="text" id="telefoneCliente" placeholder="Digite seu telefone">
-    <label for="dataEvento">Data do Evento:</label>
-    <input type="date" id="dataEvento">
+  <main>
+    <div class="form-section">
+      <h2>Preencha seus dados:</h2>
+      <label for="nomeCliente">Nome do Cliente:</label>
+      <input type="text" id="nomeCliente" placeholder="Seu nome completo" />
 
-    <p><strong>Itens do Orçamento:</strong></p>
-    <label>Churros (R$ 150)</label>
-    <input type="number" id="qtdChurros" placeholder="Quantidade">
+      <label for="telefoneCliente">Telefone:</label>
+      <input type="tel" id="telefoneCliente" placeholder="(xx) xxxxx-xxxx" />
 
-    <label>Algodão Doce (R$ 100)</label>
-    <input type="number" id="qtdAlgodao" placeholder="Quantidade">
-
-    <label>Pipoca (R$ 120)</label>
-    <input type="number" id="qtdPipoca" placeholder="Quantidade">
-
-    <label>Frete (R$ 50)</label>
-    <input type="number" id="qtdFrete" placeholder="Quantidade">
-
-    <div class="botoes">
-      <button onclick="calcularTotal()">Calcular Total</button>
-      <button onclick="enviarWhatsApp()">
-  <i class="fab fa-whatsapp"></i> Enviar pelo WhatsApp
-</button>
-      <button onclick="generatePDF()">
-  <i class="fas fa-file-pdf"></i> Gerar PDF
-</button>
+      <label for="dataEvento">Data do Evento:</label>
+      <input type="date" id="dataEvento" />
     </div>
 
-    <p id="resultadoTotal"></p>
-  </div>
+    <div class="form-section">
+      <h2>Serviços:</h2>
+      <label for="qtdPulaPula">Pula-pula (R$100 cada):</label>
+      <input type="number" id="qtdPulaPula" value="0" />
+
+      <label for="qtdPiscina">Piscina de bolinhas (R$120 cada):</label>
+      <input type="number" id="qtdPiscina" value="0" />
+
+      <label for="qtdAlgodao">Algodão doce (R$50 cada):</label>
+      <input type="number" id="qtdAlgodao" value="0" />
+
+      <label for="qtdCrepe">Crepe suíço (R$70 cada):</label>
+      <input type="number" id="qtdCrepe" value="0" />
+
+      <label for="qtdPipoca">Pipoca com leite condensado (R$60 cada):</label>
+      <input type="number" id="qtdPipoca" value="0" />
+
+      <button onclick="calcularTotal()">Calcular Total</button>
+      <div class="resultado" id="resultadoTotal"></div>
+    </div>
+
+    <div class="form-section">
+      <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
+      <button onclick="gerarPDF()">Gerar PDF</button>
+    </div>
+  </main>
 
   <script>
     function calcularTotal() {
-      const churros = Number(document.getElementById('qtdChurros').value || 0) * 150;
-      const algodao = Number(document.getElementById('qtdAlgodao').value || 0) * 100;
-      const pipoca = Number(document.getElementById('qtdPipoca').value || 0) * 120;
-      const frete = Number(document.getElementById('qtdFrete').value || 0) * 50;
-      const total = churros + algodao + pipoca + frete;
-      document.getElementById('resultadoTotal').innerText = "Total: R$ " + total.toFixed(2);
+      const valores = {
+        pulaPula: 100,
+        piscina: 120,
+        algodao: 50,
+        crepe: 70,
+        pipoca: 60
+      };
+
+      const qtdPulaPula = parseInt(document.getElementById("qtdPulaPula").value) || 0;
+      const qtdPiscina = parseInt(document.getElementById("qtdPiscina").value) || 0;
+      const qtdAlgodao = parseInt(document.getElementById("qtdAlgodao").value) || 0;
+      const qtdCrepe = parseInt(document.getElementById("qtdCrepe").value) || 0;
+      const qtdPipoca = parseInt(document.getElementById("qtdPipoca").value) || 0;
+
+      const total = (
+        qtdPulaPula * valores.pulaPula +
+        qtdPiscina * valores.piscina +
+        qtdAlgodao * valores.algodao +
+        qtdCrepe * valores.crepe +
+        qtdPipoca * valores.pipoca
+      );
+
+      document.getElementById("resultadoTotal").innerText = "Total: R$ " + total.toFixed(2);
     }
 
     function enviarWhatsApp() {
-      const nome = document.getElementById('nomeCliente').value;
-      const tel = document.getElementById('telefoneCliente').value;
-      const data = document.getElementById('dataEvento').value;
-      const total = document.getElementById('resultadoTotal').innerText;
+      const nome = document.getElementById("nomeCliente").value;
+      const telefone = document.getElementById("telefoneCliente").value;
+      const data = document.getElementById("dataEvento").value;
+      const total = document.getElementById("resultadoTotal").innerText;
 
-      const texto = `Olá, me chamo ${nome}, telefone ${tel}. Data do evento: ${data}. ${total}`;
-      const mensagem = encodeURIComponent(texto);
-      const link = `https://wa.me/557999145044?text=${mensagem}`;
+      const texto = `Olá, sou ${nome}. Meu telefone é ${telefone}. Evento em ${data}. ${total}`;
+      const numeroDestino = "SEU_NUMERO_AQUI"; // Coloque seu número aqui, ex: 5599999999999
+      const link = `https://wa.me/${numeroDestino}?text=${encodeURIComponent(texto)}`;
+
       window.open(link, '_blank');
     }
 
     function gerarPDF() {
-      alert("Função de PDF em breve 📝");
+      alert("Função de gerar PDF em construção.");
+      // Aqui futuramente pode ser inserido código para gerar PDF.
     }
   </script>
 </body>
