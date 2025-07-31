@@ -2,151 +2,161 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orçamento Gil Fest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orçamento GilFest</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-image: url('IMG-20250125-WA0002.jpeg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-color: #f1f1f1;
+      color: #333;
       margin: 0;
       padding: 0;
-      backdrop-filter: brightness(0.9);
+    }
+
+    header {
+      background: linear-gradient(to right, #007BFF, #FFD700);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.9);
       padding: 20px;
-      margin: 40px auto;
-      max-width: 600px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    h1 {
-      text-align: center;
-      color: #003366;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    input[type="number"] {
-      width: 60px;
-      margin-left: 10px;
-    }
-
-    button {
-      background-color: #ffc107;
-      color: black;
-      padding: 10px 20px;
-      border: none;
+      max-width: 700px;
+      margin: auto;
+      background-color: white;
       border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
       margin-top: 20px;
     }
 
-    #total {
-      font-size: 18px;
-      margin-top: 10px;
-      color: #333;
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 10px 5px 0 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Orçamento Gil Fest</h1>
 
-    <label>Algodão doce (copo 300ml) R$2,50
-      <input type="number" id="algodao" min="0" value="0" />
-    </label>
+<header>
+  Orçamento GilFest 🎉
+</header>
 
-    <label>Decoração com balões R$80
-      <input type="checkbox" id="baloes" />
-    </label>
+<div class="container">
 
-    <label>Pula-pula com escorregador 3,8m R$150
-      <input type="checkbox" id="pula1" />
-    </label>
-
-    <label>Pula-pula master 6m R$180
-      <input type="checkbox" id="pula2" />
-    </label>
-
-    <label>Combo (pula-pula + algodão + pipoca) R$450
-      <input type="checkbox" id="combo" />
-    </label>
-
-    <label>Cascata de chocolate grande R$1200
-      <input type="checkbox" id="cascataG" />
-    </label>
-
-    <label>Cascata de chocolate pequena R$399
-      <input type="checkbox" id="cascataP" />
-    </label>
-
-    <label>Convite animado R$50
-      <input type="checkbox" id="convite" />
-    </label>
-
-    <label>Piscina de bolinhas R$150
-      <input type="checkbox" id="piscina" />
-    </label>
-
-    <label>Churros R$399
-      <input type="checkbox" id="churros" />
-    </label>
-
-    <label>Crepe suíço R$399
-      <input type="checkbox" id="crepe" />
-    </label>
-
-    <label>Algodão doce no evento R$200
-      <input type="checkbox" id="maquinaAlgodao" />
-    </label>
-
-    <label>Algodão doce e pipoca à vontade R$300
-      <input type="checkbox" id="aVontade" />
-    </label>
-
-    <button onclick="calcular()">Calcular total</button>
-    <div id="total">Total: R$ 0,00</div>
-    <button onclick="enviarWhatsapp()">Enviar pelo WhatsApp</button>
+  <div class="input-group">
+    <label for="nomeCliente">Nome do Cliente</label>
+    <input type="text" id="nomeCliente" placeholder="Digite o nome" />
   </div>
 
-  <script>
-    function calcular() {
-      const algodao = parseInt(document.getElementById("algodao").value) * 2.5;
-      const total =
-        algodao +
-        (document.getElementById("baloes").checked ? 80 : 0) +
-        (document.getElementById("pula1").checked ? 150 : 0) +
-        (document.getElementById("pula2").checked ? 180 : 0) +
-        (document.getElementById("combo").checked ? 450 : 0) +
-        (document.getElementById("cascataG").checked ? 1200 : 0) +
-        (document.getElementById("cascataP").checked ? 399 : 0) +
-        (document.getElementById("convite").checked ? 50 : 0) +
-        (document.getElementById("piscina").checked ? 150 : 0) +
-        (document.getElementById("churros").checked ? 399 : 0) +
-        (document.getElementById("crepe").checked ? 399 : 0) +
-        (document.getElementById("maquinaAlgodao").checked ? 200 : 0) +
-        (document.getElementById("aVontade").checked ? 300 : 0);
+  <div class="input-group">
+    <label for="telefoneCliente">Telefone</label>
+    <input type="tel" id="telefoneCliente" placeholder="(00) 00000-0000" />
+  </div>
 
-      document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2);
-    }
+  <div class="input-group">
+    <label for="dataEvento">Data do Evento</label>
+    <input type="date" id="dataEvento" />
+  </div>
 
-    function enviarWhatsapp() {
-      const total = document.getElementById("total").innerText;
-      const msg = encodeURIComponent("Olá, quero fazer um orçamento. " + total);
-      const numero = "5579999145044";
-      window.open(`https://wa.me/${numero}?text=${msg}`, "_blank");
-    }
-  </script>
+  <hr>
+
+  <div class="item"><span>Algodão doce (copo)</span><input type="number" min="0" id="algodao" value="0" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Balões</span><input type="checkbox" id="baloes" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Pula-pula 3.8m</span><input type="checkbox" id="pp38" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Pula-pula 6m</span><input type="checkbox" id="pp6" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Combo (pula-pula + algodão + pipoca)</span><input type="checkbox" id="combo" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Cascata chocolate (grande)</span><input type="checkbox" id="cascataG" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Cascata chocolate (pequena)</span><input type="checkbox" id="cascataP" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Convite animado</span><input type="checkbox" id="convite" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Piscina de bolinhas</span><input type="checkbox" id="piscina" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Churros</span><input type="checkbox" id="churros" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Crepe suíço</span><input type="checkbox" id="crepe" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Algodão doce (máquina)</span><input type="checkbox" id="maquinaAlgodao" onchange="calcularTotal()" /></div>
+  <div class="item"><span>Algodão doce e pipoca à vontade</span><input type="checkbox" id="avontade" onchange="calcularTotal()" /></div>
+
+  <div class="total" id="total">Total: R$ 0,00</div>
+
+  <button onclick="enviarWhatsapp()">Enviar WhatsApp</button>
+  <button onclick="gerarPDF()">Gerar PDF</button>
+</div>
+
+<script>
+  function calcularTotal() {
+    let total = 0;
+    total += Number(document.getElementById('algodao').value) * 2.5;
+    if (document.getElementById('baloes').checked) total += 80;
+    if (document.getElementById('pp38').checked) total += 150;
+    if (document.getElementById('pp6').checked) total += 180;
+    if (document.getElementById('combo').checked) total += 450;
+    if (document.getElementById('cascataG').checked) total += 1200;
+    if (document.getElementById('cascataP').checked) total += 399;
+    if (document.getElementById('convite').checked) total += 50;
+    if (document.getElementById('piscina').checked) total += 150;
+    if (document.getElementById('churros').checked) total += 399;
+    if (document.getElementById('crepe').checked) total += 399;
+    if (document.getElementById('maquinaAlgodao').checked) total += 200;
+    if (document.getElementById('avontade').checked) total += 300;
+
+    document.getElementById('total').innerText = `Total: R$ ${total.toFixed(2)}`;
+  }
+
+  function enviarWhatsapp() {
+    const nome = document.getElementById('nomeCliente').value;
+    const telefone = document.getElementById('telefoneCliente').value;
+    const data = document.getElementById('dataEvento').value;
+    const total = document.getElementById('total').innerText;
+
+    const texto = `Olá! Meu nome é ${nome}\nTelefone: ${telefone}\nData do evento: ${data}\n${total}`;
+    const mensagem = encodeURIComponent(texto);
+    const link = `https://wa.me/557999145044?text=${mensagem}`;
+    window.open(link, '_blank');
+  }
+
+  function gerarPDF() {
+    alert("📄 Recurso de PDF em breve! (Vamos implementar na próxima etapa)");
+  }
+</script>
+
 </body>
 </html>
