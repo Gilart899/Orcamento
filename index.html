@@ -1,94 +1,203 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GilFest Orçamento</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orçamento Gilfeste</title>
   <style>
     body {
-      background: url('Screenshot_20250509_230620_gallery.jpg') no-repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: brightness(0.85);
       font-family: Arial, sans-serif;
-    }
-    .container {
-      background-color: rgba(255, 255, 255, 0.95);
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      border-radius: 12px;
+      background-color: #f0f8ff;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background-color: #007bff;
+      background-color: #0077cc;
       color: white;
-      padding: 10px;
+      padding: 20px;
       text-align: center;
-      border-radius: 12px 12px 0 0;
       font-size: 2em;
       font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    label, input, select {
+    .container {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #0077cc;
+    }
+    label {
       display: block;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .item {
-      margin-bottom: 10px;
-    }
-    .total {
-      font-size: 1.2em;
+      margin-top: 10px;
       font-weight: bold;
-      margin-top: 15px;
     }
-    button {
+    input[type="text"], input[type="date"], input[type="number"] {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      font-size: 1em;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .item {
+      margin: 10px 0;
+    }
+    .total {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #0077cc;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #ffcc00;
       border: none;
+      padding: 12px 20px;
+      margin: 10px 5px;
+      font-size: 16px;
       border-radius: 8px;
       cursor: pointer;
-    }
-    #whatsappBtn {
-      background-color: #25d366;
-      color: white;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
-    #pdfBtn {
-      background-color: #007bff;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    button img {
+      width: 20px;
+      height: 20px;
     }
   </style>
 </head>
 <body>
+
+  <header>Orçamento Gilfeste</header>
+
   <div class="container">
-    <header>GilFest</header>
-    <label for="cliente">Nome do Cliente</label>
-    <input type="text" id="cliente"><label for="telefone">Telefone</label>
-<input type="tel" id="telefone" placeholder="(00) 00000-0000">
+    <h2>Preencha seus dados</h2>
+    <label for="nome">Nome do Cliente</label>
+    <input type="text" id="nome" placeholder="Digite o nome do cliente" />
 
-<label for="data">Data do Evento</label>
-<input type="date" id="data">
+    <label for="telefone">Telefone</label>
+    <input type="text" id="telefone" placeholder="Digite o número de telefone" />
 
-<div class="item">
-  <label>Algodão doce (copo)</label>
-  <input type="number" id="algodao" min="0">
-</div>
-<div class="item"><input type="checkbox" id="baloes"> Balões</div>
-<div class="item"><input type="checkbox" id="pp38"> Pula-pula 3.8m</div>
-<div class="item"><input type="checkbox" id="pp6"> Pula-pula 6m</div>
-<div class="item"><input type="checkbox" id="combo"> Combo (pula-pula + algodão + pipoca)</div>
-<div class="item"><input type="checkbox" id="cascataG"> Cascata chocolate (grande)</div>
-<div class="item"><input type="checkbox" id="cascataP"> Cascata chocolate (pequena)</div>
-<div class="item"><input type="checkbox" id="convite"> Convite animado</div>
-<div class="item"><input type="checkbox" id="piscina"> Piscina de bolinhas</div>
-<div class="item"><input type="checkbox" id="churros"> Churros</div>
-<div class="item"><input type="checkbox" id="crepe
+    <label for="data">Data do Evento</label>
+    <input type="date" id="data" />
 
+    <h2>Escolha os Itens</h2>
+    <div class="item">
+      <input type="checkbox" id="pula" data-nome="Pula-pula médio com escorregador" data-preco="150" />
+      <label for="pula">Pula-pula médio com escorregador - R$150,00</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="piscina" data-nome="Piscina de bolinhas" data-preco="150" />
+      <label for="piscina">Piscina de bolinhas - R$150,00</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="churros" data-nome="Churros" data-preco="3.99" />
+      <label for="churros">Churros - R$3,99</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="crepe" data-nome="Crepe suíço" data-preco="3.99" />
+      <label for="crepe">Crepe suíço - R$3,99</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="algodao" data-nome="Algodão doce (limitado)" data-preco="200" />
+      <label for="algodao">Algodão doce (limitado) - R$200,00</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="pipoca" data-nome="Pipoca com leite condensado" data-preco="200" />
+      <label for="pipoca">Pipoca com leite condensado - R$200,00</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="combo" data-nome="Algodão doce + Pipoca" data-preco="300" />
+      <label for="combo">Algodão doce + Pipoca - R$300,00</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="balao" data-nome="Animação com balão" data-preco="80" />
+      <label for="balao">Animação com balão - R$80,00</label>
+    </div>
+
+    <div class="total" id="total">Total: R$0,00</div>
+
+    <button onclick="enviarWhatsApp()">
+      <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp" />
+      Enviar via WhatsApp
+    </button>
+
+    <button onclick="gerarPDF()">
+      <img src="https://img.icons8.com/ios-filled/50/fa314a/export-pdf.png" alt="PDF" />
+      Gerar PDF
+    </button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const totalSpan = document.getElementById("total");
+
+    checkboxes.forEach(cb => cb.addEventListener("change", atualizarTotal));
+
+    function atualizarTotal() {
+      let total = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          total += parseFloat(cb.getAttribute("data-preco"));
+        }
+      });
+      totalSpan.innerText = "Total: R$" + total.toFixed(2).replace(".", ",");
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById("nome").value;
+      const telefone = document.getElementById("telefone").value;
+      const data = document.getElementById("data").value;
+      let mensagem = `*Orçamento Gilfeste*%0A`;
+      mensagem += `Nome: ${nome}%0ATelefone: ${telefone}%0AData: ${data}%0AItens:%0A`;
+
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          const nomeItem = cb.getAttribute("data-nome");
+          const preco = parseFloat(cb.getAttribute("data-preco")).toFixed(2).replace(".", ",");
+          mensagem += `- ${nomeItem} (R$${preco})%0A`;
+        }
+      });
+
+      mensagem += totalSpan.innerText.replace("Total:", "*Total:*");
+
+      window.open(`https://wa.me/557999145044?text=${mensagem}`, "_blank");
+    }
+
+    async function gerarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const nome = document.getElementById("nome").value;
+      const telefone = document.getElementById("telefone").value;
+      const data = document.getElementById("data").value;
+
+      doc.setFontSize(18);
+      doc.text("Orçamento Gilfeste", 20, 20);
+      doc.setFontSize(12);
+      doc.text(`Nome: ${nome}`, 20, 35);
+      doc.text(`Telefone: ${telefone}`, 20, 45);
+      doc.text(`Data: ${data}`, 20, 55);
+      doc.text("Itens:", 20, 70);
+
+      let y = 80;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          const nomeItem = cb.getAttribute("data-nome");
+          const preco = parseFloat(cb.getAttribute("data-preco")).toFixed(2).replace(".", ",");
+          doc.text(`- ${nomeItem} (R$${preco})`, 20, y);
+          y += 10;
+        }
+      });
+
+      doc.text(totalSpan.innerText, 20, y + 10);
+      doc.save("orcamento_gilfeste.pdf");
+    }
+  </script>
+</body>
+</html>
