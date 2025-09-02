@@ -630,6 +630,11 @@
                 placeholder="Ex: Festa de aniversário de 6 anos, tema Frozen, 30 crianças, preciso de decoração azul e branca, gostaria de incluir música infantil..."
                 class="w-full h-32 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
             ></textarea>
+            <div class="text-center mt-6">
+                <button onclick="sendCustomDescription()" class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    📱 Enviar Descrição para WhatsApp
+                </button>
+            </div>
         </div>
 
         <!-- Total Geral -->
@@ -1052,6 +1057,28 @@
             window.open(whatsappURL, '_blank');
         }
 
+        // Função para enviar apenas a descrição personalizada
+        function sendCustomDescription() {
+            const customDescription = document.getElementById('custom-description').value.trim();
+            
+            if (!customDescription) {
+                alert('⚠️ Por favor, descreva seu combo antes de enviar!');
+                return;
+            }
+            
+            let message = "🎉 *GilFest - Descrição do Combo Personalizado* 🎉\n\n";
+            message += "✍️ *Descrição do Cliente:*\n";
+            message += `${customDescription}\n\n`;
+            message += "Gostaria de um orçamento personalizado para este combo! 😊";
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/5579999145044?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp
+            window.open(whatsappURL, '_blank');
+        }
+
         // Função para enviar WhatsApp
         function sendWhatsApp() {
             const eventDate = document.getElementById('event-date').value;
@@ -1163,5 +1190,5 @@
         // Inicializar valores
         updateValues();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'978dab59e1a7f62a',t:'MTc1NjgyMzA0OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'978df49d859f8046',t:'MTc1NjgyNjA1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
