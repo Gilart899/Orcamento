@@ -1,1194 +1,193 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Preços - ĜilFest</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .price-display {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .slider {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            border-radius: 3px;
-            background: #e2e8f0;
-            outline: none;
-        }
-        
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
-        }
-        
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GilFest Orçamentos</title>
+  <!-- Fonte e Ícones -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      color: #333;
+    }
 
-        /* Estilos para inputs de data e hora */
-        input[type="date"], input[type="time"] {
-            color-scheme: dark;
-        }
-        
-        input[type="date"]::-webkit-calendar-picker-indicator,
-        input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
-    </style>
+    header {
+      background: linear-gradient(90deg, #004aad, #ffcc00);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #004aad;
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #004aad;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #00337a;
+    }
+
+    .btn.whatsapp {
+      background: #25d366;
+    }
+
+    .btn.pdf {
+      background: #ffcc00;
+      color: #333;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      background: #f0f0f0;
+      border-radius: 12px;
+    }
+  </style>
 </head>
-<body class="gradient-bg min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="text-center mb-12 animate-fade-in">
-            <div class="flex justify-center items-center gap-4 mb-4">
-                <span class="text-3xl">👶</span>
-                <span class="text-3xl">🧒</span>
-                <h1 class="text-4xl md:text-6xl font-bold text-white">
-                    GilFest
-                </h1>
-                <span class="text-3xl">👧</span>
-                <span class="text-3xl">🎈</span>
-            </div>
-            <p class="text-xl text-white/80 mb-2">Calculadora de Preços</p>
-            <div class="w-24 h-1 bg-white/30 mx-auto rounded-full"></div>
-        </div>
+<body>
 
-        <!-- Hero Image -->
-        <div class="glass-effect rounded-2xl p-8 mb-12 text-center animate-fade-in">
-            <h2 class="text-2xl font-semibold text-white mb-6">Diversão Garantida para Toda Criançada!</h2>
-            <div class="flex justify-center mb-4">
-                <svg width="400" height="250" viewBox="0 0 400 250" class="max-w-full h-auto">
-                    <!-- Cama elástica base -->
-                    <ellipse cx="200" cy="200" rx="150" ry="30" fill="#2563eb" stroke="#1d4ed8" stroke-width="3"/>
-                    <ellipse cx="200" cy="195" rx="140" ry="25" fill="#3b82f6"/>
-                    
-                    <!-- Estrutura metálica -->
-                    <line x1="50" y1="200" x2="50" y2="120" stroke="#64748b" stroke-width="4"/>
-                    <line x1="350" y1="200" x2="350" y2="120" stroke="#64748b" stroke-width="4"/>
-                    <line x1="125" y1="200" x2="125" y2="130" stroke="#64748b" stroke-width="3"/>
-                    <line x1="275" y1="200" x2="275" y2="130" stroke="#64748b" stroke-width="3"/>
-                    
-                    <!-- Rede de proteção -->
-                    <path d="M50 120 Q200 100 350 120 L350 130 Q200 110 50 130 Z" fill="rgba(156, 163, 175, 0.3)" stroke="#9ca3af" stroke-width="1"/>
-                    
-                    <!-- Superfície da cama elástica -->
-                    <ellipse cx="200" cy="190" rx="130" ry="20" fill="#1e40af"/>
-                    <ellipse cx="200" cy="185" rx="120" ry="15" fill="#2563eb"/>
-                    
-                    <!-- Molas -->
-                    <g stroke="#64748b" stroke-width="2" fill="none">
-                        <path d="M80 195 Q85 190 90 195 Q95 200 100 195 Q105 190 110 195"/>
-                        <path d="M140 195 Q145 190 150 195 Q155 200 160 195 Q165 190 170 195"/>
-                        <path d="M230 195 Q235 190 240 195 Q245 200 250 195 Q255 190 260 195"/>
-                        <path d="M290 195 Q295 190 300 195 Q305 200 310 195 Q315 190 320 195"/>
-                    </g>
-                    
-                    <!-- Criança 1 - pulando alto -->
-                    <g transform="translate(150, 80)">
-                        <!-- Corpo -->
-                        <circle cx="0" cy="0" r="12" fill="#fbbf24"/>
-                        <rect x="-8" y="10" width="16" height="20" rx="3" fill="#ef4444"/>
-                        <!-- Braços -->
-                        <circle cx="-15" cy="15" r="4" fill="#fbbf24"/>
-                        <circle cx="15" cy="15" r="4" fill="#fbbf24"/>
-                        <!-- Pernas -->
-                        <circle cx="-6" cy="35" r="4" fill="#3b82f6"/>
-                        <circle cx="6" cy="35" r="4" fill="#3b82f6"/>
-                        <!-- Rosto feliz -->
-                        <circle cx="-3" cy="-3" r="1" fill="#000"/>
-                        <circle cx="3" cy="-3" r="1" fill="#000"/>
-                        <path d="M-4 2 Q0 6 4 2" stroke="#000" stroke-width="1" fill="none"/>
-                        <!-- Cabelo -->
-                        <path d="M-10 -8 Q0 -15 10 -8" fill="#8b5cf6"/>
-                    </g>
-                    
-                    <!-- Criança 2 - no ar -->
-                    <g transform="translate(250, 100)">
-                        <!-- Corpo -->
-                        <circle cx="0" cy="0" r="12" fill="#fbbf24"/>
-                        <rect x="-8" y="10" width="16" height="20" rx="3" fill="#10b981"/>
-                        <!-- Braços levantados -->
-                        <circle cx="-12" cy="5" r="4" fill="#fbbf24"/>
-                        <circle cx="12" cy="5" r="4" fill="#fbbf24"/>
-                        <!-- Pernas -->
-                        <circle cx="-6" cy="35" r="4" fill="#f59e0b"/>
-                        <circle cx="6" cy="35" r="4" fill="#f59e0b"/>
-                        <!-- Rosto feliz -->
-                        <circle cx="-3" cy="-3" r="1" fill="#000"/>
-                        <circle cx="3" cy="-3" r="1" fill="#000"/>
-                        <path d="M-4 2 Q0 6 4 2" stroke="#000" stroke-width="1" fill="none"/>
-                        <!-- Cabelo -->
-                        <circle cx="0" cy="-8" r="6" fill="#f97316"/>
-                    </g>
-                    
-                    <!-- Criança 3 - na cama elástica -->
-                    <g transform="translate(180, 160)">
-                        <!-- Corpo -->
-                        <circle cx="0" cy="0" r="10" fill="#fbbf24"/>
-                        <rect x="-6" y="8" width="12" height="16" rx="2" fill="#8b5cf6"/>
-                        <!-- Braços -->
-                        <circle cx="-10" cy="12" r="3" fill="#fbbf24"/>
-                        <circle cx="10" cy="12" r="3" fill="#fbbf24"/>
-                        <!-- Pernas -->
-                        <circle cx="-4" cy="28" r="3" fill="#ef4444"/>
-                        <circle cx="4" cy="28" r="3" fill="#ef4444"/>
-                        <!-- Rosto feliz -->
-                        <circle cx="-2" cy="-2" r="0.8" fill="#000"/>
-                        <circle cx="2" cy="-2" r="0.8" fill="#000"/>
-                        <path d="M-3 1 Q0 4 3 1" stroke="#000" stroke-width="0.8" fill="none"/>
-                        <!-- Cabelo -->
-                        <path d="M-8 -6 Q0 -12 8 -6" fill="#1f2937"/>
-                    </g>
-                    
-                    <!-- Efeitos de movimento -->
-                    <g opacity="0.6">
-                        <circle cx="150" cy="95" r="2" fill="#fbbf24" opacity="0.5"/>
-                        <circle cx="155" cy="90" r="1.5" fill="#fbbf24" opacity="0.3"/>
-                        <circle cx="145" cy="92" r="1" fill="#fbbf24" opacity="0.4"/>
-                        
-                        <circle cx="250" cy="115" r="2" fill="#10b981" opacity="0.5"/>
-                        <circle cx="255" cy="110" r="1.5" fill="#10b981" opacity="0.3"/>
-                        <circle cx="245" cy="112" r="1" fill="#10b981" opacity="0.4"/>
-                    </g>
-                    
-                    <!-- Escorregador -->
-                    <g transform="translate(320, 130)">
-                        <path d="M0 0 Q20 20 40 60 L45 60 Q25 20 5 0 Z" fill="#f59e0b"/>
-                        <path d="M0 0 Q20 18 40 58 L45 58 Q25 18 5 0 Z" fill="#fbbf24"/>
-                        <!-- Corrimão -->
-                        <line x1="0" y1="0" x2="40" y2="60" stroke="#64748b" stroke-width="2"/>
-                        <line x1="5" y1="0" x2="45" y2="60" stroke="#64748b" stroke-width="2"/>
-                    </g>
-                    
-                    <!-- Balões decorativos -->
-                    <g opacity="0.8">
-                        <circle cx="80" cy="60" r="8" fill="#ef4444"/>
-                        <line x1="80" y1="68" x2="80" y2="85" stroke="#64748b" stroke-width="1"/>
-                        
-                        <circle cx="320" cy="50" r="8" fill="#3b82f6"/>
-                        <line x1="320" y1="58" x2="320" y2="75" stroke="#64748b" stroke-width="1"/>
-                        
-                        <circle cx="100" cy="40" r="6" fill="#10b981"/>
-                        <line x1="100" y1="46" x2="100" y2="60" stroke="#64748b" stroke-width="1"/>
-                    </g>
-                </svg>
-            </div>
-            <p class="text-white/80 text-lg">Pula-pula, escorregador e muita alegria em um só lugar!</p>
-        </div>
+  <header>
+    🎉 GilFest Orçamentos 🎈
+  </header>
 
-        <!-- Seletor de Data e Horário -->
-        <div class="glass-effect rounded-2xl p-8 mb-8 animate-fade-in">
-            <h2 class="text-2xl font-semibold text-white mb-6 text-center">📅 Data e Horário do Evento</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-white/80 text-sm font-medium mb-2">Data do Evento</label>
-                    <input type="date" id="event-date" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                </div>
-                <div>
-                    <label class="block text-white/80 text-sm font-medium mb-2">Horário de Início</label>
-                    <input type="time" id="event-time" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <h2>Dados do Cliente</h2>
+    <label>Nome:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome">
 
-        <!-- Sugestões de Serviços Adicionais -->
-        <div class="glass-effect rounded-2xl p-8 mb-8 animate-fade-in">
-            <h2 class="text-2xl font-semibold text-white mb-6 text-center">💡 Sugestões de Serviços Adicionais</h2>
-            <p class="text-white/80 text-center mb-6">Quer deixar sua festa ainda mais especial? Confira essas opções extras!</p>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🎭</div>
-                    <h3 class="text-white font-medium text-sm">Animação Infantil</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🎩</div>
-                    <h3 class="text-white font-medium text-sm">Show de Mágica</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🎨</div>
-                    <h3 class="text-white font-medium text-sm">Pintura Facial</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🎵</div>
-                    <h3 class="text-white font-medium text-sm">Som e DJ</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🎈</div>
-                    <h3 class="text-white font-medium text-sm">Decoração Temática</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🥤</div>
-                    <h3 class="text-white font-medium text-sm">Refrigerante (50x)</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🧃</div>
-                    <h3 class="text-white font-medium text-sm">Suco Natural (30x)</h3>
-                </div>
-                <div class="bg-white/10 rounded-lg p-4 text-center hover:bg-white/20 transition-all duration-200">
-                    <div class="text-2xl mb-2">🧪</div>
-                    <h3 class="text-white font-medium text-sm">Oficina de Slime (2h)</h3>
-                </div>
-            </div>
-            
-            <div class="text-center mt-6">
-                <p class="text-white/70 text-sm">💬 Interessou por algum desses serviços? Entre em contato pelo WhatsApp!</p>
-            </div>
-        </div>
+    <label>Telefone:</label>
+    <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx">
 
-        <!-- Calculator Cards -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <!-- Pula-pula Grande -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-                            <path d="M8 10h8v2H8v-2zm0 4h8v2H8v-2z" fill="rgba(255,255,255,0.3)"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Pula-pula Grande c/ Escorregador</h3>
-                    <p class="text-white/70 text-sm">R$ 180 por 4 horas</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">4 horas de diversão</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="bounce-large-total">R$ 180</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('bounceLarge')" id="btn-bounceLarge" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    <label>Data do Evento:</label>
+    <input type="date" id="data">
 
-            <!-- Pula-pula Pequeno -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4L4 8v8c0 4.42 2.87 7.79 7 8.8 4.13-1.01 7-4.38 7-8.8V8l-8-4z"/>
-                            <path d="M9 11h6v1.5H9v-1.5zm0 3h6v1.5H9v-1.5z" fill="rgba(255,255,255,0.3)"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Pula-pula Pequeno</h3>
-                    <p class="text-white/70 text-sm">R$ 150 por 4 horas</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">4 horas de diversão</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="bounce-small-total">R$ 150</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('bounceSmall')" id="btn-bounceSmall" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    <h2>Serviços</h2>
+    <label>
+      <input type="checkbox" value="150" data-label="Pula-pula médio com escorregador"> Pula-pula médio com escorregador - R$150
+    </label>
+    <label>
+      <input type="checkbox" value="150" data-label="Piscina de bolinhas"> Piscina de bolinhas - R$150
+    </label>
+    <label>
+      <input type="checkbox" value="200" data-label="Algodão doce"> Algodão doce - R$200
+    </label>
+    <label>
+      <input type="checkbox" value="200" data-label="Pipoca com leite condensado"> Pipoca com leite condensado - R$200
+    </label>
+    <label>
+      <input type="checkbox" value="300" data-label="Algodão + Pipoca"> Algodão + Pipoca - R$300
+    </label>
+    <label>
+      <input type="checkbox" value="80" data-label="Animação com balão"> Animação com balão - R$80
+    </label>
 
-            <!-- Piscina de Bolinhas -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <ellipse cx="12" cy="16" rx="10" ry="6" fill="rgba(255,255,255,0.2)"/>
-                            <circle cx="8" cy="12" r="2"/>
-                            <circle cx="12" cy="10" r="2"/>
-                            <circle cx="16" cy="12" r="2"/>
-                            <circle cx="10" cy="14" r="1.5"/>
-                            <circle cx="14" cy="14" r="1.5"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Piscina de Bolinhas</h3>
-                    <p class="text-white/70 text-sm">R$ 150 por 4 horas</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">4 horas de diversão</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="pool-total">R$ 150</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('pool')" id="btn-pool" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    <h2>Total: R$ <span id="total">0,00</span></h2>
 
-            <!-- Algodão Doce -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 20v-8"/>
-                            <ellipse cx="12" cy="8" rx="6" ry="4" fill="rgba(255,255,255,0.8)"/>
-                            <ellipse cx="12" cy="6" rx="5" ry="3" fill="rgba(255,255,255,0.6)"/>
-                            <ellipse cx="12" cy="4" rx="4" ry="2" fill="rgba(255,255,255,0.4)"/>
-                            <rect x="11.5" y="12" width="1" height="8" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Algodão Doce</h3>
-                    <p class="text-white/70 text-sm">Copo 300ml: R$ 2,50 | Saquinho: R$ 2,00</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="flex items-center justify-center gap-2">
-                        <button onclick="changeCottonType(1)" id="cotton-type-1" class="px-4 py-2 bg-white/30 hover:bg-white/40 rounded-lg text-white text-sm font-medium transition-all duration-200">Copo 300ml</button>
-                        <button onclick="changeCottonType(2)" id="cotton-type-2" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-medium transition-all duration-200">Saquinho</button>
-                    </div>
-                    
-                    <div class="flex items-center justify-center gap-4">
-                        <button onclick="changeCottonQuantity(-1)" class="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white font-bold text-xl transition-all duration-200">-</button>
-                        <div class="bg-white/10 rounded-lg px-4 py-2 min-w-[120px] text-center">
-                            <p class="text-white/70 text-sm">Quantidade</p>
-                            <p class="text-lg font-semibold text-white"><span id="cotton-quantity">20</span> unidades</p>
-                        </div>
-                        <button onclick="changeCottonQuantity(1)" class="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white font-bold text-xl transition-all duration-200">+</button>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-3 text-center">
-                        <p class="text-white/70 text-sm">Preço por unidade</p>
-                        <p class="text-lg font-semibold text-white" id="cotton-unit-price">R$ 2,50</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="cotton-total">R$ 50</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('cotton')" id="btn-cotton" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    <button class="btn whatsapp" id="btnWhats">
+      <i data-lucide="whatsapp"></i> Enviar para WhatsApp
+    </button>
 
-            <!-- Pipoca -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 6h8v12H8z" fill="rgba(255,255,255,0.2)"/>
-                            <circle cx="10" cy="4" r="1.5"/>
-                            <circle cx="12" cy="3" r="1.5"/>
-                            <circle cx="14" cy="4" r="1.5"/>
-                            <circle cx="9" cy="8" r="1"/>
-                            <circle cx="15" cy="9" r="1"/>
-                            <circle cx="11" cy="11" r="1"/>
-                            <circle cx="13" cy="13" r="1"/>
-                            <circle cx="10" cy="15" r="1"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Pipoca</h3>
-                    <p class="text-white/70 text-sm">R$ 2 por saquinho</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="flex items-center justify-center gap-4">
-                        <button onclick="changePopcornQuantity(-1)" class="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white font-bold text-xl transition-all duration-200">-</button>
-                        <div class="bg-white/10 rounded-lg px-4 py-2 min-w-[120px] text-center">
-                            <p class="text-white/70 text-sm">Quantidade</p>
-                            <p class="text-lg font-semibold text-white"><span id="popcorn-quantity">30</span> saquinhos</p>
-                        </div>
-                        <button onclick="changePopcornQuantity(1)" class="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white font-bold text-xl transition-all duration-200">+</button>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="popcorn-total">R$ 60</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('popcorn')" id="btn-popcorn" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    <button class="btn pdf">
+      <i data-lucide="file-down"></i> Gerar PDF
+    </button>
+  </div>
 
-            <!-- Cascata de Chocolate Grande -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6 4h12v2H6z"/>
-                            <path d="M8 6h8v2H8z"/>
-                            <path d="M10 8h4v2h-4z"/>
-                            <path d="M7 10c0 0 2 2 5 4s5-4 5-4v8H7v-8z" fill="rgba(255,255,255,0.3)"/>
-                            <path d="M9 12c1 1 2 2 3 3 1-1 2-2 3-3" stroke="currentColor" stroke-width="0.5" fill="none"/>
-                            <path d="M9 14c1 1 2 2 3 3 1-1 2-2 3-3" stroke="currentColor" stroke-width="0.5" fill="none"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Cascata de Chocolate Grande</h3>
-                    <p class="text-white/70 text-sm">R$ 1.200 por 4 horas</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">4 horas de diversão</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="chocolate-large-total">R$ 1.200</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('chocolateLarge')" id="btn-chocolateLarge" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+  <footer>
+    © 2025 GilFest - Festas e Eventos
+  </footer>
 
-            <!-- Cascata de Chocolate Pequena -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 6h8v1.5H8z"/>
-                            <path d="M9 7.5h6v1.5H9z"/>
-                            <path d="M10 9h4v1.5h-4z"/>
-                            <path d="M9 10.5c0 0 1.5 1.5 3 3s3-3 3-3v6H9v-6z" fill="rgba(255,255,255,0.3)"/>
-                            <path d="M10 12c0.8 0.8 1.5 1.5 2 2.5 0.5-1 1.2-1.7 2-2.5" stroke="currentColor" stroke-width="0.5" fill="none"/>
-                            <path d="M10 14c0.8 0.8 1.5 1.5 2 2.5 0.5-1 1.2-1.7 2-2.5" stroke="currentColor" stroke-width="0.5" fill="none"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Cascata de Chocolate Pequena</h3>
-                    <p class="text-white/70 text-sm">R$ 399 por 4 horas</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">4 horas de diversão</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="chocolate-small-total">R$ 399</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('chocolateSmall')" id="btn-chocolateSmall" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+  <script>
+    // Ativar ícones Lucide
+    lucide.createIcons();
 
-            <!-- Churros -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <rect x="10" y="4" width="4" height="16" rx="2" fill="rgba(255,255,255,0.8)"/>
-                            <rect x="9" y="6" width="6" height="1" fill="currentColor"/>
-                            <rect x="9" y="8" width="6" height="1" fill="currentColor"/>
-                            <rect x="9" y="10" width="6" height="1" fill="currentColor"/>
-                            <rect x="9" y="12" width="6" height="1" fill="currentColor"/>
-                            <rect x="9" y="14" width="6" height="1" fill="currentColor"/>
-                            <rect x="9" y="16" width="6" height="1" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Churros</h3>
-                    <p class="text-white/70 text-sm">Serve até 100 convidados - R$ 399</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">Serve até 100 convidados</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="churros-total">R$ 399</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('churros')" id="btn-churros" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
+    const checkboxes = document.querySelectorAll('input[type=checkbox]');
+    const totalElement = document.getElementById('total');
+    const btnWhats = document.getElementById('btnWhats');
 
-            <!-- Crepe Suíço -->
-            <div class="glass-effect rounded-2xl p-6 card-hover animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <ellipse cx="12" cy="12" rx="8" ry="6" fill="rgba(255,255,255,0.8)"/>
-                            <ellipse cx="12" cy="11" rx="6" ry="4" fill="rgba(255,255,255,0.6)"/>
-                            <path d="M8 10c2 1 4 1 6 0s4 1 6 0" stroke="currentColor" stroke-width="0.5" fill="none"/>
-                            <circle cx="10" cy="9" r="0.5" fill="red"/>
-                            <circle cx="14" cy="9" r="0.5" fill="red"/>
-                            <circle cx="12" cy="13" r="0.5" fill="red"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Crepe Suíço</h3>
-                    <p class="text-white/70 text-sm">Serve até 100 convidados - R$ 399</p>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Preço Fixo</p>
-                        <p class="text-lg font-semibold text-white">Serve até 100 convidados</p>
-                    </div>
-                    
-                    <div class="bg-white/10 rounded-lg p-4 text-center">
-                        <p class="text-white/70 text-sm">Total</p>
-                        <p class="text-2xl font-bold price-display" id="crepe-total">R$ 399</p>
-                    </div>
-                    
-                    <button onclick="toggleItem('crepe')" id="btn-crepe" class="w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200">
-                        ➕ Adicionar ao Orçamento
-                    </button>
-                </div>
-            </div>
-        </div>
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        atualizarTotal();
+      });
+    });
 
-        <!-- Campo de Descrição Personalizada -->
-        <div class="glass-effect rounded-2xl p-8 mb-8 animate-fade-in">
-            <h2 class="text-2xl font-semibold text-white mb-6 text-center">✍️ Descreva seu Combo</h2>
-            <p class="text-white/80 text-center mb-6">Conte-nos mais detalhes sobre o que você gostaria para sua festa!</p>
-            <textarea 
-                id="custom-description" 
-                placeholder="Ex: Festa de aniversário de 6 anos, tema Frozen, 30 crianças, preciso de decoração azul e branca, gostaria de incluir música infantil..."
-                class="w-full h-32 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
-            ></textarea>
-            <div class="text-center mt-6">
-                <button onclick="sendCustomDescription()" class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    📱 Enviar Descrição para WhatsApp
-                </button>
-            </div>
-        </div>
+    function atualizarTotal() {
+      let total = 0;
+      checkboxes.forEach(item => {
+        if(item.checked) total += parseFloat(item.value);
+      });
+      totalElement.textContent = total.toFixed(2).replace('.', ',');
+    }
 
-        <!-- Total Geral -->
-        <div class="glass-effect rounded-2xl p-8 text-center pulse-animation">
-            <h2 class="text-2xl font-semibold text-white mb-4">Total do Orçamento</h2>
-            <div class="text-5xl md:text-6xl font-bold price-display mb-4" id="grand-total">R$ 0</div>
-            <p class="text-white/70">Valores para evento de 4 horas - podem variar conforme complexidade</p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-                <button onclick="generateQuote()" class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    📋 Gerar Orçamento Detalhado
-                </button>
-                <button onclick="downloadPDF()" class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    📄 Salvar PDF
-                </button>
-                <button onclick="sendWhatsApp()" class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    📱 Enviar WhatsApp
-                </button>
-            </div>
-        </div>
+    btnWhats.addEventListener('click', () => {
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const data = document.getElementById('data').value;
+      let total = totalElement.textContent;
 
-        <!-- Quote Modal -->
-        <div id="quote-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-            <div class="glass-effect rounded-2xl p-8 max-w-md w-full animate-fade-in">
-                <h3 class="text-2xl font-bold text-white mb-6 text-center">Orçamento Detalhado</h3>
-                <div id="quote-details" class="space-y-3 text-white/90 mb-6"></div>
-                <div class="border-t border-white/20 pt-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xl font-semibold text-white">Total:</span>
-                        <span class="text-2xl font-bold price-display" id="quote-total"></span>
-                    </div>
-                </div>
-                <div class="flex gap-4 mt-6">
-                    <button onclick="saveQuote()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 rounded-full transition-all duration-300">
-                        💾 Salvar
-                    </button>
-                    <button onclick="closeQuote()" class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold py-3 rounded-full transition-all duration-300">
-                        Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+      let servicos = [];
+      checkboxes.forEach(cb => {
+        if(cb.checked) servicos.push(cb.dataset.label + " - R$" + cb.value);
+      });
 
-    <script>
-        // Variáveis de estado
-        let cottonQuantity = 20;
-        let cottonType = 1; // 1 = Copo 300ml, 2 = Saquinho
-        let popcornQuantity = 30;
-        
-        // Estado dos itens selecionados
-        let selectedItems = {
-            bounceLarge: false,
-            bounceSmall: false,
-            pool: false,
-            cotton: false,
-            popcorn: false,
-            chocolateLarge: false,
-            chocolateSmall: false,
-            churros: false,
-            crepe: false
-        };
+      let mensagem = `*Orçamento GilFest*%0A%0A`;
+      mensagem += `👤 Nome: ${nome}%0A`;
+      mensagem += `📞 Telefone: ${telefone}%0A`;
+      mensagem += `📅 Data do evento: ${data}%0A%0A`;
+      mensagem += `🎈 Serviços escolhidos:%0A- ${servicos.join("%0A- ")}%0A%0A`;
+      mensagem += `💰 Total: R$ ${total}`;
 
-        // Função para alternar seleção de itens
-        function toggleItem(itemName) {
-            selectedItems[itemName] = !selectedItems[itemName];
-            
-            const button = document.getElementById(`btn-${itemName}`);
-            if (selectedItems[itemName]) {
-                button.textContent = '✅ Adicionado ao Orçamento';
-                button.className = 'w-full py-3 bg-green-500 hover:bg-red-500 rounded-lg text-white font-medium transition-all duration-200';
-            } else {
-                button.textContent = '➕ Adicionar ao Orçamento';
-                button.className = 'w-full py-3 bg-white/20 hover:bg-green-500 rounded-lg text-white font-medium transition-all duration-200';
-            }
-            
-            updateValues();
-        }
+      // Substituir pelo SEU número do WhatsApp no formato: 55DDXXXXXXXXX
+      let numeroWhats = "5599999999999";  
 
-        // Funções para alterar quantidades
-        function changeCottonType(type) {
-            cottonType = type;
-            document.getElementById('cotton-type-1').className = type === 1 ? 
-                'px-4 py-2 bg-white/30 hover:bg-white/40 rounded-lg text-white text-sm font-medium transition-all duration-200' :
-                'px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-medium transition-all duration-200';
-            document.getElementById('cotton-type-2').className = type === 2 ? 
-                'px-4 py-2 bg-white/30 hover:bg-white/40 rounded-lg text-white text-sm font-medium transition-all duration-200' :
-                'px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-medium transition-all duration-200';
-            updateValues();
-        }
+      let url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
+      window.open(url, "_blank");
+    });
+  </script>
 
-        function changeCottonQuantity(change) {
-            cottonQuantity = Math.max(1, Math.min(200, cottonQuantity + change));
-            updateValues();
-        }
-
-        function changePopcornQuantity(change) {
-            popcornQuantity = Math.max(1, Math.min(200, popcornQuantity + change));
-            updateValues();
-        }
-
-        // Função para atualizar valores
-        function updateValues() {
-            // Pula-pula Grande
-            const bounceLargePrice = 180; // Preço fixo
-            document.getElementById('bounce-large-total').textContent = `R$ ${bounceLargePrice.toLocaleString('pt-BR')}`;
-
-            // Pula-pula Pequeno
-            const bounceSmallPrice = 150; // Preço fixo
-            document.getElementById('bounce-small-total').textContent = `R$ ${bounceSmallPrice.toLocaleString('pt-BR')}`;
-
-            // Piscina de Bolinhas
-            const poolPrice = 150; // Preço fixo
-            document.getElementById('pool-total').textContent = `R$ ${poolPrice.toLocaleString('pt-BR')}`;
-
-            // Algodão Doce
-            const cottonPrice = cottonType === 1 ? 2.5 : 2; // 1 = Copo 300ml (R$ 2,50), 2 = Saquinho (R$ 2,00)
-            const cottonTotal = cottonQuantity * cottonPrice;
-            
-            document.getElementById('cotton-quantity').textContent = cottonQuantity;
-            document.getElementById('cotton-unit-price').textContent = `R$ ${cottonPrice.toFixed(2).replace('.', ',')}`;
-            document.getElementById('cotton-total').textContent = `R$ ${cottonTotal.toLocaleString('pt-BR')}`;
-
-            // Pipoca
-            const popcornTotal = popcornQuantity * 2;
-            
-            document.getElementById('popcorn-quantity').textContent = popcornQuantity;
-            document.getElementById('popcorn-total').textContent = `R$ ${popcornTotal.toLocaleString('pt-BR')}`;
-
-            // Cascata de Chocolate Grande
-            const chocolateLargePrice = 1200; // Preço fixo
-            document.getElementById('chocolate-large-total').textContent = `R$ ${chocolateLargePrice.toLocaleString('pt-BR')}`;
-
-            // Cascata de Chocolate Pequena
-            const chocolateSmallPrice = 399; // Preço fixo
-            document.getElementById('chocolate-small-total').textContent = `R$ ${chocolateSmallPrice.toLocaleString('pt-BR')}`;
-
-            // Churros
-            const churrosPrice = 399; // Preço fixo para até 100 convidados
-            document.getElementById('churros-total').textContent = `R$ ${churrosPrice.toLocaleString('pt-BR')}`;
-
-            // Crepe Suíço
-            const crepePrice = 399; // Preço fixo para até 100 convidados
-            document.getElementById('crepe-total').textContent = `R$ ${crepePrice.toLocaleString('pt-BR')}`;
-
-            // Total geral - apenas itens selecionados
-            let grandTotal = 0;
-            if (selectedItems.bounceLarge) grandTotal += bounceLargePrice;
-            if (selectedItems.bounceSmall) grandTotal += bounceSmallPrice;
-            if (selectedItems.pool) grandTotal += poolPrice;
-            if (selectedItems.cotton) grandTotal += cottonTotal;
-            if (selectedItems.popcorn) grandTotal += popcornTotal;
-            if (selectedItems.chocolateLarge) grandTotal += chocolateLargePrice;
-            if (selectedItems.chocolateSmall) grandTotal += chocolateSmallPrice;
-            if (selectedItems.churros) grandTotal += churrosPrice;
-            if (selectedItems.crepe) grandTotal += crepePrice;
-            
-            document.getElementById('grand-total').textContent = `R$ ${grandTotal.toLocaleString('pt-BR')}`;
-        }
-
-        // Função para gerar orçamento
-        function generateQuote() {
-            const bounceLargePrice = 180;
-            const bounceSmallPrice = 150;
-            const poolPrice = 150;
-            
-            const cottonPrice = cottonType === 1 ? 2.5 : 2;
-            const cottonTotal = cottonQuantity * cottonPrice;
-            const cottonTypeName = cottonType === 1 ? 'Copo 300ml' : 'Saquinho';
-            
-            const popcornTotal = popcornQuantity * 2;
-            
-            const chocolateLargePrice = 1200;
-            const chocolateSmallPrice = 399;
-            
-            const churrosPrice = 399;
-            const crepePrice = 399;
-            
-            let grandTotal = 0;
-            let quoteHTML = '';
-            
-            // Apenas itens selecionados
-            if (selectedItems.bounceLarge) {
-                grandTotal += bounceLargePrice;
-                quoteHTML += `<div class="flex justify-between"><span>Pula-pula Grande c/ Escorregador</span><span>R$ ${bounceLargePrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.bounceSmall) {
-                grandTotal += bounceSmallPrice;
-                quoteHTML += `<div class="flex justify-between"><span>Pula-pula Pequeno</span><span>R$ ${bounceSmallPrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.pool) {
-                grandTotal += poolPrice;
-                quoteHTML += `<div class="flex justify-between"><span>Piscina de Bolinhas</span><span>R$ ${poolPrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.cotton) {
-                grandTotal += cottonTotal;
-                quoteHTML += `<div class="flex justify-between"><span>Algodão Doce ${cottonTypeName} (${cottonQuantity}x)</span><span>R$ ${cottonTotal.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.popcorn) {
-                grandTotal += popcornTotal;
-                quoteHTML += `<div class="flex justify-between"><span>Pipoca (${popcornQuantity}x)</span><span>R$ ${popcornTotal.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.chocolateLarge) {
-                grandTotal += chocolateLargePrice;
-                quoteHTML += `<div class="flex justify-between"><span>Cascata de Chocolate Grande</span><span>R$ ${chocolateLargePrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.chocolateSmall) {
-                grandTotal += chocolateSmallPrice;
-                quoteHTML += `<div class="flex justify-between"><span>Cascata de Chocolate Pequena</span><span>R$ ${chocolateSmallPrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.churros) {
-                grandTotal += churrosPrice;
-                quoteHTML += `<div class="flex justify-between"><span>Churros (até 100 convidados)</span><span>R$ ${churrosPrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            if (selectedItems.crepe) {
-                grandTotal += crepePrice;
-                quoteHTML += `<div class="flex justify-between"><span>Crepe Suíço (até 100 convidados)</span><span>R$ ${crepePrice.toLocaleString('pt-BR')}</span></div>`;
-            }
-            
-            if (quoteHTML === '') {
-                quoteHTML = '<div class="text-center text-white/70">Nenhum item selecionado</div>';
-            }
-
-            const quoteDetails = document.getElementById('quote-details');
-            quoteDetails.innerHTML = quoteHTML;
-            
-            document.getElementById('quote-total').textContent = `R$ ${grandTotal.toLocaleString('pt-BR')}`;
-            document.getElementById('quote-modal').classList.remove('hidden');
-            document.getElementById('quote-modal').classList.add('flex');
-        }
-
-        // Função para salvar orçamento
-        function saveQuote() {
-            // Criar dados do orçamento
-            const quoteData = {
-                date: new Date().toLocaleDateString('pt-BR'),
-                eventDate: document.getElementById('event-date').value,
-                eventTime: document.getElementById('event-time').value,
-                customDescription: document.getElementById('custom-description').value,
-                selectedItems: selectedItems,
-                cottonQuantity: cottonQuantity,
-                cottonType: cottonType,
-                popcornQuantity: popcornQuantity
-            };
-            
-            // Salvar no localStorage
-            const savedQuotes = JSON.parse(localStorage.getItem('gilfest-quotes') || '[]');
-            savedQuotes.push(quoteData);
-            localStorage.setItem('gilfest-quotes', JSON.stringify(savedQuotes));
-            
-            alert('✅ Orçamento salvo com sucesso!');
-            closeQuote();
-        }
-
-        // Função para fechar orçamento
-        function closeQuote() {
-            document.getElementById('quote-modal').classList.add('hidden');
-            document.getElementById('quote-modal').classList.remove('flex');
-        }
-
-        // Função para baixar PDF
-        function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Configurações
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(20);
-            doc.text("GilFest - Orçamento", 20, 30);
-            
-            // Data e horário do evento
-            const eventDate = document.getElementById('event-date').value;
-            const eventTime = document.getElementById('event-time').value;
-            const customDescription = document.getElementById('custom-description').value;
-            
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "normal");
-            
-            let yPosition = 50;
-            if (eventDate || eventTime) {
-                doc.text("Dados do Evento:", 20, yPosition);
-                yPosition += 10;
-                if (eventDate) {
-                    const formattedDate = new Date(eventDate + 'T00:00:00').toLocaleDateString('pt-BR');
-                    doc.text(`Data: ${formattedDate}`, 20, yPosition);
-                    yPosition += 10;
-                }
-                if (eventTime) {
-                    doc.text(`Horário: ${eventTime}`, 20, yPosition);
-                    yPosition += 10;
-                }
-                yPosition += 10;
-            }
-            
-            // Descrição personalizada
-            if (customDescription) {
-                doc.text("Descrição do Combo:", 20, yPosition);
-                yPosition += 10;
-                const lines = doc.splitTextToSize(customDescription, 170);
-                doc.text(lines, 20, yPosition);
-                yPosition += lines.length * 5 + 10;
-            }
-            
-            // Itens do orçamento
-            doc.text("Itens Selecionados:", 20, yPosition);
-            yPosition += 15;
-            
-            // Calcular valores apenas dos itens selecionados
-            const bounceLargePrice = 180;
-            const bounceSmallPrice = 150;
-            const poolPrice = 150;
-            const cottonPrice = cottonType === 1 ? 2.5 : 2;
-            const cottonTotal = cottonQuantity * cottonPrice;
-            const cottonTypeName = cottonType === 1 ? 'Copo 300ml' : 'Saquinho';
-            const popcornTotal = popcornQuantity * 2;
-            const chocolateLargePrice = 1200;
-            const chocolateSmallPrice = 399;
-            const churrosPrice = 399;
-            const crepePrice = 399;
-            
-            let grandTotal = 0;
-            const items = [];
-            
-            // Apenas itens selecionados
-            if (selectedItems.bounceLarge) {
-                items.push(`Pula-pula Grande c/ Escorregador - R$ ${bounceLargePrice.toLocaleString('pt-BR')}`);
-                grandTotal += bounceLargePrice;
-            }
-            if (selectedItems.bounceSmall) {
-                items.push(`Pula-pula Pequeno - R$ ${bounceSmallPrice.toLocaleString('pt-BR')}`);
-                grandTotal += bounceSmallPrice;
-            }
-            if (selectedItems.pool) {
-                items.push(`Piscina de Bolinhas - R$ ${poolPrice.toLocaleString('pt-BR')}`);
-                grandTotal += poolPrice;
-            }
-            if (selectedItems.cotton) {
-                items.push(`Algodão Doce ${cottonTypeName} (${cottonQuantity}x) - R$ ${cottonTotal.toLocaleString('pt-BR')}`);
-                grandTotal += cottonTotal;
-            }
-            if (selectedItems.popcorn) {
-                items.push(`Pipoca (${popcornQuantity}x) - R$ ${popcornTotal.toLocaleString('pt-BR')}`);
-                grandTotal += popcornTotal;
-            }
-            if (selectedItems.chocolateLarge) {
-                items.push(`Cascata de Chocolate Grande - R$ ${chocolateLargePrice.toLocaleString('pt-BR')}`);
-                grandTotal += chocolateLargePrice;
-            }
-            if (selectedItems.chocolateSmall) {
-                items.push(`Cascata de Chocolate Pequena - R$ ${chocolateSmallPrice.toLocaleString('pt-BR')}`);
-                grandTotal += chocolateSmallPrice;
-            }
-            if (selectedItems.churros) {
-                items.push(`Churros (até 100 convidados) - R$ ${churrosPrice.toLocaleString('pt-BR')}`);
-                grandTotal += churrosPrice;
-            }
-            if (selectedItems.crepe) {
-                items.push(`Crepe Suíço (até 100 convidados) - R$ ${crepePrice.toLocaleString('pt-BR')}`);
-                grandTotal += crepePrice;
-            }
-            
-            if (items.length === 0) {
-                doc.text("Nenhum item selecionado", 20, yPosition);
-                yPosition += 10;
-            } else {
-                items.forEach(item => {
-                    if (yPosition > 270) {
-                        doc.addPage();
-                        yPosition = 20;
-                    }
-                    doc.text(item, 20, yPosition);
-                    yPosition += 8;
-                });
-            }
-            
-            // Total
-            yPosition += 10;
-            if (yPosition > 270) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.text(`TOTAL: R$ ${grandTotal.toLocaleString('pt-BR')}`, 20, yPosition);
-            
-            // Informações de contato
-            yPosition += 20;
-            if (yPosition > 270) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(10);
-            doc.text("GilFest - Diversão Garantida!", 20, yPosition);
-            doc.text("WhatsApp: (79) 9 9914-5044", 20, yPosition + 10);
-            doc.text("Orçamento válido por 30 dias", 20, yPosition + 20);
-            
-            // Salvar PDF
-            const today = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
-            doc.save(`GilFest-Orcamento-${today}.pdf`);
-            
-            // Enviar cópia para WhatsApp
-            sendPDFToWhatsApp();
-        }
-
-        // Função para enviar PDF para WhatsApp
-        function sendPDFToWhatsApp() {
-            let message = "📄 *GilFest - Cópia do Orçamento PDF* 📄\n\n";
-            message += "Olá! Um novo orçamento foi gerado e salvo em PDF.\n\n";
-            message += "📋 *Detalhes:*\n";
-            message += `• Data de criação: ${new Date().toLocaleDateString('pt-BR')}\n`;
-            message += `• Horário: ${new Date().toLocaleTimeString('pt-BR')}\n\n`;
-            message += "O cliente baixou o PDF com os itens selecionados.\n\n";
-            message += "💼 *Para acompanhamento interno*";
-            
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/5579999145044?text=${encodedMessage}`;
-            
-            // Abrir WhatsApp em nova aba
-            window.open(whatsappURL, '_blank');
-        }
-
-        // Função para enviar apenas a descrição personalizada
-        function sendCustomDescription() {
-            const customDescription = document.getElementById('custom-description').value.trim();
-            
-            if (!customDescription) {
-                alert('⚠️ Por favor, descreva seu combo antes de enviar!');
-                return;
-            }
-            
-            let message = "🎉 *GilFest - Descrição do Combo Personalizado* 🎉\n\n";
-            message += "✍️ *Descrição do Cliente:*\n";
-            message += `${customDescription}\n\n`;
-            message += "Gostaria de um orçamento personalizado para este combo! 😊";
-            
-            // Codificar mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/5579999145044?text=${encodedMessage}`;
-            
-            // Abrir WhatsApp
-            window.open(whatsappURL, '_blank');
-        }
-
-        // Função para enviar WhatsApp
-        function sendWhatsApp() {
-            const eventDate = document.getElementById('event-date').value;
-            const eventTime = document.getElementById('event-time').value;
-            const customDescription = document.getElementById('custom-description').value;
-            
-            // Calcular valores apenas dos itens selecionados
-            const bounceLargePrice = 180;
-            const bounceSmallPrice = 150;
-            const poolPrice = 150;
-            const cottonPrice = cottonType === 1 ? 2.5 : 2;
-            const cottonTotal = cottonQuantity * cottonPrice;
-            const cottonTypeName = cottonType === 1 ? 'Copo 300ml' : 'Saquinho';
-            const popcornTotal = popcornQuantity * 2;
-            const chocolateLargePrice = 1200;
-            const chocolateSmallPrice = 399;
-            const churrosPrice = 399;
-            const crepePrice = 399;
-            
-            let grandTotal = 0;
-            let selectedItemsText = '';
-            
-            // Apenas itens selecionados
-            if (selectedItems.bounceLarge) {
-                selectedItemsText += `• Pula-pula Grande c/ Escorregador - R$ ${bounceLargePrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += bounceLargePrice;
-            }
-            if (selectedItems.bounceSmall) {
-                selectedItemsText += `• Pula-pula Pequeno - R$ ${bounceSmallPrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += bounceSmallPrice;
-            }
-            if (selectedItems.pool) {
-                selectedItemsText += `• Piscina de Bolinhas - R$ ${poolPrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += poolPrice;
-            }
-            if (selectedItems.cotton) {
-                selectedItemsText += `• Algodão Doce ${cottonTypeName} (${cottonQuantity}x) - R$ ${cottonTotal.toLocaleString('pt-BR')}\n`;
-                grandTotal += cottonTotal;
-            }
-            if (selectedItems.popcorn) {
-                selectedItemsText += `• Pipoca (${popcornQuantity}x) - R$ ${popcornTotal.toLocaleString('pt-BR')}\n`;
-                grandTotal += popcornTotal;
-            }
-            if (selectedItems.chocolateLarge) {
-                selectedItemsText += `• Cascata de Chocolate Grande - R$ ${chocolateLargePrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += chocolateLargePrice;
-            }
-            if (selectedItems.chocolateSmall) {
-                selectedItemsText += `• Cascata de Chocolate Pequena - R$ ${chocolateSmallPrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += chocolateSmallPrice;
-            }
-            if (selectedItems.churros) {
-                selectedItemsText += `• Churros (até 100 convidados) - R$ ${churrosPrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += churrosPrice;
-            }
-            if (selectedItems.crepe) {
-                selectedItemsText += `• Crepe Suíço (até 100 convidados) - R$ ${crepePrice.toLocaleString('pt-BR')}\n`;
-                grandTotal += crepePrice;
-            }
-            
-            // Montar mensagem
-            let message = "🎉 *GilFest - Solicitação de Orçamento* 🎉\n\n";
-            
-            if (eventDate || eventTime) {
-                message += "📅 *Dados do Evento:*\n";
-                if (eventDate) {
-                    const formattedDate = new Date(eventDate + 'T00:00:00').toLocaleDateString('pt-BR');
-                    message += `Data: ${formattedDate}\n`;
-                }
-                if (eventTime) {
-                    message += `Horário: ${eventTime}\n`;
-                }
-                message += "\n";
-            }
-            
-            if (customDescription) {
-                message += "✍️ *Descrição do Combo:*\n";
-                message += `${customDescription}\n\n`;
-            }
-            
-            if (selectedItemsText) {
-                message += "🎪 *Itens Selecionados:*\n";
-                message += selectedItemsText + "\n";
-                message += `💰 *TOTAL: R$ ${grandTotal.toLocaleString('pt-BR')}*\n\n`;
-            } else {
-                message += "ℹ️ Nenhum item foi selecionado ainda.\n\n";
-            }
-            
-            message += "Gostaria de mais informações sobre este orçamento! 😊";
-            
-            // Codificar mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = `https://wa.me/5579999145044?text=${encodedMessage}`;
-            
-            // Abrir WhatsApp
-            window.open(whatsappURL, '_blank');
-        }
-
-        // Fechar modal clicando fora
-        document.getElementById('quote-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeQuote();
-            }
-        });
-
-        // Definir data mínima como hoje
-        document.getElementById('event-date').min = new Date().toISOString().split('T')[0];
-
-        // Inicializar valores
-        updateValues();
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'978df49d859f8046',t:'MTc1NjgyNjA1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
