@@ -6,6 +6,7 @@
   <title>GilFest Orçamentos</title>
   <!-- Fonte e Ícones -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -37,18 +38,41 @@
       margin-top: 0;
     }
 
-    label {
-      display: block;
+    .input-group {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 8px 12px;
       margin-top: 10px;
-      font-weight: bold;
     }
 
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .input-group i {
+      margin-right: 10px;
+      color: #004aad;
+    }
+
+    .input-group input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+    }
+
+    .service {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      font-size: 1rem;
+    }
+
+    .service i {
+      color: #ff6600;
+      width: 22px;
+      height: 22px;
     }
 
     .btn {
@@ -97,33 +121,58 @@
 
   <div class="container">
     <h2>Dados do Cliente</h2>
-    <label>Nome:</label>
-    <input type="text" id="nome" placeholder="Digite seu nome">
 
-    <label>Telefone:</label>
-    <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx">
+    <div class="input-group">
+      <i data-lucide="user"></i>
+      <input type="text" id="nome" placeholder="Digite seu nome">
+    </div>
 
-    <label>Data do Evento:</label>
-    <input type="date" id="data">
+    <div class="input-group">
+      <i data-lucide="phone"></i>
+      <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx">
+    </div>
+
+    <div class="input-group">
+      <i data-lucide="calendar"></i>
+      <input type="date" id="data">
+    </div>
 
     <h2>Serviços</h2>
-    <label>
-      <input type="checkbox" value="150" data-label="Pula-pula médio com escorregador"> Pula-pula médio com escorregador - R$150
+
+    <label class="service">
+      <i data-lucide="castle"></i>
+      <input type="checkbox" value="150" data-label="Pula-pula médio com escorregador"> 
+      Pula-pula médio com escorregador - R$150
     </label>
-    <label>
-      <input type="checkbox" value="150" data-label="Piscina de bolinhas"> Piscina de bolinhas - R$150
+
+    <label class="service">
+      <i data-lucide="toy-brick"></i>
+      <input type="checkbox" value="150" data-label="Piscina de bolinhas"> 
+      Piscina de bolinhas - R$150
     </label>
-    <label>
-      <input type="checkbox" value="200" data-label="Algodão doce"> Algodão doce - R$200
+
+    <label class="service">
+      <i data-lucide="candy"></i>
+      <input type="checkbox" value="200" data-label="Algodão doce"> 
+      Algodão doce - R$200
     </label>
-    <label>
-      <input type="checkbox" value="200" data-label="Pipoca com leite condensado"> Pipoca com leite condensado - R$200
+
+    <label class="service">
+      <i data-lucide="popcorn"></i>
+      <input type="checkbox" value="200" data-label="Pipoca com leite condensado"> 
+      Pipoca com leite condensado - R$200
     </label>
-    <label>
-      <input type="checkbox" value="300" data-label="Algodão + Pipoca"> Algodão + Pipoca - R$300
+
+    <label class="service">
+      <i data-lucide="cup-soda"></i>
+      <input type="checkbox" value="300" data-label="Algodão + Pipoca"> 
+      Algodão + Pipoca - R$300
     </label>
-    <label>
-      <input type="checkbox" value="80" data-label="Animação com balão"> Animação com balão - R$80
+
+    <label class="service">
+      <i data-lucide="balloon"></i>
+      <input type="checkbox" value="80" data-label="Animação com balão"> 
+      Animação com balão - R$80
     </label>
 
     <h2>Total: R$ <span id="total">0,00</span></h2>
@@ -132,7 +181,7 @@
       <i data-lucide="whatsapp"></i> Enviar para WhatsApp
     </button>
 
-    <button class="btn pdf">
+    <button class="btn pdf" id="btnPDF">
       <i data-lucide="file-down"></i> Gerar PDF
     </button>
   </div>
@@ -142,18 +191,12 @@
   </footer>
 
   <script>
-    // Ativar ícones Lucide
     lucide.createIcons();
 
     const checkboxes = document.querySelectorAll('input[type=checkbox]');
     const totalElement = document.getElementById('total');
     const btnWhats = document.getElementById('btnWhats');
-
-    checkboxes.forEach(cb => {
-      cb.addEventListener('change', () => {
-        atualizarTotal();
-      });
-    });
+    const btnPDF = document.getElementById('btnPDF');
 
     function atualizarTotal() {
       let total = 0;
@@ -162,6 +205,8 @@
       });
       totalElement.textContent = total.toFixed(2).replace('.', ',');
     }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', atualizarTotal));
 
     btnWhats.addEventListener('click', () => {
       const nome = document.getElementById('nome').value;
@@ -181,13 +226,43 @@
       mensagem += `🎈 Serviços escolhidos:%0A- ${servicos.join("%0A- ")}%0A%0A`;
       mensagem += `💰 Total: R$ ${total}`;
 
-      // Substituir pelo SEU número do WhatsApp no formato: 55DDXXXXXXXXX
       let numeroWhats = "5579999145044";  
-
       let url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
       window.open(url, "_blank");
+    });
+
+    btnPDF.addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const data = document.getElementById('data').value;
+      let total = totalElement.textContent;
+
+      let servicos = [];
+      checkboxes.forEach(cb => {
+        if(cb.checked) servicos.push(cb.dataset.label + " - R$" + cb.value);
+      });
+
+      doc.setFontSize(18);
+      doc.text("Orçamento - GilFest", 20, 20);
+
+      doc.setFontSize(12);
+      doc.text(`Nome: ${nome}`, 20, 40);
+      doc.text(`Telefone: ${telefone}`, 20, 50);
+      doc.text(`Data do evento: ${data}`, 20, 60);
+
+      doc.text("Serviços escolhidos:", 20, 80);
+      servicos.forEach((s, i) => {
+        doc.text(`- ${s}`, 25, 90 + i * 10);
+      });
+
+      doc.text(`Total: R$ ${total}`, 20, 120 + servicos.length * 10);
+
+      doc.save("orcamento_gilfest.pdf");
     });
   </script>
 
 </body>
-</html>
+        </html>
