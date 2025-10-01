@@ -75,6 +75,15 @@
       height: 22px;
     }
 
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -184,6 +193,13 @@
     <button class="btn pdf" id="btnPDF">
       <i data-lucide="file-down"></i> Gerar PDF
     </button>
+
+    <h2>Serviço Extra / Observações</h2>
+    <textarea id="extra" placeholder="Digite aqui o serviço desejado ou observações..." rows="4"></textarea>
+
+    <button class="btn whatsapp" id="btnOrcamento">
+      <i data-lucide="message-circle"></i> Pedir Orçamento
+    </button>
   </div>
 
   <footer>
@@ -197,6 +213,7 @@
     const totalElement = document.getElementById('total');
     const btnWhats = document.getElementById('btnWhats');
     const btnPDF = document.getElementById('btnPDF');
+    const btnOrcamento = document.getElementById('btnOrcamento');
 
     function atualizarTotal() {
       let total = 0;
@@ -262,7 +279,23 @@
 
       doc.save("orcamento_gilfest.pdf");
     });
+
+    btnOrcamento.addEventListener('click', () => {
+      const extra = document.getElementById('extra').value;
+
+      if (!extra.trim()) {
+        alert("Por favor, digite o serviço ou observação antes de enviar.");
+        return;
+      }
+
+      let mensagem = `*Pedido de Orçamento Personalizado*%0A%0A`;
+      mensagem += `📝 ${extra}`;
+
+      let numeroWhats = "5579999145044";  
+      let url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
+      window.open(url, "_blank");
+    });
   </script>
 
 </body>
-        </html>
+</html>
