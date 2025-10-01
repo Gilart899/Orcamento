@@ -2,77 +2,89 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GilFest Orçamentos</title>
-  <!-- Fonte e Ícones -->
+  <title>Orçamentos GilFest</title>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f7f9fc;
+      background: #fefefe;
+      margin: 0;
+      padding: 20px;
       color: #333;
     }
 
-    header {
-      background: linear-gradient(90deg, #004aad, #ffcc00);
-      color: white;
-      padding: 20px;
+    h1 {
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
       color: #004aad;
-      margin-top: 0;
+      margin-bottom: 20px;
     }
 
-    .input-group {
+    .category {
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .category-header {
+      background: #004aad;
+      color: #fff;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      background: #f5f5f5;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-top: 10px;
+      justify-content: space-between;
     }
 
-    .input-group i {
-      margin-right: 10px;
-      color: #004aad;
-    }
-
-    .input-group input {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 1rem;
+    .category-content {
+      display: none;
+      padding: 10px;
     }
 
     .service {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 8px 0;
-      font-size: 1rem;
+      margin: 10px 0;
+      background: #fefefe;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 10px;
     }
 
-    .service i {
-      color: #ff6600;
-      width: 22px;
-      height: 22px;
+    .service img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .service label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .price {
+      font-weight: bold;
+      color: green;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .quantity button {
+      background: #004aad;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
     textarea {
@@ -81,221 +93,205 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       margin-top: 10px;
-      font-size: 1rem;
+    }
+
+    .total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: right;
+      color: #004aad;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      background: #004aad;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
       margin-top: 15px;
-      cursor: pointer;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
       font-size: 1rem;
-      transition: background 0.3s;
-    }
-
-    .btn:hover {
-      background: #00337a;
+      cursor: pointer;
     }
 
     .btn.whatsapp {
       background: #25d366;
+      color: #fff;
     }
 
     .btn.pdf {
-      background: #ffcc00;
-      color: #333;
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      margin-top: 20px;
-      font-size: 0.9rem;
-      background: #f0f0f0;
-      border-radius: 12px;
+      background: #004aad;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    🎉 GilFest Orçamentos 🎈
-  </header>
+  <h1>📋 Orçamento GilFest</h1>
 
-  <div class="container">
-    <h2>Dados do Cliente</h2>
-
-    <div class="input-group">
-      <i data-lucide="user"></i>
-      <input type="text" id="nome" placeholder="Digite seu nome">
+  <!-- BRINQUEDOS -->
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      🎪 Brinquedos <i data-lucide="chevron-down"></i>
     </div>
-
-    <div class="input-group">
-      <i data-lucide="phone"></i>
-      <input type="tel" id="telefone" placeholder="(xx) xxxxx-xxxx">
+    <div class="category-content">
+      <div class="service">
+        <img src="https://i.imgur.com/uvZ3aY3.jpg" alt="Pula-pula Master">
+        <label><input type="checkbox" value="180" data-label="Pula-pula Master"> Pula-pula Master (Super grande)</label>
+        <span class="price">R$180,00</span>
+      </div>
     </div>
-
-    <div class="input-group">
-      <i data-lucide="calendar"></i>
-      <input type="date" id="data">
-    </div>
-
-    <h2>Serviços</h2>
-
-    <label class="service">
-      <i data-lucide="castle"></i>
-      <input type="checkbox" value="150" data-label="Pula-pula médio com escorregador"> 
-      Pula-pula médio com escorregador - R$150
-    </label>
-
-    <label class="service">
-      <i data-lucide="toy-brick"></i>
-      <input type="checkbox" value="150" data-label="Piscina de bolinhas"> 
-      Piscina de bolinhas - R$150
-    </label>
-
-    <label class="service">
-      <i data-lucide="candy"></i>
-      <input type="checkbox" value="200" data-label="Algodão doce"> 
-      Algodão doce - R$200
-    </label>
-
-    <label class="service">
-      <i data-lucide="popcorn"></i>
-      <input type="checkbox" value="200" data-label="Pipoca com leite condensado"> 
-      Pipoca com leite condensado - R$200
-    </label>
-
-    <label class="service">
-      <i data-lucide="cup-soda"></i>
-      <input type="checkbox" value="300" data-label="Algodão + Pipoca"> 
-      Algodão + Pipoca - R$300
-    </label>
-
-    <label class="service">
-      <i data-lucide="balloon"></i>
-      <input type="checkbox" value="80" data-label="Animação com balão"> 
-      Animação com balão - R$80
-    </label>
-
-    <h2>Total: R$ <span id="total">0,00</span></h2>
-
-    <button class="btn whatsapp" id="btnWhats">
-      <i data-lucide="whatsapp"></i> Enviar para WhatsApp
-    </button>
-
-    <button class="btn pdf" id="btnPDF">
-      <i data-lucide="file-down"></i> Gerar PDF
-    </button>
-
-    <h2>Serviço Extra / Observações</h2>
-    <textarea id="extra" placeholder="Digite aqui o serviço desejado ou observações..." rows="4"></textarea>
-
-    <button class="btn whatsapp" id="btnOrcamento">
-      <i data-lucide="message-circle"></i> Pedir Orçamento
-    </button>
   </div>
 
-  <footer>
-    © 2025 GilFest - Festas e Eventos
-  </footer>
+  <!-- COMIDAS -->
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      🍴 Comidas e Guloseimas <i data-lucide="chevron-down"></i>
+    </div>
+    <div class="category-content">
+      <div class="service">
+        <img src="https://i.imgur.com/cXHgSXX.jpg" alt="Cascata de Chocolate">
+        <label><input type="checkbox" value="399" data-label="Cascata de Chocolate"> Cascata de chocolate (pequena)</label>
+        <span class="price">R$399,00</span>
+      </div>
 
+      <div class="service">
+        <img src="https://i.imgur.com/yWevSqf.jpg" alt="Acarajé">
+        <label><input type="checkbox" value="700" data-label="Acarajé (ilimitado)"> Acarajé (03h de serviço)</label>
+        <span class="price">R$700,00</span>
+      </div>
+
+      <div class="service">
+        <img src="https://i.imgur.com/5PnGBhv.jpg" alt="Crepe Suíço">
+        <label><input type="checkbox" value="399" data-label="Crepe Suíço"> Crepe suíço (ilimitado)</label>
+        <span class="price">R$399,00</span>
+      </div>
+
+      <div class="service">
+        <img src="https://i.imgur.com/vIt1s7w.jpg" alt="Churros">
+        <label><input type="checkbox" value="399" data-label="Churros"> Churros (ilimitado)</label>
+        <span class="price">R$399,00</span>
+      </div>
+
+      <!-- ALGODÃO DOCE COPOS E SAQUINHOS -->
+      <div class="service">
+        <img src="https://i.imgur.com/gKMFifF.jpg" alt="Algodão Doce Copo">
+        <label>Algodão doce no copo (300ml)</label>
+        <div class="quantity">
+          <button onclick="alterarQtd('copo', -1)">-</button>
+          <span id="qtd-copo">0</span>
+          <button onclick="alterarQtd('copo', 1)">+</button>
+        </div>
+        <span class="price">R$2,50</span>
+      </div>
+
+      <div class="service">
+        <img src="https://i.imgur.com/Q2Zfbtq.jpg" alt="Algodão Doce Saquinho">
+        <label>Algodão doce no saquinho</label>
+        <div class="quantity">
+          <button onclick="alterarQtd('saquinho', -1)">-</button>
+          <span id="qtd-saquinho">0</span>
+          <button onclick="alterarQtd('saquinho', 1)">+</button>
+        </div>
+        <span class="price">R$2,00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRAS -->
+  <div class="category">
+    <div class="category-header" onclick="toggleCategory(this)">
+      📌 Extras <i data-lucide="chevron-down"></i>
+    </div>
+    <div class="category-content">
+      <div class="service">
+        <img src="https://i.imgur.com/WoSHlR2.jpg" alt="Convites">
+        <label><input type="checkbox" value="30" data-label="Convites Interativo"> Convites Interativo e Animado</label>
+        <span class="price">R$30,00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBSERVAÇÕES -->
+  <h2>📝 Serviço Extra / Observações</h2>
+  <textarea id="extra" placeholder="Digite aqui o serviço desejado ou observações..."></textarea>
+
+  <div class="total">Total: R$<span id="total">0,00</span></div>
+
+  <button class="btn pdf" onclick="gerarPDF()"><i data-lucide="file-text"></i> Baixar PDF</button>
+  <button class="btn whatsapp" onclick="enviarWhatsApp()"><i data-lucide="message-circle"></i> Enviar para WhatsApp</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     lucide.createIcons();
 
-    const checkboxes = document.querySelectorAll('input[type=checkbox]');
-    const totalElement = document.getElementById('total');
-    const btnWhats = document.getElementById('btnWhats');
-    const btnPDF = document.getElementById('btnPDF');
-    const btnOrcamento = document.getElementById('btnOrcamento');
+    let qtdCopo = 0;
+    let qtdSaquinho = 0;
 
-    function atualizarTotal() {
-      let total = 0;
-      checkboxes.forEach(item => {
-        if(item.checked) total += parseFloat(item.value);
-      });
-      totalElement.textContent = total.toFixed(2).replace('.', ',');
+    function toggleCategory(header) {
+      const content = header.nextElementSibling;
+      content.style.display = content.style.display === "block" ? "none" : "block";
     }
 
-    checkboxes.forEach(cb => cb.addEventListener('change', atualizarTotal));
+    function alterarQtd(tipo, delta) {
+      if (tipo === 'copo') {
+        qtdCopo = Math.max(0, qtdCopo + delta);
+        document.getElementById('qtd-copo').innerText = qtdCopo;
+      } else {
+        qtdSaquinho = Math.max(0, qtdSaquinho + delta);
+        document.getElementById('qtd-saquinho').innerText = qtdSaquinho;
+      }
+      calcularTotal();
+    }
 
-    btnWhats.addEventListener('click', () => {
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const data = document.getElementById('data').value;
-      let total = totalElement.textContent;
-
-      let servicos = [];
-      checkboxes.forEach(cb => {
-        if(cb.checked) servicos.push(cb.dataset.label + " - R$" + cb.value);
+    function calcularTotal() {
+      let total = 0;
+      document.querySelectorAll('.service input[type="checkbox"]:checked').forEach(item => {
+        total += parseFloat(item.value);
       });
+      total += qtdCopo * 2.5;
+      total += qtdSaquinho * 2;
+      document.getElementById('total').innerText = total.toFixed(2);
+      return total;
+    }
 
-      let mensagem = `*Orçamento GilFest*%0A%0A`;
-      mensagem += `👤 Nome: ${nome}%0A`;
-      mensagem += `📞 Telefone: ${telefone}%0A`;
-      mensagem += `📅 Data do evento: ${data}%0A%0A`;
-      mensagem += `🎈 Serviços escolhidos:%0A- ${servicos.join("%0A- ")}%0A%0A`;
-      mensagem += `💰 Total: R$ ${total}`;
+    function coletarDados() {
+      let dados = "Orçamento GilFest%0A%0A";
+      document.querySelectorAll('.service input[type="checkbox"]:checked').forEach(item => {
+        dados += `✅ ${item.dataset.label} - R$${item.value}%0A`;
+      });
+      if (qtdCopo > 0) dados += `✅ Algodão doce (copo 300ml) x${qtdCopo} - R$${(qtdCopo*2.5).toFixed(2)}%0A`;
+      if (qtdSaquinho > 0) dados += `✅ Algodão doce (saquinho) x${qtdSaquinho} - R$${(qtdSaquinho*2).toFixed(2)}%0A`;
+      const extra = document.getElementById('extra').value;
+      if (extra.trim()) dados += `%0A📝 Observações: ${extra}%0A`;
+      dados += `%0ATotal: R$${calcularTotal().toFixed(2)}`;
+      return dados;
+    }
 
-      let numeroWhats = "5579999145044";  
-      let url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
+    function enviarWhatsApp() {
+      let numero = "5579999145044";
+      let url = `https://wa.me/${numero}?text=${coletarDados()}`;
       window.open(url, "_blank");
-    });
+    }
 
-    btnPDF.addEventListener('click', () => {
+    async function gerarPDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const data = document.getElementById('data').value;
-      let total = totalElement.textContent;
-
-      let servicos = [];
-      checkboxes.forEach(cb => {
-        if(cb.checked) servicos.push(cb.dataset.label + " - R$" + cb.value);
+      doc.text("Orçamento GilFest", 10, 10);
+      let y = 20;
+      document.querySelectorAll('.service input[type="checkbox"]:checked').forEach(item => {
+        doc.text(`- ${item.dataset.label} R$${item.value}`, 10, y);
+        y += 10;
       });
-
-      doc.setFontSize(18);
-      doc.text("Orçamento - GilFest", 20, 20);
-
-      doc.setFontSize(12);
-      doc.text(`Nome: ${nome}`, 20, 40);
-      doc.text(`Telefone: ${telefone}`, 20, 50);
-      doc.text(`Data do evento: ${data}`, 20, 60);
-
-      doc.text("Serviços escolhidos:", 20, 80);
-      servicos.forEach((s, i) => {
-        doc.text(`- ${s}`, 25, 90 + i * 10);
-      });
-
-      doc.text(`Total: R$ ${total}`, 20, 120 + servicos.length * 10);
-
-      doc.save("orcamento_gilfest.pdf");
-    });
-
-    btnOrcamento.addEventListener('click', () => {
+      if (qtdCopo > 0) { doc.text(`- Algodão doce (copo 300ml) x${qtdCopo} R$${(qtdCopo*2.5).toFixed(2)}`, 10, y); y += 10; }
+      if (qtdSaquinho > 0) { doc.text(`- Algodão doce (saquinho) x${qtdSaquinho} R$${(qtdSaquinho*2).toFixed(2)}`, 10, y); y += 10; }
       const extra = document.getElementById('extra').value;
-
-      if (!extra.trim()) {
-        alert("Por favor, digite o serviço ou observação antes de enviar.");
-        return;
-      }
-
-      let mensagem = `*Pedido de Orçamento Personalizado*%0A%0A`;
-      mensagem += `📝 ${extra}`;
-
-      let numeroWhats = "5579999145044";  
-      let url = `https://wa.me/${numeroWhats}?text=${mensagem}`;
-      window.open(url, "_blank");
-    });
+      if (extra.trim()) { doc.text(`Obs: ${extra}`, 10, y); y += 10; }
+      doc.text(`Total: R$${calcularTotal().toFixed(2)}`, 10, y + 10);
+      doc.save("orcamento-gilfest.pdf");
+    }
   </script>
-
 </body>
-</html>
+    </html>
