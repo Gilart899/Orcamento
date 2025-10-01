@@ -277,6 +277,14 @@
       });
 
       doc.text("Total: R$" + total.toFixed(2), 20, y + 10);
+
+      // Rodapé com CPF, Nome e Data
+      const dataHoje = new Date().toLocaleDateString("pt-BR");
+      doc.setFontSize(10);
+      doc.text("Emitido por: GilFest", 20, 280);
+      doc.text("CPF: 045.761.515-09", 20, 286);
+      doc.text("Data: " + dataHoje, 150, 286);
+
       doc.save("orcamento_gilfest.pdf");
     }
 
@@ -298,4 +306,4 @@
     }
   </script>
 </body>
-          </html>
+  </html>
