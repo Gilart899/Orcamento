@@ -1,163 +1,316 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Orçamento GilFest</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide-static"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="GilFest — Ferramenta de orçamento e contrato com assinatura digital e exportação em PDF">
+  <title>GilFest — Orçamentos & Contratos</title>
+
   <style>
-    body {
-      background: url('Criação do Messenger_975205B6-7357-4AD1-B270-6510521D72F2.png') no-repeat center center fixed;
-      background-size: 50%;
-      opacity: 0.95;
-    }
-    #signaturePad {
-      border: 2px dashed #aaa;
-      background: white;
-    }
+  :root{
+    --gap: 12px;
+    --accent: #0d6efd;
+    --muted: #666;
+    --bg: #fff;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter, system-ui, sans-serif; margin:0; background:#f7f7f8; color:#222}
+  .container{max-width:980px;margin:20px auto;padding:16px;background:var(--bg);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  .header{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+  .logo{width:64px;height:auto}
+  h1{font-size:1.25rem;margin:0}
+  .lead{margin:0;color:var(--muted);font-size:.95rem}
+  section{margin-top:20px}
+  h2{font-size:1.1rem;margin:10px 0}
+  .row{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+  label{font-size:.85rem;color:var(--muted);display:block}
+  input[type="text"], input[type="number"], input[type="date"], input[type="tel"], .qty-input{padding:8px;border-radius:6px;border:1px solid #ddd;width:100%}
+  .actions{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .actions button{padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+  .actions button:hover{opacity:.9}
+  .categoria{margin-top:10px}
+  .item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;border:1px solid #eee;background:#fafafa;margin-top:6px}
+  .item label{flex:1}
+  .qty{display:flex;align-items:center;gap:6px}
+  .qty button{padding:6px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+  .preco{min-width:80px;text-align:right;color:var(--muted)}
+  #resumo{background:#f1f3f9;padding:12px;border-radius:8px}
+  #signature-pad{border:1px solid #ccc;border-radius:6px;width:100%;max-width:600px}
+  .sigActions{margin-top:6px;display:flex;gap:8px}
+  .sigActions button{background:#aaa;color:#fff;padding:6px 12px;border-radius:6px;border:0;cursor:pointer}
+  @media(min-width:720px){
+    .row{grid-template-columns:repeat(3,1fr)}
+    .actions{flex-direction:row}
+  }
   </style>
 </head>
-<body class="bg-white bg-opacity-90 min-h-screen flex flex-col items-center p-6">
-
-  <h1 class="text-3xl font-bold text-pink-600 mb-6">🎉 Orçamentos e Contratos - GilFest 🎉</h1>
-
-  <!-- Dados do Cliente -->
-  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl mb-6">
-    <h2 class="text-xl font-semibold mb-4">Dados do Cliente</h2>
-    <input id="clienteNome" placeholder="Nome do Cliente" class="w-full p-2 border rounded mb-2">
-    <input id="clienteTelefone" placeholder="Telefone do Cliente" class="w-full p-2 border rounded mb-2">
-    <input id="clienteEndereco" placeholder="Endereço do Cliente" class="w-full p-2 border rounded">
-  </div>
-
-  <!-- Serviços -->
-  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl mb-6">
-    <h2 class="text-xl font-semibold mb-4">Serviços</h2>
-    <div id="servicos" class="space-y-2">
-      <label><input type="number" min="0" value="0" class="qtd w-16 border rounded p-1" data-preco="2"> Algodão doce no saquinho (R$ 2,00)</label><br>
-      <label><input type="number" min="0" value="0" class="qtd w-16 border rounded p-1" data-preco="2.5"> Algodão doce copo 300ml (R$ 2,50)</label><br>
-      <label><input type="number" min="0" value="0" class="qtd w-16 border rounded p-1" data-preco="3"> Algodão doce copo 500ml (R$ 3,00)</label><br>
-      <label><input type="number" min="0" value="0" class="qtd w-16 border rounded p-1" data-preco="5"> Pipoca gourmet 300ml (R$ 5,00)</label><br>
-      <label><input type="number" min="0" value="0" class="qtd w-16 border rounded p-1" data-preco="2"> Pipoca caramelizada 300ml (R$ 2,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="399"> Cascata de chocolate pequena (R$ 399,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="399"> Crepe suíço (R$ 399,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="399"> Churros (R$ 399,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="200"> Máquina de algodão doce no evento (R$ 200,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="180"> Pula-pula grande (R$ 180,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="150"> Pula-pula médio (R$ 150,00)</label><br>
-      <label><input type="checkbox" class="chk" data-preco="150"> Piscina de bolinhas (R$ 150,00)</label>
+<body>
+<main class="container">
+  <header class="header">
+    <img src="logo.png" alt="LOGO GilFest" class="logo" />
+    <div>
+      <h1>GilFest — Orçamentos & Contratos</h1>
+      <p class="lead">Gere orçamento e contrato com assinatura digital e exporte em PDF.</p>
     </div>
-    <p class="mt-4 font-semibold">💰 Total: R$ <span id="total">0,00</span></p>
-    <p>🔑 Sinal (40%): R$ <span id="sinal">0,00</span></p>
-    <p>📌 Saldo: R$ <span id="saldo">0,00</span></p>
-  </div>
+  </header>
 
-  <!-- Assinatura -->
-  <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-3xl mb-6">
-    <h2 class="text-xl font-semibold mb-2">Assinatura Digital</h2>
-    <canvas id="signaturePad" width="600" height="150"></canvas>
-    <button onclick="limparAssinatura()" class="mt-2 px-4 py-2 bg-red-500 text-white rounded">Limpar</button>
-  </div>
+  <form id="orcamentoForm" novalidate>
+    <section aria-labelledby="cliente-title">
+      <h2 id="cliente-title">Dados do Cliente</h2>
+      <div class="row">
+        <div>
+          <label for="clienteNome">Nome</label>
+          <input id="clienteNome" name="clienteNome" type="text" placeholder="Ex: João Silva" required />
+        </div>
+        <div>
+          <label for="clienteTelefone">Telefone</label>
+          <input id="clienteTelefone" name="clienteTelefone" type="tel" placeholder="(99) 99999-9999" />
+        </div>
+        <div>
+          <label for="dataEmissao">Data de emissão</label>
+          <input id="dataEmissao" name="dataEmissao" type="date" />
+        </div>
+      </div>
+    </section>
 
-  <!-- Botões -->
-  <div class="flex space-x-4">
-    <button onclick="gerarOrcamento()" class="px-4 py-2 bg-green-600 text-white rounded flex items-center gap-2">📄 Gerar Orçamento</button>
-    <button onclick="gerarContrato()" class="px-4 py-2 bg-blue-600 text-white rounded flex items-center gap-2">📝 Gerar Contrato</button>
-    <button onclick="enviarWhatsapp()" class="px-4 py-2 bg-orange-600 text-white rounded flex items-center gap-2">📲 Enviar WhatsApp</button>
-  </div>
+    <section aria-labelledby="config-title">
+      <h2 id="config-title">Configurações</h2>
+      <div class="row">
+        <div>
+          <label>Valor hora extra (fixo)</label>
+          <input type="text" value="100,00" disabled />
+        </div>
+        <div>
+          <label>Percentual de sinal (fixo)</label>
+          <input type="text" value="40%" disabled />
+        </div>
+      </div>
+    </section>
 
-  <script>
-    const sinalPercent = 0.4;
-    const horaExtra = 100;
+    <section aria-labelledby="servicos-title" id="servicos">
+      <h2 id="servicos-title">Serviços</h2>
 
-    function calcularTotal(){
-      let total = 0;
-      document.querySelectorAll(".qtd").forEach(input=>{
-        total += parseFloat(input.dataset.preco) * parseInt(input.value||0);
-      });
-      document.querySelectorAll(".chk:checked").forEach(chk=>{
-        total += parseFloat(chk.dataset.preco);
-      });
-      document.getElementById("total").textContent = total.toFixed(2).replace(".",",");
-      document.getElementById("sinal").textContent = (total*sinalPercent).toFixed(2).replace(".",",");
-      document.getElementById("saldo").textContent = (total-total*sinalPercent).toFixed(2).replace(".",",");
-      return total;
+      <div class="categoria">
+        <h3>Comidas e Guloseimas</h3>
+
+        <div class="item" data-preco="2">
+          <label><input type="checkbox" class="item-checkbox" /> Algodão doce no saquinho</label>
+          <div class="qty">
+            <button type="button" class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="0" min="0" />
+            <button type="button" class="qty-inc">+</button>
+          </div>
+          <div class="preco">R$ 2,00</div>
+        </div>
+
+        <div class="item" data-preco="2.5">
+          <label><input type="checkbox" class="item-checkbox" /> Algodão doce no copo 300ml</label>
+          <div class="qty">
+            <button type="button" class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="0" min="0" />
+            <button type="button" class="qty-inc">+</button>
+          </div>
+          <div class="preco">R$ 2,50</div>
+        </div>
+
+        <div class="item" data-preco="3">
+          <label><input type="checkbox" class="item-checkbox" /> Algodão doce no copo 500ml</label>
+          <div class="qty">
+            <button type="button" class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="0" min="0" />
+            <button type="button" class="qty-inc">+</button>
+          </div>
+          <div class="preco">R$ 3,00</div>
+        </div>
+
+        <div class="item" data-preco="5">
+          <label><input type="checkbox" class="item-checkbox" /> Pipoca gourmet (copo 300ml)</label>
+          <div class="qty">
+            <button type="button" class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="0" min="0" />
+            <button type="button" class="qty-inc">+</button>
+          </div>
+          <div class="preco">R$ 5,00</div>
+        </div>
+
+        <div class="item" data-preco="2">
+          <label><input type="checkbox" class="item-checkbox" /> Pipoca caramelizada (copo 300ml)</label>
+          <div class="qty">
+            <button type="button" class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="0" min="0" />
+            <button type="button" class="qty-inc">+</button>
+          </div>
+          <div class="preco">R$ 2,00</div>
+        </div>
+
+        <div class="item" data-preco="399">
+          <label><input type="checkbox" class="item-checkbox" /> Cascata de chocolate pequena</label>
+          <div class="preco">R$ 399,00</div>
+        </div>
+
+        <div class="item" data-preco="399">
+          <label><input type="checkbox" class="item-checkbox" /> Crepe suíço</label>
+          <div class="preco">R$ 399,00</div>
+        </div>
+
+        <div class="item" data-preco="399">
+          <label><input type="checkbox" class="item-checkbox" /> Churros</label>
+          <div class="preco">R$ 399,00</div>
+        </div>
+
+        <div class="item" data-preco="200">
+          <label><input type="checkbox" class="item-checkbox" /> Máquina de algodão doce no evento</label>
+          <div class="preco">R$ 200,00</div>
+        </div>
+      </div>
+
+      <div class="categoria">
+        <h3>Brinquedos</h3>
+
+        <div class="item" data-preco="180">
+          <label><input type="checkbox" class="item-checkbox" /> Pula-pula grande</label>
+          <div class="preco">R$ 180,00</div>
+        </div>
+
+        <div class="item" data-preco="150">
+          <label><input type="checkbox" class="item-checkbox" /> Pula-pula médio</label>
+          <div class="preco">R$ 150,00</div>
+        </div>
+
+        <div class="item" data-preco="150">
+          <label><input type="checkbox" class="item-checkbox" /> Piscina de bolinhas</label>
+          <div class="preco">R$ 150,00</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resumo" aria-live="polite">
+      <h2>Resumo</h2>
+      <div id="total">Total calculado: R$ <span id="totalValue">0,00</span></div>
+      <div id="sinalInfo">Sinal (40%): R$ <span id="sinalValue">0,00</span> • Saldo: R$ <span id="saldoValue">0,00</span></div>
+    </section>
+
+    <div class="actions">
+      <button id="gerarOrcamento" type="button">Gerar Orçamento (PDF)</button>
+      <button id="gerarContrato" type="button">Gerar Contrato (PDF)</button>
+      <button id="enviarWhats" type="button">Enviar pelo WhatsApp</button>
+    </div>
+  </form>
+
+  <section id="assinaturaSection">
+    <h2>Assinatura digital (cliente)</h2>
+    <canvas id="signature-pad" width=600 height=200 aria-label="Área para assinatura"></canvas>
+    <div class="sigActions">
+      <button id="clearSig" type="button">Limpar assinatura</button>
+      <button id="saveSig" type="button">Salvar assinatura</button>
+    </div>
+  </section>
+</main>
+
+<!-- Libs externas -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const itens = Array.from(document.querySelectorAll('.item'));
+  const totalValueEl = document.getElementById('totalValue');
+  const sinalValEl = document.getElementById('sinalValue');
+  const saldoValEl = document.getElementById('saldoValue');
+
+  function parsePrice(v){ return Number(String(v).replace(',','.')) || 0 }
+  function currencyBr(v){ return v.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2}) }
+
+  function getItemData(itemEl){
+    const preco = parsePrice(itemEl.dataset.preco);
+    const qtyInput = itemEl.querySelector('.qty-input');
+    const qty = qtyInput ? Number(qtyInput.value)||0 : (itemEl.querySelector('.item-checkbox').checked ? 1 : 0);
+    return { preco, qty, total: preco*qty, nome: itemEl.querySelector('label').textContent.trim() };
+  }
+
+  function calcular(){
+    let subtotal=0;
+    itens.forEach(item=>{
+      if(item.querySelector('.item-checkbox').checked){
+        subtotal+= getItemData(item).total;
+      }
+    });
+    const percentual = 40;
+    const sinal = subtotal*percentual/100;
+    const saldo = subtotal-sinal;
+    totalValueEl.textContent = currencyBr(subtotal);
+    sinalValEl.textContent = currencyBr(sinal);
+    saldoValEl.textContent = currencyBr(saldo);
+  }
+
+  itens.forEach(item=>{
+    const inc=item.querySelector('.qty-inc');
+    const dec=item.querySelector('.qty-dec');
+    const qty=item.querySelector('.qty-input');
+    const chk=item.querySelector('.item-checkbox');
+    if(inc){ inc.addEventListener('click',()=>{qty.value=Number(qty.value||0)+1;calcular()}); }
+    if(dec){ dec.addEventListener('click',()=>{qty.value=Math.max(0,Number(qty.value||0)-1);calcular()}); }
+    if(qty){ qty.addEventListener('input',calcular); }
+    chk.addEventListener('change',calcular);
+  });
+  calcular();
+
+  // assinatura digital
+  const canvas=document.getElementById('signature-pad');
+  const signaturePad=new SignaturePad(canvas,{backgroundColor:'rgba(255,255,255,0)', penColor:'rgb(0,0,0)'});
+  document.getElementById('clearSig').addEventListener('click',()=>{signaturePad.clear();window.__sigData=null});
+  document.getElementById('saveSig').addEventListener('click',()=>{
+    if(signaturePad.isEmpty()){alert('Assine primeiro.');return}
+    window.__sigData=signaturePad.toDataURL('image/png');
+    alert('Assinatura salva!');
+  });
+
+  // gerar PDF
+  document.getElementById('gerarOrcamento').addEventListener('click',()=>gerarPDF(false));
+  document.getElementById('gerarContrato').addEventListener('click',()=>gerarPDF(true));
+
+  function gerarPDF(comContrato){
+    const { jsPDF }=window.jspdf;
+    const doc=new jsPDF({unit:'pt', format:'a4'});
+    const cliente=document.getElementById('clienteNome').value||'Cliente';
+    doc.setFontSize(14);
+    doc.text(comContrato?'Contrato de Prestação de Serviços':'Orçamento',40,40);
+    doc.setFontSize(12);
+    doc.text(`Cliente: ${cliente}`,40,60);
+
+    const selecionados=itens.map(getItemData).filter(it=>it.qty>0);
+    if(selecionados.length){
+      const table=selecionados.map(it=>[it.nome,it.qty,`R$ ${currencyBr(it.preco)}`,`R$ ${currencyBr(it.total)}`]);
+      doc.autoTable({startY:90, head:[['Item','Qtd','Unitário','Total']], body:table, styles:{fontSize:10}});
     }
-    document.querySelectorAll(".qtd,.chk").forEach(el=>el.addEventListener("input",calcularTotal));
+    const subtotal=selecionados.reduce((s,i)=>s+i.total,0);
+    const percentual=40;
+    const sinal=subtotal*percentual/100;
+    const saldo=subtotal-sinal;
+    const finalY=doc.lastAutoTable?.finalY||150;
+    doc.text(`Subtotal: R$ ${currencyBr(subtotal)}`,40,finalY+20);
+    doc.text(`Sinal (40%): R$ ${currencyBr(sinal)}`,40,finalY+35);
+    doc.text(`Saldo: R$ ${currencyBr(saldo)}`,40,finalY+50);
 
-    function getAssinatura(){
-      return document.getElementById("signaturePad").toDataURL("image/png");
-    }
-
-    function limparAssinatura(){
-      let ctx = document.getElementById("signaturePad").getContext("2d");
-      ctx.clearRect(0,0,600,150);
-    }
-
-    // Funções PDF
-    async function gerarOrcamento(){
-      const { jsPDF } = window.jspdf;
-      let doc = new jsPDF();
-      doc.text("Orçamento - GilFest", 20,20);
-      doc.text("Cliente: "+document.getElementById("clienteNome").value, 20,30);
-      doc.text("Telefone: "+document.getElementById("clienteTelefone").value, 20,40);
-      doc.text("Endereço: "+document.getElementById("clienteEndereco").value, 20,50);
-      doc.text("Total: R$ "+document.getElementById("total").textContent, 20,70);
-      doc.text("Sinal (40%): R$ "+document.getElementById("sinal").textContent, 20,80);
-      doc.text("Saldo: R$ "+document.getElementById("saldo").textContent, 20,90);
-      doc.addImage(getAssinatura(),"PNG",20,100,80,30);
-      doc.save("orcamento.pdf");
-    }
-
-    async function gerarContrato(){
-      const { jsPDF } = window.jspdf;
-      let doc = new jsPDF();
-      doc.setFontSize(14);
-      doc.text("CONTRATO DE PRESTAÇÃO DE SERVIÇOS - GILFEST", 20,20);
+    if(comContrato){
+      doc.text('Cláusulas básicas do contrato:',40,finalY+80);
       doc.setFontSize(10);
-      doc.text("Contratado: GilFest - CPF 045.761.515-09 - Tel: 79 99914-5044 - Endereço: Av. Principal do conjunto João Alves n°705, Nossa Senhora do Socorro/SE", 20,30,{maxWidth:170});
-      doc.text("Contratante: "+document.getElementById("clienteNome").value, 20,50);
-      doc.text("Telefone: "+document.getElementById("clienteTelefone").value, 20,60);
-      doc.text("Endereço: "+document.getElementById("clienteEndereco").value, 20,70);
-      doc.text("Valor Total: R$ "+document.getElementById("total").textContent, 20,90);
-      doc.text("Sinal (40%): R$ "+document.getElementById("sinal").textContent+" - Saldo: R$ "+document.getElementById("saldo").textContent, 20,100);
-      doc.text("Cláusula 1 - O contratado prestará os serviços de recreação, brinquedos e alimentação conforme descrição.",20,120,{maxWidth:170});
-      doc.text("Cláusula 2 - O contratante pagará 40% como sinal na assinatura, e o saldo até a data do evento.",20,135,{maxWidth:170});
-      doc.text("Cláusula 3 - Hora extra será cobrada no valor de R$ 100,00 por hora.",20,150,{maxWidth:170});
-      doc.text("Cláusula 4 - Em caso de cancelamento, o sinal não será devolvido.",20,165,{maxWidth:170});
-      doc.text("Assinaturas:",20,190);
-      doc.addImage(getAssinatura(),"PNG",20,200,80,30);
-      doc.text("Contratante ____________________",20,240);
-      doc.text("Contratado - GilFest",120,240);
-      doc.save("contrato.pdf");
+      doc.text('1. O contratado se compromete a fornecer os serviços listados.\n2. O cliente deve pagar o sinal (40%) e o saldo no dia do evento.\n3. Horas extras: R$ 100,00 por hora adicional.\n4. Em caso de cancelamento, condições de reembolso serão aplicadas.\n5. Ambas as partes concordam com as responsabilidades definidas.',40,finalY+100,{maxWidth:500});
     }
 
-    function enviarWhatsapp(){
-      let nome = document.getElementById("clienteNome").value;
-      let total = document.getElementById("total").textContent;
-      let msg = `Olá, aqui é da GilFest! 🎉\nSegue o resumo do orçamento:\nCliente: ${nome}\nTotal: R$ ${total}`;
-      let url = "https://wa.me/5579999145044?text="+encodeURIComponent(msg);
-      window.open(url,"_blank");
+    if(window.__sigData){
+      doc.setFontSize(12);
+      doc.text('Assinatura do Cliente:',40,finalY+200);
+      doc.addImage(window.__sigData,'PNG',40,finalY+210,200,60);
     }
 
-    // Assinatura
-    let canvas = document.getElementById("signaturePad");
-    let ctx = canvas.getContext("2d");
-    let drawing = false;
-    canvas.addEventListener("mousedown",()=>drawing=true);
-    canvas.addEventListener("mouseup",()=>drawing=false);
-    canvas.addEventListener("mousemove",draw);
-    function draw(e){
-      if(!drawing) return;
-      ctx.lineWidth = 2;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = "#000";
-      ctx.lineTo(e.offsetX,e.offsetY);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(e.offsetX,e.offsetY);
-    }
-  </script>
-</body>
-</html>
+    doc.save(`${comContrato?'Contrato':'Orcamento'}-${cliente.replace(/\s+/g,'_')}.pdf`);
+  }
+
+  // envio WhatsApp
+  document.getElementById('enviarWhats').addEventListener('click',()=>{
+    const cliente=document.getElementById('clienteNome').value||'Cliente';
+    const total=totalValueEl.textContent;
+    const msg=`Olá, aqui é da GilFest! 🎉\nSegue o orçamento de ${cliente}.\nValor total: R$ ${total}\nSinal (40%): R$ ${sinalValEl.textContent}\nSaldo: R$ ${saldoValEl.textContent}`;
+    const url=`https://wa.me/5579999145044?text=${encodeURIComponent(msg
