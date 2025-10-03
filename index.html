@@ -550,34 +550,33 @@
 </body>
 </html>
 
+<!-- Botão PIX lateral esquerda -->
+<div id="pix-container"
+     style="position: fixed; top: 50%; left: 20px; transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: center;
+            text-decoration: none; cursor: pointer; z-index: 9999;">
+  
+  <!-- Botão circular -->
+  <a id="pix-button" 
+     style="width: 60px; height: 60px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2); transition: transform 0.15s;">
+    <!-- Logo Pix SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
+      <path fill="#32BCAD" d="M183.2 21.3L78.5 126c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0l104.7-104.7c28.7-28.7 28.7-75.3 0-104L287.2 21.3c-28.6-28.4-75.3-28.4-104 0z"/>
+      <path fill="#32BCAD" d="M328.8 490.7l104.7-104.7c28.7-28.7 28.7-75.3 0-104L328.8 177.3c-28.7-28.7-75.3-28.7-104 0L120.1 282c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0z"/>
+    </svg>
+  </a>
 
-
-<!-- Botão PIX fixo com símbolo Pix -->
-<a id="pix-button" href="#" role="button" aria-label="Copiar chave PIX" 
-   style="position: fixed;
-          bottom: 20px;
-          right: 90px;             /* deslocado para não sobrepor o Instagram */
-          width: 60px;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #fff;        /* fundo branco para destacar o logo */
-          border-radius: 50%;
-          box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-          cursor: pointer;
-          transition: transform 0.15s, box-shadow 0.15s;
-          z-index: 9999;">
-  <!-- Ícone oficial Pix em SVG -->
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
-    <path fill="#32BCAD" d="M183.2 21.3L78.5 126c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0l104.7-104.7c28.7-28.7 28.7-75.3 0-104L287.2 21.3c-28.6-28.4-75.3-28.4-104 0z"/>
-    <path fill="#32BCAD" d="M328.8 490.7l104.7-104.7c28.7-28.7 28.7-75.3 0-104L328.8 177.3c-28.7-28.7-75.3-28.7-104 0L120.1 282c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0z"/>
-  </svg>
-</a>
+  <!-- Texto embaixo -->
+  <span style="margin-top: 6px; font-size: 14px; font-family: Arial; color: #333;">
+    Copiar Pix
+  </span>
+</div>
 
 <!-- Tooltip de confirmação -->
-<div id="pix-tooltip" role="status" aria-live="polite"
-     style="position: fixed; bottom: 90px; right: 90px;
+<div id="pix-tooltip" 
+     style="position: fixed; top: 50%; left: 100px; transform: translateY(-50%);
             background:#222; color:#fff; padding:8px 12px; border-radius:8px;
             font-family:Arial, sans-serif; font-size:14px; display:none;
             box-shadow:0 6px 16px rgba(0,0,0,0.25); z-index:10000;">
@@ -642,6 +641,6 @@
     });
   });
 })();
-        </script>          
+</script>>          
 </body>
 </html>
