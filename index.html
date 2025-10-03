@@ -617,71 +617,7 @@
       return navigator.clipboard.writeText(text);
     } else {
       // fallback antigo
-      return new Promise(function(resolve, reject){
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        try{
-          var ok = document.execCommand("copy");
-          document.body.removeChild(ta);
-          if(ok) resolve();
-          else reject();
-        } catch(e){
-          document.body.removeChild(ta);
-          reject(e);
-        }
-      });
-    }
-  }
 
-  btn.addEventListener("click", function(e){
-    e.preventDefault();
-    // o valor que vamos copiar: digits puros (recomendado para chave PIX)
-    var copyValue = pixKeyDigits;
-
-    copyToClipboard(copyValue).then(function(){
-      showTooltip("Chave PIX copiada: " + formatCPF(pixKeyDigits), 1800);
-      // animação visual rápida no botão
-      btn.style.transform = "scale(0.96)";
-      setTimeout(function(){ btn.style.transform = ""; }, 150);
-    }).catch(function(){
-      // se falhar, tenta mostrar instrução para o usuário
-      showTooltip("Não foi possível copiar automaticamente. Segure e copie: " + formatCPF(pixKeyDigits), 2500);
-    });
-  });
-
-  // melhora a experiência com tecla Enter / espaço (acessibilidade)
-  btn.addEventListener("keydown", function(e){
-    if(e.key === "Enter" || e.key === " "){
-      e.preventDefault();
-      btn.click();
-    }
-  });
-
-  // opcional: ao passar o mouse, mostra tooltip indicando ação
-  btn.addEventListener("mouseenter", function(){ showTooltip("Clique para copiar minha chave PIX", 1200); });
-  btn.addEventListener("mouseleave", function(){ /* nada — tooltip some sozinho */ });
-
-})();
-</script>
-</body>
-<!-- Botão Instagram fixo -->
-  <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
-     style="position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: #fff;
-            font-weight: bold;
-            padding: 12px 20px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: transform 0.2s;">
      📸 Instagram
   </a>
 </body>
