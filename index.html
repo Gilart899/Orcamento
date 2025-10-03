@@ -1,680 +1,298 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GilFest — Orçamentos & Contratos (Profissional)</title>
-
-  <!-- Tailwind (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js"></script>
-
-  <!-- jsPDF + AutoTable + SignaturePad -->
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-
+  <meta charset="UTF-8">
+  <title>Orçamento - GilArt</title>
   <style>
-    /* Marca d'água via pseudo-element (usa a imagem na mesma pasta do HTML) */
-    body{
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background-color: #f3f6f9;
-      margin:0;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f8f8f8;
     }
-    /* marca d'água centralizada, leve e responsiva */
-    body::before{
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image: url("Criação do Messenger_975205B6-7357-4AD1-B270-6510521D72F2.png");
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 60vmin;
-      opacity: 0.06; /* muito sutil */
-      pointer-events: none;
-      z-index: 0;
+    h1 {
+      text-align: center;
     }
-    /* container acima da marca d'água */
-    .page {
-      position: relative;
-      z-index: 1;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px auto;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-
-    /* Canvas signature responsive height control */
-    .sig-canvas { width: 100%; height: 160px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); }
-
-    /* pequeno ajuste para autoTable texto que possa quebrar linha */
-    .jspdf-autotable td { word-break: break-word; }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background: #f4f4f4;
+    }
+    button {
+      padding: 6px 12px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #total {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 20px;
+    }
   </style>
 </head>
-<body class="min-h-screen flex items-start justify-center p-6 page">
+<body>
+  <h1>Orçamento</h1>
 
-  <main class="w-full max-w-5xl bg-white rounded-2xl shadow-xl p-6 space-y-6">
-    <!-- Header -->
-    <header class="flex items-start gap-4">
-      <div class="flex-1">
-        <h1 class="text-3xl font-extrabold text-indigo-700">GilFest</h1>
-        <p class="text-sm text-gray-600">Orçamentos & Contratos — Serviços para eventos</p>
-        <div class="mt-2 text-sm text-gray-700">
-          <div><strong>CPF:</strong> 045.761.515-09</div>
-          <div><strong>Telefone:</strong> (79) 9 9914-5044</div>
-          <div><strong>Endereço:</strong> Av. Principal do conjunto João Alves, n°705 — Nossa Senhora do Socorro - SE</div>
-        </div>
-      </div>
-      <div class="flex flex-col items-end gap-2">
-        <div class="text-right">
-          <span class="text-xs text-gray-500">Hora extra</span>
-          <div class="text-lg font-semibold">R$ 100,00 / hora</div>
-        </div>
-        <div class="text-right">
-          <span class="text-xs text-gray-500">Sinal (fixo)</span>
-          <div class="text-lg font-semibold">40%</div>
-        </div>
-      </div>
-    </header>
+  <div class="calculadora">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Preço</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bolo de casamento</td>
+          <td>R$ 500,00</td>
+          <td><button onclick="adicionar(500)">Adicionar</button></td>
+        </tr>
+        <tr>
+          <td>Doces finos</td>
+          <td>R$ 300,00</td>
+          <td><button onclick="adicionar(300)">Adicionar</button></td>
+        </tr>
+        <tr>
+          <td>Bebidas</td>
+          <td>R$ 400,00</td>
+          <td><button onclick="adicionar(400)">Adicionar</button></td>
+        </tr>
+        <tr>
+          <td>Cascata de chocolate grande</td>
+          <td>R$ 1.200,00</td>
+          <td><button onclick="adicionar(1200)">Adicionar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Form -->
-    <section class="grid md:grid-cols-3 gap-4">
-      <div class="md:col-span-2 space-y-4">
-        <!-- Cliente -->
-        <div class="bg-gray-50 p-4 rounded-lg border">
-          <h2 class="font-semibold text-lg flex items-center gap-2"><span data-lucide="user"></span> Dados do cliente</h2>
-          <div class="grid md:grid-cols-2 gap-3 mt-3">
-            <input id="clienteNome" class="p-2 border rounded" placeholder="Nome do Cliente" />
-            <input id="clienteTelefone" class="p-2 border rounded" placeholder="Telefone (opcional)" />
-            <input id="dataEvento" type="date" class="p-2 border rounded" />
-            <input id="localEvento" class="p-2 border rounded" placeholder="Endereço do evento (opcional)" />
-          </div>
-        </div>
+  <div id="total">Total: R$ 0,00</div>
 
-        <!-- Serviços -->
-        <div class="bg-white p-4 rounded-lg border">
-          <h2 class="font-semibold text-lg flex items-center gap-2"><span data-lucide="shopping-cart"></span> Serviços e produtos</h2>
+  <!-- Botão Instagram fixo -->
+  <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
+     style="position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            z-index: 1000;">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30" height="30">
+  </a>
 
-          <div class="grid md:grid-cols-2 gap-4 mt-4">
-            <!-- Comidas / Guloseimas -->
-            <div class="space-y-3">
-              <h3 class="font-semibold">Algodão Doce</h3>
+  <!-- Botão PIX fixo -->
+  <a id="pix-button" href="#" role="button" aria-label="Copiar chave PIX" 
+     style="position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.15s;
+            z-index: 1000;">
+    <!-- Ícone Pix em SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
+      <path fill="#32BCAD" d="M183.2 21.3L78.5 126c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0l104.7-104.7c28.7-28.7 28.7-75.3 0-104L287.2 21.3c-28.6-28.4-75.3-28.4-104 0z"/>
+      <path fill="#32BCAD" d="M328.8 490.7l104.7-104.7c28.7-28.7 28.7-75.3 0-104L328.8 177.3c-28.7-28.7-75.3-28.7-104 0L120.1 282c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0z"/>
+    </svg>
+  </a>
 
-              <div class="flex items-center justify-between gap-3 p-3 border rounded">
-                <div>
-                  <div class="font-medium">Saquinho</div>
-                  <div class="text-sm text-gray-500">R$ 2,00</div>
-                </div>
-                <input type="number" min="0" value="0" data-price="2.00" class="qtd p-1 w-20 text-center border rounded" />
-              </div>
-
-              <div class="flex items-center justify-between gap-3 p-3 border rounded">
-                <div>
-                  <div class="font-medium">Copo 300ml</div>
-                  <div class="text-sm text-gray-500">R$ 2,50</div>
-                </div>
-                <input type="number" min="0" value="0" data-price="2.50" class="qtd p-1 w-20 text-center border rounded" />
-              </div>
-
-              <div class="flex items-center justify-between gap-3 p-3 border rounded">
-                <div>
-                  <div class="font-medium">Copo 500ml</div>
-                  <div class="text-sm text-gray-500">R$ 3,00</div>
-                </div>
-                <input type="number" min="0" value="0" data-price="3.00" class="qtd p-1 w-20 text-center border rounded" />
-              </div>
-
-              <div class="mt-3">
-                <h4 class="font-semibold">Pipocas</h4>
-                <div class="flex items-center justify-between gap-3 p-3 border rounded mt-2">
-                  <div>
-                    <div class="font-medium">Pipoca Gourmet (300ml)</div>
-                    <div class="text-sm text-gray-500">R$ 5,00</div>
-                  </div>
-                  <input type="number" min="0" value="0" data-price="5.00" class="qtd p-1 w-20 text-center border rounded" />
-                </div>
-                <div class="flex items-center justify-between gap-3 p-3 border rounded mt-2">
-                  <div>
-                    <div class="font-medium">Pipoca Caramelizada (300ml)</div>
-                    <div class="text-sm text-gray-500">R$ 2,00</div>
-                  </div>
-                  <input type="number" min="0" value="0" data-price="2.00" class="qtd p-1 w-20 text-center border rounded" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Extras / Brinquedos -->
-            <div class="space-y-3">
-              <h3 class="font-semibold">Extras & Brinquedos</h3>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="399.00" class="chk" />
-                <div>
-                  <div class="font-medium">Cascata de chocolate — pequena</div>
-                  <div class="text-sm text-gray-500">R$ 399,00</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="399.00" class="chk" />
-                <div>
-                  <div class="font-medium">Crepe suíço</div>
-                  <div class="text-sm text-gray-500">R$ 399,00</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="399.00" class="chk" />
-                <div>
-                  <div class="font-medium">Churros</div>
-                  <div class="text-sm text-gray-500">R$ 399,00</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="200.00" class="chk" />
-                <div>
-                  <div class="font-medium">Máquina de algodão doce (no evento)</div>
-                  <div class="text-sm text-gray-500">R$ 200,00</div>
-                </div>
-              </label>
-
-              <hr class="my-2" />
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="180.00" class="chk" />
-                <div>
-                  <div class="font-medium">Pula-pula grande</div>
-                  <div class="text-sm text-gray-500">R$ 180,00</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="150.00" class="chk" />
-                <div>
-                  <div class="font-medium">Pula-pula médio</div>
-                  <div class="text-sm text-gray-500">R$ 150,00</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 border rounded">
-                <input type="checkbox" data-price="150.00" class="chk" />
-                <div>
-                  <div class="font-medium">Piscina de bolinhas</div>
-                  <div class="text-sm text-gray-500">R$ 150,00</div>
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Observações e horas extras input (visual only) -->
-        <div class="bg-gray-50 p-4 rounded-lg border">
-          <h2 class="font-semibold">Observações</h2>
-          <textarea id="observacoes" rows="3" class="w-full p-2 border rounded mt-2" placeholder="Observações adicionais (acessos, energia, etc)"></textarea>
-        </div>
-
-        <!-- Assinatura -->
-        <div class="bg-white p-4 rounded-lg border">
-          <h2 class="font-semibold flex items-center gap-2"><span data-lucide="pen-tool"></span> Assinatura digital (cliente)</h2>
-          <canvas id="sigCanvas" class="sig-canvas mt-3"></canvas>
-          <div class="flex gap-2 mt-3">
-            <button id="clearSig" class="px-3 py-1 rounded bg-gray-200">Limpar</button>
-            <button id="saveSig" class="px-3 py-1 rounded bg-indigo-600 text-white">Salvar assinatura</button>
-            <div id="sigStatus" class="text-sm text-gray-600 self-center">Nenhuma assinatura salva</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sidebar resumo & ações -->
-      <aside class="space-y-4">
-        <div class="bg-gradient-to-br from-white to-gray-50 p-4 rounded-lg border shadow-sm">
-          <h3 class="font-semibold">Resumo</h3>
-          <div class="mt-3 text-gray-700 space-y-2">
-            <div class="flex justify-between"><span>Subtotal</span><strong id="subtotalLabel">R$ 0,00</strong></div>
-            <div class="flex justify-between"><span>Sinal (40%)</span><strong id="sinalLabel">R$ 0,00</strong></div>
-            <div class="flex justify-between"><span>Saldo</span><strong id="saldoLabel">R$ 0,00</strong></div>
-            <div class="flex justify-between"><span>Hora extra (por h)</span><strong>R$ 100,00</strong></div>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-3">
-          <button id="btnGerarOrc" class="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded shadow">
-            <span data-lucide="file-text"></span> Gerar Orçamento (PDF) & WhatsApp
-          </button>
-          <button id="btnGerarContrato" class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded shadow">
-            <span data-lucide="file-signature"></span> Gerar Contrato Formal (PDF) & WhatsApp
-          </button>
-          <button id="btnEnviarWhats" class="flex items-center justify-center gap-2 px-4 py-3 bg-amber-500 text-white rounded shadow">
-            <span data-lucide="send"></span> Abrir WhatsApp (Resumo)
-          </button>
-        </div>
-
-        <div class="text-xs text-gray-500">
-          Observação: o PDF é gerado localmente no navegador. Para enviar o PDF pelo WhatsApp você pode anexá-lo manualmente no chat que é aberto.
-        </div>
-      </aside>
-    </section>
-  </main>
+  <!-- Tooltip PIX -->
+  <div id="pix-tooltip" style="position: fixed; bottom: 90px; left: 20px;
+            background:#222; color:#fff; padding:8px 12px; border-radius:8px;
+            font-family:Arial, sans-serif; font-size:14px; display:none;
+            box-shadow:0 6px 16px rgba(0,0,0,0.25); z-index:1001;">
+    Chave PIX copiada!
+  </div>
 
   <script>
-    // inicializa ícones lucide
-    lucide.createIcons();
-
-    // constantes fixas
-    const WHATS_NUMBER = '5579999145044'; // formato internacional sem sinais
-    const SIGNAL_PERCENT = 40;
-    const HORA_EXTRA = 100.00;
-
-    // elementos
-    const qtdInputs = document.querySelectorAll('.qtd');
-    const chkInputs = document.querySelectorAll('.chk');
-    const subtotalLabel = document.getElementById('subtotalLabel');
-    const sinalLabel = document.getElementById('sinalLabel');
-    const saldoLabel = document.getElementById('saldoLabel');
-
-    // calculo
-    function currencyBr(n){ return Number(n||0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
-
-    function calcular(){
-      let subtotal = 0;
-      qtdInputs.forEach(inp => {
-        const price = parseFloat(inp.dataset.price) || 0;
-        const qty = Math.max(0, parseInt(inp.value || 0));
-        subtotal += price * qty;
-      });
-      chkInputs.forEach(chk => {
-        if(chk.checked) subtotal += parseFloat(chk.dataset.price || 0);
-      });
-      const sinal = subtotal * SIGNAL_PERCENT / 100;
-      const saldo = subtotal - sinal;
-      subtotalLabel.textContent = `R$ ${currencyBr(subtotal)}`;
-      sinalLabel.textContent = `R$ ${currencyBr(sinal)}`;
-      saldoLabel.textContent = `R$ ${currencyBr(saldo)}`;
-      return {subtotal, sinal, saldo};
+    let total = 0;
+    function adicionar(valor) {
+      total += valor;
+      document.getElementById("total").innerText = "Total: R$ " + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
     }
 
-    qtdInputs.forEach(i => i.addEventListener('input', calcular));
-    chkInputs.forEach(i => i.addEventListener('change', calcular));
-    calcular();
+    // PIX botão
+    (function(){
+      var pixKeyDigits = "58847235553"; // sua chave PIX (CPF)
 
-    // SignaturePad
-    const canvas = document.getElementById('sigCanvas');
-    function resizeCanvasToDisplaySize(canvas) {
-      const ratio = Math.max(window.devicePixelRatio || 1, 1);
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      if (canvas.width !== Math.floor(w * ratio) || canvas.height !== Math.floor(h * ratio)) {
-        canvas.width = Math.floor(w * ratio);
-        canvas.height = Math.floor(h * ratio);
-        canvas.getContext('2d').scale(ratio, ratio);
+      function formatCPF(digits){
+        if(!digits || digits.length !== 11) return digits;
+        return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
       }
-    }
-    resizeCanvasToDisplaySize(canvas);
-    const signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)', penColor: 'black' });
-    window.addEventListener('resize', () => { resizeCanvasToDisplaySize(canvas); });
 
-    const sigStatus = document.getElementById('sigStatus');
-    document.getElementById('clearSig').addEventListener('click', () => {
-      signaturePad.clear();
-      window.__sigData = null;
-      sigStatus && (sigStatus.textContent = 'Nenhuma assinatura salva');
-    });
-    document.getElementById('saveSig').addEventListener('click', () => {
-      if(signaturePad.isEmpty()) { alert('Por favor, assine antes de salvar.'); return; }
-      window.__sigData = signaturePad.toDataURL('image/png');
-      sigStatus && (sigStatus.textContent = 'Assinatura salva e pronta para inserir no PDF');
-      alert('Assinatura salva!');
-    });
+      var btn = document.getElementById("pix-button");
+      var tip = document.getElementById("pix-tooltip");
 
-    // helpers para coletar itens selecionados
-    function coletarItens(){
-      const itens = [];
-      // qtd inputs
-      qtdInputs.forEach(inp => {
-        const qty = Math.max(0, parseInt(inp.value||0));
-        const price = parseFloat(inp.dataset.price) || 0;
-        if(qty > 0){
-          // label text: buscar texto no mesmo container (anterior)
-          const container = inp.closest('div, label') || inp.parentElement;
-          // tentamos extrair o texto do primeiro elemento textual próximo
-          let title = '';
-          // procura elementos de texto no container pai
-          const parent = inp.parentElement;
-          if(parent){
-            // procurar um textNode em parent or previous sibling
-            const possible = parent.querySelector('div, h3, span, label');
-            if(possible) title = possible.textContent.trim();
-          }
-          // fallback: construir a partir do price
-          if(!title) title = `Item R$ ${price.toFixed(2)}`;
-          itens.push({descricao: title.replace(/\s+/g,' '), qtd: qty, unit: price, total: price * qty});
+      function showTooltip(msg, timeMs){
+        tip.textContent = msg;
+        tip.style.display = "block";
+        tip.style.opacity = "1";
+        clearTimeout(tip._timeout);
+        tip._timeout = setTimeout(function(){
+          tip.style.transition = "opacity 150ms";
+          tip.style.opacity = "0";
+          setTimeout(function(){ tip.style.display = "none"; tip.style.transition = ""; }, 160);
+        }, timeMs || 1600);
+      }
+
+      function copyToClipboard(text){
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          return navigator.clipboard.writeText(text);
+        } else {
+          return new Promise(function(resolve, reject){
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try{
+              var ok = document.execCommand("copy");
+              document.body.removeChild(ta);
+              if(ok) resolve(); else reject();
+            } catch(e){
+              document.body.removeChild(ta);
+              reject(e);
+            }
+          });
         }
-      });
-      // checkboxes
-      chkInputs.forEach(chk => {
-        if(chk.checked){
-          // descrição do item: texto após o checkbox
-          const label = chk.closest('label');
-          let descricao = '';
-          if(label){
-            descricao = label.textContent.replace(/\s+/g,' ').trim();
-          } else {
-            // fallback
-            descricao = `Item R$ ${parseFloat(chk.dataset.price||0).toFixed(2)}`;
-          }
-          itens.push({descricao, qtd: 1, unit: parseFloat(chk.dataset.price||0), total: parseFloat(chk.dataset.price||0)});
-        }
-      });
-      return itens;
-    }
+      }
 
-    // Monta mensagem para WhatsApp
-    function montarMensagemResumo(tipo, clienteNome, dataEvento, localEvento, itens, subtotal, sinal, saldo){
-      let msg = `${tipo} - GilFest\n`;
-      msg += `Cliente: ${clienteNome || '---'}\n`;
-      if(dataEvento) msg += `Data do evento: ${dataEvento}\n`;
-      if(localEvento) msg += `Local: ${localEvento}\n`;
-      msg += `\nItens:\n`;
-      if(itens.length === 0) msg += `Nenhum item selecionado.\n`;
-      else itens.forEach(it => {
-        msg += `- ${it.descricao} ${it.qtd>1?`(x${it.qtd}) `:''}- R$ ${currencyBr(it.total)}\n`;
-      });
-      msg += `\nSubtotal: R$ ${currencyBr(subtotal)}\nSinal (${SIGNAL_PERCENT}%): R$ ${currencyBr(sinal)}\nSaldo: R$ ${currencyBr(saldo)}\n`;
-      msg += `\nPDF gerado localmente. Anexe o PDF manualmente se desejar enviar o arquivo.\nAtenciosamente,\nGilFest`;
-      return msg;
-    }
-
-    // Função para gerar PDF (orcamento simples) e abrir WhatsApp com resumo
-    async function gerarOrcamentoPDFAbrirWhats(){
-      const clienteNome = document.getElementById('clienteNome').value.trim();
-      const clienteTel = document.getElementById('clienteTelefone').value.trim();
-      const dataEvento = document.getElementById('dataEvento').value;
-      const localEvento = document.getElementById('localEvento').value;
-      const observacoes = document.getElementById('observacoes').value;
-      const itens = coletarItens();
-      const {subtotal, sinal, saldo} = calcular();
-      // jsPDF
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-      const margin = 40;
-      let y = 40;
-
-      // Cabeçalho
-      doc.setFontSize(14);
-      doc.setFont('Times','Bold');
-      doc.text('ORÇAMENTO', 297, y, {align: 'center'}); y += 18;
-      doc.setFontSize(10);
-      doc.setFont('Times','Normal');
-      doc.text('GilFest — Orçamentos & Contratos', margin, y); y += 14;
-      doc.text('CPF: 045.761.515-09', margin, y); y += 12;
-      doc.text('Telefone: (79) 9 9914-5044', margin, y); y += 12;
-      doc.text('Endereço: Av. Principal do conjunto João Alves, n°705 — Nossa Senhora do Socorro - SE', margin, y); y += 18;
-
-      // Dados do cliente
-      doc.setFontSize(11);
-      doc.setFont('Times','Bold');
-      doc.text(`Cliente: ${clienteNome || '---'}`, margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      if(clienteTel) { doc.text(`Telefone: ${clienteTel}`, margin, y); y += 12; }
-      if(dataEvento) { doc.text(`Data do evento: ${dataEvento}`, margin, y); y += 12; }
-      if(localEvento) { doc.text(`Local: ${localEvento}`, margin, y); y += 14; }
-
-      // Tabela de itens via autoTable
-      if(itens.length > 0){
-        const tableBody = itens.map(it => [it.descricao, String(it.qtd), `R$ ${currencyBr(it.unit)}`, `R$ ${currencyBr(it.total)}`]);
-        doc.autoTable({
-          startY: y,
-          head: [['Descrição','Qtd','Unitário','Total']],
-          body: tableBody,
-          styles: { font: 'Times', fontSize: 10 },
-          headStyles: { fillColor: [13,110,253], textColor: 255 }
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        copyToClipboard(pixKeyDigits).then(function(){
+          showTooltip("Chave PIX copiada: " + formatCPF(pixKeyDigits), 1800);
+          btn.style.transform = "scale(0.95)";
+          setTimeout(function(){ btn.style.transform = ""; }, 150);
+        }).catch(function(){
+          showTooltip("Erro: copie manualmente: " + formatCPF(pixKeyDigits), 2500);
         });
-        y = doc.lastAutoTable.finalY + 10;
-      } else {
-        doc.text('Nenhum item selecionado.', margin, y); y += 18;
-      }
-
-      // Resumo financeiro
-      doc.setFontSize(11);
-      doc.text(`Subtotal: R$ ${currencyBr(subtotal)}`, margin, y); y += 14;
-      doc.text(`Sinal (${SIGNAL_PERCENT}%): R$ ${currencyBr(sinal)}`, margin, y); y += 14;
-      doc.text(`Saldo a pagar: R$ ${currencyBr(saldo)}`, margin, y); y += 18;
-      doc.text(`Valor hora extra (por hora): R$ ${currencyBr(HORA_EXTRA)}`, margin, y); y += 18;
-
-      // Observações
-      if(observacoes){
-        doc.setFont('Times','Bold');
-        doc.text('Observações:', margin, y); y += 12;
-        doc.setFont('Times','Normal');
-        doc.text(observacoes, margin, y, { maxWidth: 500 }); y += 30;
-      }
-
-      // Assinatura (se houver)
-      if(window.__sigData){
-        try {
-          doc.text('Assinatura do Cliente:', margin, y); y += 12;
-          doc.addImage(window.__sigData, 'PNG', margin, y, 180, 54);
-          y += 70;
-        } catch(e){ console.warn('Erro ao inserir assinatura:', e); }
-      }
-
-      // Rodapé / data
-      const now = new Date();
-      doc.setFontSize(9);
-      doc.text(`Emitido em: ${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR')}`, margin, 800);
-
-      // Salvar PDF
-      const nomeArquivo = `Orcamento_GilFest_${(clienteNome||'cliente').replace(/\s+/g,'_')}.pdf`;
-      doc.save(nomeArquivo);
-
-      // Abrir WhatsApp com resumo (não anexa PDF)
-      const mensagem = montarMensagemResumo('Orçamento', clienteNome, dataEvento, localEvento, itens, subtotal, sinal, saldo);
-      const waUrl = `https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`;
-      window.open(waUrl, '_blank');
-    }
-
-    // Função para gerar contrato formal (mais formal)
-    async function gerarContratoFormalPDFAbrirWhats(){
-      const clienteNome = document.getElementById('clienteNome').value.trim();
-      const clienteTel = document.getElementById('clienteTelefone').value.trim();
-      const dataEvento = document.getElementById('dataEvento').value;
-      const localEvento = document.getElementById('localEvento').value;
-      const observacoes = document.getElementById('observacoes').value;
-      const itens = coletarItens();
-      const {subtotal, sinal, saldo} = calcular();
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-
-      const margin = 40;
-      let y = 40;
-
-      // Cabeçalho do contrato
-      doc.setFont('Times','Bold');
-      doc.setFontSize(14);
-      doc.text('CONTRATO DE PRESTAÇÃO DE SERVIÇOS', 297, y, { align: 'center' }); y += 18;
-      doc.setFontSize(10);
-      doc.setFont('Times','Normal');
-      doc.text('IDENTIFICAÇÃO DAS PARTES:', margin, y); y += 14;
-
-      // Contratado (empresa - seus dados fixos)
-      doc.setFont('Times','Bold');
-      doc.text('CONTRATADO:', margin, y); y += 12;
-      doc.setFont('Times','Normal');
-      doc.text('GilFest', margin, y); y += 12;
-      doc.text('CPF: 045.761.515-09', margin, y); y += 12;
-      doc.text('Endereço: Av. Principal do conjunto João Alves, n°705 — Nossa Senhora do Socorro - SE', margin, y); y += 16;
-
-      // Contratante (cliente)
-      doc.setFont('Times','Bold');
-      doc.text('CONTRATANTE:', margin, y); y += 12;
-      doc.setFont('Times','Normal');
-      doc.text(`${clienteNome || '---'}`, margin, y); y += 12;
-      if (clienteTel) { doc.text(`Telefone: ${clienteTel}`, margin, y); y += 12; }
-      if (localEvento) { doc.text(`Local do evento: ${localEvento}`, margin, y); y += 12; }
-      if (dataEvento) { doc.text(`Data do evento: ${dataEvento}`, margin, y); y += 14; }
-      else y += 6;
-
-      // Objeto
-      doc.setFont('Times','Bold');
-      doc.text('CLÁUSULA 1 — DO OBJETO', margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      doc.text('1.1. O presente contrato tem por objeto a prestação dos serviços descritos no orçamento anexo, relacionados à organização/execução de recreação, fornecimento de alimentos e operação de equipamentos para evento.', margin, y, { maxWidth: 500 }); y += 36;
-
-      // Valor e pagamento
-      doc.setFont('Times','Bold');
-      doc.text('CLÁUSULA 2 — DO VALOR E DO PAGAMENTO', margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      doc.text(`2.1. O valor total dos serviços é de R$ ${currencyBr(subtotal)}.`, margin, y); y += 14;
-      doc.text(`2.2. O contratante pagará sinal de ${SIGNAL_PERCENT}% (R$ ${currencyBr(sinal)}) para confirmação da reserva. O saldo remanescente (R$ ${currencyBr(saldo)}) deverá ser quitado conforme acordo entre as partes, preferencialmente até a data do evento.`, margin, y, { maxWidth: 500 }); y += 36;
-
-      // Horas extras
-      doc.setFont('Times','Bold');
-      doc.text('CLÁUSULA 3 — HORAS EXTRAS', margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      doc.text(`3.1. Caso haja necessidade de extensão de jornada, as horas extras serão cobradas à razão de R$ ${currencyBr(HORA_EXTRA)} por hora.`, margin, y, { maxWidth: 500 }); y += 36;
-
-      // Obrigações
-      doc.setFont('Times','Bold');
-      doc.text('CLÁUSULA 4 — DAS OBRIGAÇÕES', margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      const obr = [
-        '4.1. O CONTRATADO se compromete a fornecer os serviços discriminados no orçamento, em conformidade com as especificações técnicas e prazos ajustados.',
-        '4.2. O CONTRATANTE deverá fornecer local adequado, infraestrutura mínima e acesso à energia quando necessário, responsabilizando-se por eventuais danos causados por terceiros no local.',
-        '4.3. Qualquer solicitação de alteração nos serviços deverá ser previamente acordada entre as partes e poderá implicar reajuste do valor.'
-      ];
-      obr.forEach(text => { doc.text(text, margin, y, { maxWidth: 500 }); y += 14; });
-      y += 8;
-
-      // Cancelamento
-      doc.setFont('Times','Bold');
-      doc.text('CLÁUSULA 5 — DO CANCELAMENTO', margin, y); y += 14;
-      doc.setFont('Times','Normal');
-      doc.text('5.1. Em caso de cancelamento por parte do contratante, o sinal poderá ser retido total ou parcialmente conforme prazo e justificativa. As condições específicas deverão ser negociadas entre as partes.', margin, y, { maxWidth: 500 }); y += 36;
-
-      // Itens do orçamento (anexo / tabela)
-      doc.setFont('Times','Bold');
-      doc.text('ANEXO — ITENS CONTRATADOS / ORÇAMENTO', margin, y); y += 14;
-      if(itens.length > 0){
-        const tableBody = itens.map(it => [it.descricao, String(it.qtd), `R$ ${currencyBr(it.unit)}`, `R$ ${currencyBr(it.total)}`]);
-        doc.autoTable({
-          startY: y,
-          head: [['Descrição','Qtd','Unitário','Total']],
-          body: tableBody,
-          styles: { font: 'Times', fontSize: 10 },
-          headStyles: { fillColor: [30,41,59], textColor: 255 }
-        });
-        y = doc.lastAutoTable.finalY + 10;
-      } else {
-        doc.setFont('Times','Normal');
-        doc.text('Nenhum item selecionado.', margin, y); y += 18;
-      }
-
-      // Assinaturas
-      y += 20;
-      const assinaturaY = y;
-      // Contratante assinatura
-      doc.setDrawColor(0);
-      doc.setLineWidth(0.5);
-      doc.line(margin, assinaturaY + 60, margin + 220, assinaturaY + 60); // linha
-      doc.text('Assinatura do Contratante', margin + 10, assinaturaY + 75);
-
-      // Contratado assinatura
-      doc.line(340, assinaturaY + 60, 340 + 220, assinaturaY + 60);
-      doc.text('Assinatura do Contratado', 350, assinaturaY + 75);
-
-      // Inserir assinatura do cliente (se houver) acima da linha do contratante
-      if(window.__sigData){
-        try {
-          doc.addImage(window.__sigData, 'PNG', margin, assinaturaY - 10, 180, 54);
-        } catch(e){ console.warn('Erro ao inserir assinatura no contrato:', e); }
-      }
-
-      // Rodapé com data e contatos
-      const now = new Date();
-      doc.setFontSize(9);
-      doc.text(`Emitido em: ${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR')}`, margin, 800);
-      doc.text('GilFest — Tel: (79) 9 9914-5044 — CPF: 045.761.515-09', margin, 815);
-
-      // Salvar PDF
-      const nomeArquivo = `Contrato_GilFest_${(clienteNome||'cliente').replace(/\s+/g,'_')}.pdf`;
-      doc.save(nomeArquivo);
-
-      // Abrir WhatsApp com resumo e instruções
-      const mensagem = montarMensagemResumo('Contrato (formal)', clienteNome, dataEvento, localEvento, itens, subtotal, sinal, saldo);
-      const waUrl = `https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`;
-      window.open(waUrl, '_blank');
-    }
-
-    // eventos dos botões
-    document.getElementById('btnGerarOrc').addEventListener('click', gerarOrcamentoPDFAbrirWhats);
-    document.getElementById('btnGerarContrato').addEventListener('click', gerarContratoFormalPDFAbrirWhats);
-    document.getElementById('btnEnviarWhats').addEventListener('click', () => {
-      const clienteNome = document.getElementById('clienteNome').value.trim();
-      const dataEvento = document.getElementById('dataEvento').value;
-      const localEvento = document.getElementById('localEvento').value;
-      const itens = coletarItens();
-      const {subtotal, sinal, saldo} = calcular();
-      const mensagem = montarMensagemResumo('Resumo', clienteNome, dataEvento, localEvento, itens, subtotal, sinal, saldo);
-      window.open(`https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`, '_blank');
-    });
-
-    // Helper functions used earlier - ensure scope
-    function coletarItens(){
-      const itens = [];
-      qtdInputs.forEach(inp => {
-        const qty = Math.max(0, parseInt(inp.value||0));
-        const price = parseFloat(inp.dataset.price) || 0;
-        // try to find description nearby (previous sibling or parent)
-        let descricao = 'Item';
-        // find nearest text label in parent element
-        const parent = inp.parentElement;
-        if(parent){
-          const txt = parent.querySelector('div') || parent.querySelector('label') || parent;
-          if(txt) descricao = (txt.textContent || '').trim();
-        }
-        if(qty > 0){
-          itens.push({ descricao: descricao.replace(/\s+/g,' '), qtd: qty, unit: price, total: price * qty });
-        }
       });
-      chkInputs.forEach(chk => {
-        if(chk.checked){
-          let descricao = 'Item';
-          const label = chk.closest('label');
-          if(label) descricao = label.textContent.trim();
-          itens.push({ descricao: descricao.replace(/\s+/g,' '), qtd: 1, unit: parseFloat(chk.dataset.price||0), total: parseFloat(chk.dataset.price||0) });
-        }
-      });
-      return itens;
-    }
-
-    // expose calcular for other uses
-    window.calcular = calcular;
-
-    // small UX: recompute every 1s while typing to update sidebar (optional)
-    // already handled by event listeners above
-
+    })();
   </script>
-  </table>
-  </div>
 
-  <!-- Botão Instagram -->
-  <div style="text-align:center; margin-top:30px;">
-    <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
-       style="display:inline-block;
-              background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-              color: #fff;
-              font-weight: bold;
-              padding: 12px 20px;
-              border-radius: 30px;
-              text-decoration: none;
-              font-family: Arial, sans-serif;
-              transition: 0.3s;">
-       📸 Me siga no Instagram
-    </a>
-  </div>
+  <!-- Botão PIX fixo com símbolo Pix -->
+<a id="pix-button" href="#" role="button" aria-label="Copiar chave PIX" 
+   style="position: fixed;
+          bottom: 20px;
+          right: 90px;             /* deslocado para não sobrepor o Instagram */
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #fff;        /* fundo branco para destacar o logo */
+          border-radius: 50%;
+          box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+          cursor: pointer;
+          transition: transform 0.15s, box-shadow 0.15s;
+          z-index: 9999;">
+  <!-- Ícone oficial Pix em SVG -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
+    <path fill="#32BCAD" d="M183.2 21.3L78.5 126c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0l104.7-104.7c28.7-28.7 28.7-75.3 0-104L287.2 21.3c-28.6-28.4-75.3-28.4-104 0z"/>
+    <path fill="#32BCAD" d="M328.8 490.7l104.7-104.7c28.7-28.7 28.7-75.3 0-104L328.8 177.3c-28.7-28.7-75.3-28.7-104 0L120.1 282c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0z"/>
+  </svg>
+</a>
 
+<!-- Tooltip de confirmação -->
+<div id="pix-tooltip" role="status" aria-live="polite"
+     style="position: fixed; bottom: 90px; right: 90px;
+            background:#222; color:#fff; padding:8px 12px; border-radius:8px;
+            font-family:Arial, sans-serif; font-size:14px; display:none;
+            box-shadow:0 6px 16px rgba(0,0,0,0.25); z-index:10000;">
+  Chave PIX copiada!
+</div>
+
+<script>
+(function(){
+  var pixKeyDigits = "58847235553"; // sua chave PIX CPF
+
+  function formatCPF(digits){
+    if(!digits || digits.length !== 11) return digits;
+    return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
+
+  var btn = document.getElementById("pix-button");
+  var tip = document.getElementById("pix-tooltip");
+
+  function showTooltip(msg, timeMs){
+    tip.textContent = msg;
+    tip.style.display = "block";
+    tip.style.opacity = "1";
+    clearTimeout(tip._timeout);
+    tip._timeout = setTimeout(function(){
+      tip.style.transition = "opacity 150ms";
+      tip.style.opacity = "0";
+      setTimeout(function(){ tip.style.display = "none"; tip.style.transition = ""; }, 160);
+    }, timeMs || 1600);
+  }
+
+  function copyToClipboard(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    } else {
+      return new Promise(function(resolve, reject){
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try{
+          var ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+          if(ok) resolve(); else reject();
+        } catch(e){
+          document.body.removeChild(ta);
+          reject(e);
+        }
+      });
+    }
+  }
+
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+    copyToClipboard(pixKeyDigits).then(function(){
+      showTooltip("Chave PIX copiada: " + formatCPF(pixKeyDigits), 1800);
+      btn.style.transform = "scale(0.95)";
+      setTimeout(function(){ btn.style.transform = ""; }, 150);
+    }).catch(function(){
+      showTooltip("Erro: copie manualmente: " + formatCPF(pixKeyDigits), 2500);
+    });
+  });
+})();
+</script>
 </body>
 </html>
-</body>
-</html>
-```0
