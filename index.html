@@ -550,6 +550,123 @@
      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" 
           alt="Instagram" width="30" height="30">
   </a>
+  <!-- Botão PIX fixo (cole antes do </body>) -->
+<a id="pix-button" href="#" role="button" aria-label="Copiar chave PIX" 
+   style="position: fixed;
+          bottom: 20px;
+          right: 90px;             /* deslocado para não sobrepor o Instagram */
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg,#00c853,#aeea00); /* verde/amarelo Pix */
+          border-radius: 50%;
+          box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+          text-decoration: none;
+          cursor: pointer;
+          transition: transform 0.15s, box-shadow 0.15s;
+          z-index: 9999;">
+  <!-- ícone simples (pode trocar pela sua imagem) -->
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 12H18" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 6V18" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="12" r="9" stroke="none" fill="rgba(255,255,255,0.08)"/>
+  </svg>
+</a>
+
+<!-- Tooltip de confirmação -->
+<div id="pix-tooltip" role="status" aria-live="polite"
+     style="position: fixed; bottom: 90px; right: 90px;
+            background:#222; color:#fff; padding:8px 12px; border-radius:8px;
+            font-family:Arial, sans-serif; font-size:14px; display:none;
+            box-shadow:0 6px 16px rgba(0,0,0,0.25); z-index:10000;">
+  Chave PIX copiada!
+</div>
+
+<script>
+(function(){
+  // Coloque aqui a chave PIX em dígitos puros (sem espaços/pontos)
+  var pixKeyDigits = "58847235553";
+
+  // Formata para CPF ###.###.###-##
+  function formatCPF(digits){
+    if(!digits || digits.length !== 11) return digits;
+    return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
+
+  var btn = document.getElementById("pix-button");
+  var tip = document.getElementById("pix-tooltip");
+
+  // função para mostrar tooltip temporário
+  function showTooltip(msg, timeMs){
+    tip.textContent = msg;
+    tip.style.display = "block";
+    tip.style.opacity = "1";
+    clearTimeout(tip._timeout);
+    tip._timeout = setTimeout(function(){
+      tip.style.transition = "opacity 150ms";
+      tip.style.opacity = "0";
+      setTimeout(function(){ tip.style.display = "none"; tip.style.transition = ""; }, 160);
+    }, timeMs || 1600);
+  }
+
+  // copia para a área de transferência com fallback
+  function copyToClipboard(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text);
+    } else {
+      // fallback antigo
+      return new Promise(function(resolve, reject){
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try{
+          var ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+          if(ok) resolve();
+          else reject();
+        } catch(e){
+          document.body.removeChild(ta);
+          reject(e);
+        }
+      });
+    }
+  }
+
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
+    // o valor que vamos copiar: digits puros (recomendado para chave PIX)
+    var copyValue = pixKeyDigits;
+
+    copyToClipboard(copyValue).then(function(){
+      showTooltip("Chave PIX copiada: " + formatCPF(pixKeyDigits), 1800);
+      // animação visual rápida no botão
+      btn.style.transform = "scale(0.96)";
+      setTimeout(function(){ btn.style.transform = ""; }, 150);
+    }).catch(function(){
+      // se falhar, tenta mostrar instrução para o usuário
+      showTooltip("Não foi possível copiar automaticamente. Segure e copie: " + formatCPF(pixKeyDigits), 2500);
+    });
+  });
+
+  // melhora a experiência com tecla Enter / espaço (acessibilidade)
+  btn.addEventListener("keydown", function(e){
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      btn.click();
+    }
+  });
+
+  // opcional: ao passar o mouse, mostra tooltip indicando ação
+  btn.addEventListener("mouseenter", function(){ showTooltip("Clique para copiar minha chave PIX", 1200); });
+  btn.addEventListener("mouseleave", function(){ /* nada — tooltip some sozinho */ });
+
+})();
+</script>
 </body>
 <!-- Botão Instagram fixo -->
   <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
