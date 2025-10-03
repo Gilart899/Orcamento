@@ -10,7 +10,7 @@
       padding: 20px;
       background: #f8f8f8;
     }
-    h1, h2 {
+    h1 {
       text-align: center;
     }
     table {
@@ -45,25 +45,6 @@
       font-weight: bold;
       text-align: right;
       margin-top: 20px;
-    }
-    .contrato {
-      background: #fff;
-      padding: 20px;
-      margin: 40px auto;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      max-width: 800px;
-      line-height: 1.6;
-    }
-    .assinatura {
-      margin-top: 50px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .linha {
-      border-top: 1px solid #000;
-      width: 40%;
-      text-align: center;
-      padding-top: 5px;
     }
   </style>
 </head>
@@ -100,39 +81,11 @@
           <td>R$ 1.200,00</td>
           <td><button onclick="adicionar(1200)">Adicionar</button></td>
         </tr>
-        <tr>
-          <td>Combo com Pula-pula, piscina de bolinhas, algodão doce e pipoca</td>
-          <td>R$ 550,00</td>
-          <td><button onclick="adicionar(550)">Adicionar</button></td>
-        </tr>
       </tbody>
     </table>
   </div>
 
   <div id="total">Total: R$ 0,00</div>
-
-  <!-- Contrato -->
-  <div class="contrato">
-    <h2>Contrato de Prestação de Serviços</h2>
-    <p>
-      Pelo presente instrumento particular, as partes abaixo identificadas
-      contratam os serviços de buffet e entretenimento conforme os itens
-      selecionados no orçamento acima.
-    </p>
-    <p>
-      O contratante declara estar de acordo com os valores e condições
-      apresentados, comprometendo-se a efetuar o pagamento via PIX, depósito
-      bancário ou em espécie conforme combinado previamente.
-    </p>
-    <p>
-      O contratante também se responsabiliza por informar detalhes do evento,
-      como data, horário e local, com antecedência mínima de 7 dias.
-    </p>
-    <div class="assinatura">
-      <div class="linha">Assinatura do Contratante</div>
-      <div class="linha">Assinatura do Contratado</div>
-    </div>
-  </div>
 
   <!-- Botão Instagram fixo -->
   <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
@@ -168,7 +121,7 @@
             cursor: pointer;
             transition: transform 0.15s;
             z-index: 1000;">
-    <!-- Ícone Pix -->
+    <!-- Ícone Pix em SVG -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="34" height="34">
       <path fill="#32BCAD" d="M183.2 21.3L78.5 126c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0l104.7-104.7c28.7-28.7 28.7-75.3 0-104L287.2 21.3c-28.6-28.4-75.3-28.4-104 0z"/>
       <path fill="#32BCAD" d="M328.8 490.7l104.7-104.7c28.7-28.7 28.7-75.3 0-104L328.8 177.3c-28.7-28.7-75.3-28.7-104 0L120.1 282c-28.7 28.7-28.7 75.3 0 104l104.7 104.7c28.7 28.7 75.3 28.7 104 0z"/>
