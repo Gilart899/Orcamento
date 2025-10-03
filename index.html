@@ -647,27 +647,7 @@
 })();
 </script>
 
-  // função para mostrar tooltip temporário
-  function showTooltip(msg, timeMs){
-    tip.textContent = msg;
-    tip.style.display = "block";
-    tip.style.opacity = "1";
-    clearTimeout(tip._timeout);
-    tip._timeout = setTimeout(function(){
-      tip.style.transition = "opacity 150ms";
-      tip.style.opacity = "0";
-      setTimeout(function(){ tip.style.display = "none"; tip.style.transition = ""; }, 160);
-    }, timeMs || 1600);
-  }
-
-  // copia para a área de transferência com fallback
-  function copyToClipboard(text){
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      return navigator.clipboard.writeText(text);
-    } else {
-      // fallback antigo
-
-     📸 Instagram
+  // 
   </a>
 </body>
 </html>
