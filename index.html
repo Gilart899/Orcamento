@@ -1,141 +1,535 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Orçamento GilFest</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GilFest — Orçamentos & Contratos</title>
+  <meta name="description" content="GilFest — Ferramenta de orçamento e contrato com assinatura digital e exportação em PDF">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 20px;
+    :root{
+      --accent:#0d6efd;
+      --muted:#666;
+      --bg:#fff;
     }
-    h1 {
-      text-align: center;
-      color: #d6336c;
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:#f4f6f9; color:#111}
+    .container{max-width:980px;margin:18px auto;padding:18px;background:var(--bg);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+    .header{display:flex;gap:12px;align-items:center}
+    .logo{width:64px;height:64px;object-fit:contain}
+    h1{font-size:1.25rem;margin:0}
+    .lead{margin:0;color:var(--muted);font-size:.95rem}
+    section{margin-top:18px}
+    h2{font-size:1.05rem;margin:8px 0}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    label{font-size:.85rem;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], input[type="number"], input[type="date"], input[type="tel"], select{
+      padding:8px;border-radius:8px;border:1px solid #e3e6ea;width:100%;background:#fff
     }
-    .categoria {
-      margin: 20px 0;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #f9f9f9;
+    .config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .categoria{margin-top:8px}
+    .item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-radius:8px;border:1px solid #eee;background:#fcfdff;margin-top:8px}
+    .item-left{display:flex;align-items:center;gap:10px;flex:1}
+    .item-checkbox{transform:scale(1.1)}
+    .item-title{font-weight:600}
+    .qty{display:flex;align-items:center;gap:6px}
+    .qty button{padding:6px 8px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+    .qty input{width:62px;padding:6px;border-radius:6px;border:1px solid #ddd;text-align:center}
+    .preco{min-width:100px;text-align:right;color:var(--muted);font-weight:600}
+    #resumo{background:#f1f3f9;padding:12px;border-radius:8px;margin-top:12px}
+    .actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .actions button{padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    .actions button.secondary{background:#28a745}
+    .sigWrap{margin-top:12px}
+    canvas#signature-pad{border:1px solid #dcdcdc;border-radius:6px;display:block;max-width:100%}
+    .sigActions{display:flex;gap:8px;margin-top:8px}
+    .sigActions button{padding:8px 10px;border-radius:6px;border:0;cursor:pointer}
+    .muted{color:var(--muted);font-size:.95rem}
+    @media(min-width:720px){
+      .row{grid-template-columns:repeat(3,1fr)}
+      .actions{flex-direction:row}
+      .config-grid{grid-template-columns:repeat(3,1fr)}
     }
-    .item {
-      margin: 5px 0;
-    }
-    .resultado {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    button {
-      margin: 10px 5px 0 0;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #fff;
-    }
-    .orcamento { background: #28a745; }
-    .contrato { background: #007bff; }
-    .whatsapp { background: #ff8800; }
   </style>
 </head>
 <body>
+  <main class="container" role="main">
+    <header class="header" aria-label="Cabeçalho">
+      <img src="logo.png" alt="Logo GilFest" class="logo" />
+      <div>
+        <h1>GilFest — Orçamentos & Contratos</h1>
+        <p class="lead">Gere orçamento e contrato com assinatura digital e exporte em PDF.</p>
+        <p class="muted">CPF: <strong>045.761.515-09</strong> • Tel: <strong>(79) 9 9914-5044</strong></p>
+        <p class="muted">Endereço: <strong>Av. Principal do conjunto João Alves, n°705 — Nossa Senhora do Socorro - SE</strong></p>
+      </div>
+    </header>
 
-  <h1>🎉 Orçamento GilFest 🎉</h1>
+    <form id="orcForm" novalidate>
+      <section aria-labelledby="cliente-title">
+        <h2 id="cliente-title">Dados do Cliente</h2>
+        <div class="row">
+          <div>
+            <label for="clienteNome">Nome</label>
+            <input id="clienteNome" type="text" placeholder="Ex: João Silva" />
+          </div>
+          <div>
+            <label for="clienteTelefone">Telefone</label>
+            <input id="clienteTelefone" type="tel" placeholder="(99) 99999-9999" />
+          </div>
+          <div>
+            <label for="dataEvento">Data do Evento</label>
+            <input id="dataEvento" type="date" />
+          </div>
+        </div>
+      </section>
 
-  <!-- Categoria Comidas -->
-  <div class="categoria">
-    <h2>Comidas e Guloseimas</h2>
-    <div class="item" data-preco="2">
-      <label><input type="number" min="0" value="0" class="qtd"> Algodão doce no saquinho (R$ 2,00)</label>
-    </div>
-    <div class="item" data-preco="2.5">
-      <label><input type="number" min="0" value="0" class="qtd"> Algodão doce copo 300ml (R$ 2,50)</label>
-    </div>
-    <div class="item" data-preco="3">
-      <label><input type="number" min="0" value="0" class="qtd"> Algodão doce copo 500ml (R$ 3,00)</label>
-    </div>
-    <div class="item" data-preco="5">
-      <label><input type="number" min="0" value="0" class="qtd"> Pipoca gourmet 300ml (R$ 5,00)</label>
-    </div>
-    <div class="item" data-preco="2">
-      <label><input type="number" min="0" value="0" class="qtd"> Pipoca caramelizada 300ml (R$ 2,00)</label>
-    </div>
-    <div class="item" data-preco="399">
-      <label><input type="checkbox" class="chk"> Cascata de chocolate pequena (R$ 399,00)</label>
-    </div>
-    <!-- NOVO ITEM ADICIONADO -->
-    <div class="item" data-preco="1200">
-      <label><input type="checkbox" class="chk"> Cascata de chocolate grande (R$ 1200,00)</label>
-    </div>
-    <!-- fim do novo -->
-    <div class="item" data-preco="399">
-      <label><input type="checkbox" class="chk"> Crepe suíço (R$ 399,00)</label>
-    </div>
-    <div class="item" data-preco="399">
-      <label><input type="checkbox" class="chk"> Churros (R$ 399,00)</label>
-    </div>
-    <div class="item" data-preco="200">
-      <label><input type="checkbox" class="chk"> Máquina de algodão doce no evento (R$ 200,00)</label>
-    </div>
-  </div>
+      <section aria-labelledby="config-title">
+        <h2 id="config-title">Configurações (fixas)</h2>
+        <div class="config-grid">
+          <div>
+            <label for="valorHoraExtra">Valor hora extra (R$) — fixo</label>
+            <input id="valorHoraExtra" type="number" value="100.00" readonly />
+          </div>
+          <div>
+            <label for="percentualSinal">Percentual de sinal (%) — fixo</label>
+            <input id="percentualSinal" type="number" value="40" readonly />
+          </div>
+          <div>
+            <label for="observacoes">Observações (opcional)</label>
+            <input id="observacoes" type="text" placeholder="Ex: Local com acesso a energia elétrica" />
+          </div>
+        </div>
+      </section>
 
-  <!-- Categoria Brinquedos -->
-  <div class="categoria">
-    <h2>Brinquedos</h2>
-    <div class="item" data-preco="180">
-      <label><input type="checkbox" class="chk"> Pula-pula grande (R$ 180,00)</label>
-    </div>
-    <div class="item" data-preco="150">
-      <label><input type="checkbox" class="chk"> Pula-pula médio (R$ 150,00)</label>
-    </div>
-    <div class="item" data-preco="150">
-      <label><input type="checkbox" class="chk"> Piscina de bolinhas (R$ 150,00)</label>
-    </div>
-  </div>
+      <section aria-labelledby="servicos-title">
+        <h2 id="servicos-title">Serviços</h2>
 
-  <!-- Resultado -->
-  <div class="resultado">
-    💰 Total: R$ <span id="total">0,00</span><br>
-    🔑 Sinal (40%): R$ <span id="sinal">0,00</span><br>
-    📌 Saldo: R$ <span id="saldo">0,00</span>
-  </div>
+        <div class="categoria" id="categoria-comidas">
+          <h3>Comidas e Guloseimas</h3>
 
-  <!-- Botões -->
-  <div>
-    <button class="orcamento" onclick="gerarOrcamento()">Gerar Orçamento</button>
-    <button class="contrato" onclick="gerarContrato()">Gerar Contrato</button>
-    <button class="whatsapp" onclick="enviarWhatsapp()">Enviar WhatsApp</button>
-  </div>
+          <div class="item" data-preco="2.00" data-id="algodao-saquinho">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no saquinho" />
+              <div>
+                <div class="item-title">Algodão doce no saquinho</div>
+                <div class="muted">R$ 2,00 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 2,00</div>
+          </div>
+
+          <div class="item" data-preco="5.00" data-id="pipoca-gourmet">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pipoca Gurmet, copo 300ml" />
+              <div>
+                <div class="item-title">Pipoca Gourmet (copo 300ml)</div>
+                <div class="muted">R$ 5,00 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 5,00</div>
+          </div>
+
+          <div class="item" data-preco="2.00" data-id="pipoca-caramelizada">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pipoca caramelizada copo 300ml" />
+              <div>
+                <div class="item-title">Pipoca Caramelizada (copo 300ml)</div>
+                <div class="muted">R$ 2,00 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 2,00</div>
+          </div>
+
+          <div class="item" data-preco="399.00" data-id="cascata-pequena">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Cascata de chocolate pequena" />
+              <div>
+                <div class="item-title">Cascata de chocolate (pequena)</div>
+                <div class="muted">R$ 399,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 399,00</div>
+          </div>
+
+          <div class="item" data-preco="399.00" data-id="crepe-suico">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Crepe suíço" />
+              <div>
+                <div class="item-title">Crepe suíço</div>
+                <div class="muted">R$ 399,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 399,00</div>
+          </div>
+
+          <div class="item" data-preco="399.00" data-id="churros">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Churros" />
+              <div>
+                <div class="item-title">Churros</div>
+                <div class="muted">R$ 399,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 399,00</div>
+          </div>
+
+          <div class="item" data-preco="200.00" data-id="maquina-algodao">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
+              <div>
+                <div class="item-title">Máquina de algodão doce no evento</div>
+                <div class="muted">R$ 200,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 200,00</div>
+          </div>
+        </div>
+
+        <div class="categoria" id="categoria-brinquedos">
+          <h3>Brinquedos</h3>
+
+          <div class="item" data-preco="180.00" data-id="pula-pula-grande">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula grande" />
+              <div>
+                <div class="item-title">Pula-pula grande</div>
+                <div class="muted">R$ 180,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 180,00</div>
+          </div>
+
+          <div class="item" data-preco="150.00" data-id="pula-pula-medio">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula médio" />
+              <div>
+                <div class="item-title">Pula-pula médio</div>
+                <div class="muted">R$ 150,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 150,00</div>
+          </div>
+
+          <div class="item" data-preco="150.00" data-id="piscina-bolinhas">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Piscina de bolinhas" />
+              <div>
+                <div class="item-title">Piscina de bolinhas</div>
+                <div class="muted">R$ 150,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 150,00</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="resumo" aria-live="polite">
+        <h2>Resumo</h2>
+        <div id="subtotais" class="muted">Nenhum serviço selecionado.</div>
+        <div id="total" style="margin-top:8px;font-weight:700">Total calculado: R$ <span id="totalValue">0,00</span></div>
+        <div id="sinalInfo" style="margin-top:6px">Sinal (40%): R$ <span id="sinalValue">0,00</span> • Saldo: R$ <span id="saldoValue">0,00</span></div>
+      </section>
+
+      <div class="actions" style="margin-top:14px">
+        <button id="gerarOrcamento" type="button">Gerar Orçamento (PDF) + Abrir WhatsApp</button>
+        <button id="gerarContrato" type="button" class="secondary">Gerar Contrato (PDF) + Abrir WhatsApp</button>
+        <button id="enviarWhats" type="button" style="background:#25d366">Enviar Resumo pelo WhatsApp</button>
+      </div>
+    </form>
+
+    <section class="sigWrap" aria-labelledby="sig-title">
+      <h2 id="sig-title">Assinatura digital (cliente)</h2>
+      <canvas id="signature-pad" width="700" height="160" aria-label="Área para assinatura"></canvas>
+      <div class="sigActions">
+        <button id="clearSig" type="button" style="background:#dc3545;color:#fff">Limpar assinatura</button>
+        <button id="saveSig" type="button" style="background:#007bff;color:#fff">Salvar assinatura</button>
+        <span id="sigStatus" class="muted" style="align-self:center">Nenhuma assinatura salva.</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- libs -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
   <script>
-    const sinalPercent = 0.4;
-    function calcularTotal(){
-      let total = 0;
-      document.querySelectorAll(".qtd").forEach(input=>{
-        total += parseFloat(input.parentNode.parentNode.dataset.preco) * parseInt(input.value||0);
-      });
-      document.querySelectorAll(".chk:checked").forEach(chk=>{
-        total += parseFloat(chk.parentNode.parentNode.dataset.preco);
-      });
-      document.getElementById("total").textContent = total.toFixed(2).replace(".",",");
-      document.getElementById("sinal").textContent = (total*sinalPercent).toFixed(2).replace(".",",");
-      document.getElementById("saldo").textContent = (total-total*sinalPercent).toFixed(2).replace(".",",");
-      return total;
-    }
-    document.querySelectorAll(".qtd,.chk").forEach(el=>el.addEventListener("input",calcularTotal));
+  (function(){
+    // número de WhatsApp alvo (formato internacional sem sinais): +55 79 9 9914 5044 => 5579999145044
+    const WHATS_NUMBER = '5579999145044';
 
-    function gerarOrcamento(){ alert("Aqui entraria a geração de orçamento em PDF."); }
-    function gerarContrato(){ alert("Aqui entraria a geração de contrato em PDF."); }
-    function enviarWhatsapp(){
-      let total = document.getElementById("total").textContent;
-      let msg = `Olá! Aqui é da GilFest 🎉\nSeu orçamento total é de R$ ${total}`;
-      window.open("https://wa.me/5579999145044?text="+encodeURIComponent(msg),"_blank");
+    const itens = Array.from(document.querySelectorAll('.item'));
+    const totalValueEl = document.getElementById('totalValue');
+    const sinalValueEl = document.getElementById('sinalValue');
+    const saldoValueEl = document.getElementById('saldoValue');
+    const subtotaisEl = document.getElementById('subtotais');
+    const percentualInput = document.getElementById('percentualSinal'); // fixo 40
+    const valorHoraExtraInput = document.getElementById('valorHoraExtra'); // fixo 100
+    const clienteNomeEl = document.getElementById('clienteNome');
+    const clienteTelEl = document.getElementById('clienteTelefone');
+    const dataEventoEl = document.getElementById('dataEvento');
+    const obsEl = document.getElementById('observacoes');
+
+    // SignaturePad
+    const canvas = document.getElementById('signature-pad');
+    const sigStatus = document.getElementById('sigStatus');
+    const signaturePad = new SignaturePad(canvas, {backgroundColor: 'rgba(255,255,255,0)', penColor: 'rgb(0,0,0)'});
+    document.getElementById('clearSig').addEventListener('click', () => {
+      signaturePad.clear();
+      window.__sigData = null;
+      sigStatus.textContent = 'Nenhuma assinatura salva.';
+    });
+    document.getElementById('saveSig').addEventListener('click', () => {
+      if(signaturePad.isEmpty()){
+        alert('Assine primeiro antes de salvar.');
+        return;
+      }
+      window.__sigData = signaturePad.toDataURL('image/png');
+      sigStatus.textContent = 'Assinatura salva (será inserida no PDF).';
+    });
+
+    // formatação moeda pt-br
+    function currencyBr(v){
+      return Number(v || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
     }
+
+    // retorna dados do item
+    function getItemData(itemEl){
+      const preco = Number(itemEl.dataset.preco) || 0;
+      const id = itemEl.dataset.id || '';
+      const title = (itemEl.querySelector('.item-title') || itemEl.querySelector('label') || {textContent: id}).textContent.trim();
+      const checked = itemEl.querySelector('.item-checkbox').checked;
+      const qtyInput = itemEl.querySelector('.qty-input');
+      const qty = qtyInput ? Math.max(0, Number(qtyInput.value || 0)) : 1;
+      const total = preco * (qtyInput ? qty : (checked ? 1 : 0));
+      return { id, title, preco, qty: qtyInput ? qty : 1, checked, total, hasQty: !!qtyInput };
+    }
+
+    // criar controles de +/-
+    itens.forEach(item => {
+      const inc = item.querySelector('.qty-inc');
+      const dec = item.querySelector('.qty-dec');
+      const qtyInput = item.querySelector('.qty-input');
+      // Se o item não tem campo qty (qtyInput undefined), esconda controles (mas no markup atual todos tem)
+      if(!qtyInput){
+        if(inc) inc.style.display='none';
+        if(dec) dec.style.display='none';
+      } else {
+        inc.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) + 1)); calcular(); });
+        dec.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) - 1)); calcular(); });
+        qtyInput.addEventListener('input', () => {
+          if(qtyInput.value === '') qtyInput.value = '0';
+          if(Number(qtyInput.value) < 0) qtyInput.value = '0';
+          calcular();
+        });
+      }
+      const cb = item.querySelector('.item-checkbox');
+      if(cb) cb.addEventListener('change', calcular);
+    });
+
+    // cálculo principal
+    function calcular(){
+      const selecionados = [];
+      let subtotal = 0;
+      itens.forEach(item => {
+        const d = getItemData(item);
+        if(d.checked){
+          selecionados.push(d);
+          subtotal += d.total;
+        }
+      });
+
+      if(selecionados.length === 0){
+        subtotaisEl.textContent = 'Nenhum serviço selecionado.';
+      } else {
+        // montar string de subtotais por item
+        const lines = selecionados.map(s => {
+          return `${s.title}${s.hasQty ? ` — ${s.qty} x R$ ${currencyBr(s.preco)} = R$ ${currencyBr(s.total)}` : ` — R$ ${currencyBr(s.preco)}`}`;
+        });
+        subtotaisEl.innerHTML = lines.join('<br/>');
+      }
+
+      const percentual = Number(percentualInput.value) || 0;
+      const sinal = subtotal * percentual / 100;
+      const saldo = subtotal - sinal;
+
+      totalValueEl.textContent = currencyBr(subtotal);
+      sinalValueEl.textContent = currencyBr(sinal);
+      saldoValueEl.textContent = currencyBr(saldo);
+    }
+
+    // bind calculo a inputs fixos (mesmo que read-only)
+    percentualInput.addEventListener('input', calcular);
+    valorHoraExtraInput.addEventListener('input', calcular);
+
+    // inicializa
+    calcular();
+
+    // gerar PDF (orcamento ou contrato)
+    async function gerarPDF(comContrato){
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({unit:'pt',format:'a4'});
+      const marginLeft = 40;
+      let y = 40;
+      const clienteNome = (clienteNomeEl.value || '---').trim();
+      const clienteTel = (clienteTelEl.value || '---').trim();
+      const dataEvento = (dataEventoEl.value || '---');
+      const observacoes = (obsEl.value || '');
+
+      // Cabeçalho (seus dados fixos)
+      doc.setFontSize(12);
+      doc.text('GILFEST — Orçamentos & Contratos', marginLeft, y); y += 18;
+      doc.setFontSize(10);
+      doc.text('Contratado: GilFest', marginLeft, y); y += 14;
+      doc.text('CPF: 045.761.515-09', marginLeft, y); y += 14;
+      doc.text('Telefone: (79) 9 9914-5044', marginLeft, y); y += 14;
+      doc.text('Endereço: Av. Principal do conjunto João Alves, n°705 — Nossa Senhora do Socorro - SE', marginLeft, y); y += 20;
+
+      // Dados do cliente
+      doc.setFontSize(11);
+      doc.text(`Cliente: ${clienteNome}`, marginLeft, y); y += 14;
+      doc.text(`Telefone (cliente): ${clienteTel}`, marginLeft, y); y += 14;
+      doc.text(`Data do evento: ${dataEvento}`, marginLeft, y); y += 18;
+
+      // Tabela de itens
+      const selecionados = itens.map(getItemData).filter(d => d.checked && d.total > 0);
+      if(selecionados.length > 0){
+        const tableBody = selecionados.map(s => {
+          const descricao = s.hasQty ? `${s.title} (x${s.qty})` : s.title;
+          return [descricao, `R$ ${currencyBr(s.preco)}`, s.hasQty ? String(s.qty) : '-', `R$ ${currencyBr(s.total)}`];
+        });
+
+        doc.autoTable({
+          startY: y,
+          head: [['Serviço/Produto','Unit.','Qtd','Total']],
+          body: tableBody,
+          styles:{fontSize:10},
+          headStyles:{fillColor:[13,110,253], textColor:255}
+        });
+        y = (doc.lastAutoTable && doc.lastAutoTable.finalY) ? doc.lastAutoTable.finalY + 10 : y + 120;
+      } else {
+        doc.text('Nenhum serviço selecionado.', marginLeft, y); y += 18;
+      }
+
+      // Resumo financeiro
+      const subtotal = selecionados.reduce((s,i)=>s+i.total,0);
+      const percentual = Number(percentualInput.value) || 0;
+      const sinal = subtotal * percentual / 100;
+      const saldo = subtotal - sinal;
+      doc.setFontSize(11);
+      doc.text(`Subtotal: R$ ${currencyBr(subtotal)}`, marginLeft, y); y += 16;
+      doc.text(`Sinal (${percentual}%): R$ ${currencyBr(sinal)}`, marginLeft, y); y += 16;
+      doc.text(`Saldo a pagar: R$ ${currencyBr(saldo)}`, marginLeft, y); y += 20;
+
+      // Observações e horas extras
+      const horaExtra = Number(valorHoraExtraInput.value || 0);
+      doc.text(`Valor hora extra (por hora): R$ ${currencyBr(horaExtra)}`, marginLeft, y); y += 16;
+      if(observacoes) {
+        doc.text('Observações:', marginLeft, y); y += 14;
+        doc.setFontSize(10);
+        doc.text(observacoes, marginLeft, y, {maxWidth:480}); y += 30;
+      } else {
+        y += 6;
+      }
+
+      // Se contrato, inserir cláusulas
+      if(comContrato){
+        doc.setFontSize(12);
+        doc.text('CONTRATO DE PRESTAÇÃO DE SERVIÇOS — CLÁUSULAS BÁSICAS', marginLeft, y); y += 18;
+        doc.setFontSize(10);
+        const clausulas = [
+          '1. Objeto: Contratação dos serviços descritos neste documento para realização de evento na data informada.',
+          '2. Valor e Pagamento: O valor total corresponde ao subtotal. O contratante pagará sinal de 40% para garantia da reserva; o saldo deverá ser pago conforme acordado.',
+          '3. Horas extras: As horas adicionais serão cobradas à razão de R$ ' + currencyBr(horaExtra) + ' por hora.',
+          '4. Cancelamento: Em caso de cancelamento, poderá haver retenção do sinal conforme acordo entre as partes.',
+          '5. Responsabilidades: O contratado fornecerá os serviços descritos; o contratante deve prover local adequado, acesso à energia quando necessário, e segurança.',
+          '6. Foro: As partes elegem o foro da comarca local para dirimir eventuais dúvidas.'
+        ];
+        clausulas.forEach(text => {
+          doc.text(text, marginLeft, y, {maxWidth:500});
+          y += 14;
+        });
+      }
+
+      // Assinaturas
+      y += 18;
+      doc.text('Assinaturas:', marginLeft, y); y += 18;
+      if(window.__sigData){
+        doc.addImage(window.__sigData, 'PNG', marginLeft, y, 180, 54);
+        doc.text('Assinatura do Cliente', marginLeft, y + 70);
+      } else {
+        doc.text('_______________________________    _______________________________', marginLeft, y);
+        doc.text('Assinatura do Contratante                Assinatura do Contratado', marginLeft, y + 16);
+      }
+
+      // salvar pdf
+      const tipo = comContrato ? 'Contrato' : 'Orcamento';
+      const filename = `${tipo}_${(clienteNome || 'Cliente').replace(/\s+/g,'_')}.pdf`;
+      doc.save(filename);
+
+      // após salvar, abrir WhatsApp com mensagem resumida para o número fixo
+      // montar mensagem curta com os principais dados
+      const mensagem = montarMensagemWhats({tipo, clienteNome, clienteTel, dataEvento, selecionados, subtotal, sinal, saldo});
+      // abre em nova aba
+      const waUrl = `https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // helper monta mensagem
+    function montarMensagemWhats({tipo, clienteNome, clienteTel, dataEvento, selecionados, subtotal, sinal, saldo}){
+      const header = `Olá, segue ${tipo.toLowerCase()} gerado por GilFest.\n`;
+      const cliente = `Cliente: ${clienteNome}\nTelefone: ${clienteTel || '---'}\nData do evento: ${dataEvento || '---'}\n\n`;
+      const itensTxt = (selecionados.length > 0) ? selecionados.map(s => {
+        return `${s.title}${s.hasQty ? ' x' + s.qty : ''} — R$ ${currencyBr(s.total)}`;
+      }).join('\n') + '\n\n' : 'Nenhum item selecionado.\n\n';
+      const valores = `Subtotal: R$ ${currencyBr(subtotal)}\nSinal (40%): R$ ${currencyBr(sinal)}\nSaldo: R$ ${currencyBr(saldo)}\n\n`;
+      const footer = 'PDF gerado no navegador. Para enviar o PDF em anexo é necessário transferi-lo manualmente ou usar integração com API.\nAtenciosamente,\nGilFest';
+      return header + cliente + itensTxt + valores + footer;
+    }
+
+    // botão gerar orçamento / contrato
+    document.getElementById('gerarOrcamento').addEventListener('click', () => gerarPDF(false));
+    document.getElementById('gerarContrato').addEventListener('click', () => gerarPDF(true));
+
+    // botão enviar resumo WhatsApp (apenas abre chat com resumo atual)
+    document.getElementById('enviarWhats').addEventListener('click', () => {
+      const clienteNome = clienteNomeEl.value || 'Cliente';
+      const clienteTel = clienteTelEl.value || '';
+      const dataEvento = dataEventoEl.value || '';
+      const selecionados = itens.map(getItemData).filter(i => i.checked && i.total > 0);
+      const subtotal = selecionados.reduce((s,i)=>s+i.total,0);
+      const percentual = Number(percentualInput.value) || 0;
+      const sinal = subtotal * percentual / 100;
+      const saldo = subtotal - sinal;
+      const mensagem = montarMensagemWhats({tipo: 'Resumo', clienteNome, clienteTel, dataEvento, selecionados, subtotal, sinal, saldo});
+      const waUrl = `https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+      window.open(waUrl, '_blank');
+    });
+
+    // recalcular sempre que algo muda (delegation)
+    document.querySelectorAll('.item-checkbox, .qty-input').forEach(el => {
+      el.addEventListener('change', calcular);
+      el.addEventListener('input', calcular);
+    });
+
+    // calcula inicialmente
+    calcular();
+  })();
   </script>
-
 </body>
 </html>
