@@ -108,33 +108,52 @@
   <!-- ====== COMIDAS E GULOSEIMAS ====== -->
 <div class="categoria" id="categoria-comidas-guloseimas">
   
+</div>
+          <!-- Guloseimas Extras -->
+<h3>🍬 Guloseimas Extras</h3>
 
-  <!-- Guloseimas  -->
-<h3>Guloseimas Extras</h3>
-
-<div>
+<div class="item">
   <label>
     <input type="checkbox" class="item-checkbox" data-name="Algodão doce no saquinho" data-price="2">
     Algodão doce no saquinho (R$2,00)
   </label>
-  <input type="number" class="item-qty" value="0" min="0" style="width:60px">
+  <div class="qty-control">
+    <button type="button" class="btn-minus">-</button>
+    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
+    <button type="button" class="btn-plus">+</button>
+  </div>
 </div>
 
-<div>
+<div class="item">
   <label>
     <input type="checkbox" class="item-checkbox" data-name="Pipoca gourmet 300ml" data-price="5">
     Pipoca gourmet copo 300ml (R$5,00)
   </label>
-  <input type="number" class="item-qty" value="0" min="0" style="width:60px">
+  <div class="qty-control">
+    <button type="button" class="btn-minus">-</button>
+    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
+    <button type="button" class="btn-plus">+</button>
+  </div>
 </div>
 
-<div>
+<div class="item">
   <label>
     <input type="checkbox" class="item-checkbox" data-name="Pipoca caramelizada 300ml" data-price="2">
     Pipoca caramelizada copo 300ml (R$2,00)
   </label>
-  <input type="number" class="item-qty" value="0" min="0" style="width:60px">
+  <div class="qty-control">
+    <button type="button" class="btn-minus">-</button>
+    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
+    <button type="button" class="btn-plus">+</button>
+  </div>
 </div>
+
+<!-- Exibir total -->
+<p id="total" style="font-weight:bold; font-size:18px; margin-top:10px;">Total: R$ 0,00</p>
+
+<!-- Botões -->
+<button id="btn-whatsapp">📲 Enviar Orçamento via WhatsApp</button>
+<button id="btn-pdf">📄 Gerar Orçamento em PDF</button>
 
   <!-- Algodão doce no copo 300ml -->
   <div class="item" data-preco="2.50" data-id="algodao-copo-300">
@@ -721,6 +740,73 @@
     });
   });
 })();
-</script>          
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+function calcularTotal() {
+  let total = 0;
+  document.querySelectorAll('.item-checkbox').forEach((chk, i) => {
+    const qtyInput = document.querySelectorAll('.item-qty')[i];
+    const qty = parseInt(qtyInput.value) || 0;
+    if (chk.checked && qty > 0) {
+      const price = parseFloat(chk.dataset.price);
+      total += price * qty;
+    }
+  });
+  document.getElementById('total').textContent = "Total: R$ " + total.toFixed(2);
+  return total;
+}
+
+// Ações dos botões + e -
+document.querySelectorAll('.btn-plus').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    const qtyInput = document.querySelectorAll('.item-qty')[i];
+    qtyInput.value = parseInt(qtyInput.value) + 1;
+    document.querySelectorAll('.item-checkbox')[i].checked = true;
+    calcularTotal();
+  });
+});
+
+document.querySelectorAll('.btn-minus').forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    const qtyInput = document.querySelectorAll('.item-qty')[i];
+    if (parseInt(qtyInput.value) > 0) {
+      qtyInput.value = parseInt(qtyInput.value) - 1;
+    }
+    calcularTotal();
+  });
+});
+
+// Atualizar ao marcar/desmarcar ou digitar quantidade
+document.querySelectorAll('.item-checkbox, .item-qty').forEach(el => {
+  el.addEventListener('input', calcularTotal);
+});
+
+// Enviar orçamento pelo WhatsApp
+document.getElementById('btn-whatsapp').addEventListener('click', () => {
+  let msg = "📋 *Orçamento GilFest*\n\n";
+  document.querySelectorAll('.item-checkbox').forEach((chk, i) => {
+    const qty = parseInt(document.querySelectorAll('.item-qty')[i].value) || 0;
+    if (chk.checked && qty > 0) {
+      msg += `• ${chk.dataset.name} x${qty} = R$ ${(chk.dataset.price * qty).toFixed(2)}\n`;
+    }
+  });
+  msg += "\n💰 Total: R$ " + calcularTotal().toFixed(2);
+  const url = "https://wa.me/5579999145044?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+});
+
+// Gerar PDF
+document.getElementById('btn-pdf').addEventListener('click', () => {
+  const element = document.body;
+  html2pdf().set({
+    margin: 10,
+    filename: 'orcamento-gilfest.pdf',
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(element).save();
+});
+</script>
+
 </body>
 </html>
