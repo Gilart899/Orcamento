@@ -107,58 +107,145 @@
           <!-- ===================== COMIDAS E GULOSEIMAS ===================== -->
 <div class="categoria" id="categoria-comidas">
   <h3>Comidas e Guloseimas</h3>
-<!-- ====== COMIDAS E GULOSEIMAS (com novos itens e ícones) ====== -->
+  <!-- ====== COMIDAS E GULOSEIMAS ====== -->
+<div class="categoria" id="categoria-comidas-guloseimas">
+  <h3>Comidas e Guloseimas</h3>
 
-<!-- Máquina de algodão doce no evento -->
-<div class="item" data-preco="200.00" data-id="maquina-algodao">
-  <div class="item-left">
-    <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
-    <div>
-      <div class="item-title">
-        <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
-        Máquina de algodão doce no evento
+  <!-- Algodão doce no copo 300ml -->
+  <div class="item" data-preco="2.50" data-id="algodao-copo-300">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 300ml" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+          Algodão doce no copo (300ml)
+        </div>
+        <div class="muted">R$ 2,50 cada</div>
       </div>
-      <div class="muted">R$ 200,00</div>
     </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 2,50</div>
   </div>
-  <div class="preco">R$ 200,00</div>
+
+  <!-- Algodão doce no copo 500ml -->
+  <div class="item" data-preco="3.50" data-id="algodao-copo-500">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 500ml" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+          Algodão doce no copo (500ml)
+        </div>
+        <div class="muted">R$ 3,50 cada</div>
+      </div>
+    </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 3,50</div>
+  </div>
+
+  <!-- Máquina de algodão doce no evento -->
+  <div class="item" data-preco="200.00" data-id="maquina-algodao">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+          Máquina de algodão doce no evento
+        </div>
+        <div class="muted">R$ 200,00</div>
+      </div>
+    </div>
+    <div class="preco">R$ 200,00</div>
+  </div>
+
+  <!-- Combo infantil básico -->
+  <div class="item" data-preco="399.00" data-id="combo-infantil">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Combo infantil básico" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#32cd32;margin-right:6px;"></i>
+          Combo infantil básico (pula-pula + algodão doce + pipoca)
+        </div>
+        <div class="muted">R$ 399,00</div>
+      </div>
+    </div>
+    <div class="preco">R$ 399,00</div>
+  </div>
+
+  <!-- Combo completo -->
+  <div class="item" data-preco="550.00" data-id="combo-completo">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Combo completo" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#228b22;margin-right:6px;"></i>
+          Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)
+        </div>
+        <div class="muted">R$ 550,00</div>
+      </div>
+    </div>
+    <div class="preco">R$ 550,00</div>
+  </div>
 </div>
 
-<!-- Novo: Algodão doce no copo 300ml -->
-<div class="item" data-preco="2.50" data-id="algodao-copo">
-  <div class="item-left">
-    <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 300ml" />
-    <div>
-      <div class="item-title">
-        <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
-        Algodão doce no copo (300ml)
-      </div>
-      <div class="muted">R$ 2,50 cada</div>
-    </div>
-  </div>
-  <div class="qty">
-    <button type="button" class="qty-dec">−</button>
-    <input type="number" class="qty-input" value="0" min="0" />
-    <button type="button" class="qty-inc">+</button>
-  </div>
-  <div class="preco">R$ 2,50</div>
-</div>
+<!-- ====== BRINQUEDOS ====== -->
+<div class="categoria" id="categoria-brinquedos">
+  <h3>Brinquedos</h3>
 
-<!-- Novo: Combo completo -->
-<div class="item" data-preco="550.00" data-id="combo-completo">
-  <div class="item-left">
-    <input class="item-checkbox" type="checkbox" aria-label="Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)" />
-    <div>
-      <div class="item-title">
-        <i class="fas fa-comments" style="color:#32cd32;margin-right:6px;"></i>
-        Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)
+  <!-- Pula-pula grande -->
+  <div class="item" data-preco="180.00" data-id="pula-pula-grande">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Pula-pula grande" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+          Pula-pula grande
+        </div>
+        <div class="muted">R$ 180,00</div>
       </div>
-      <div class="muted">R$ 550,00</div>
     </div>
+    <div class="preco">R$ 180,00</div>
   </div>
-  <div class="preco">R$ 550,00</div>
+
+  <!-- Pula-pula médio -->
+  <div class="item" data-preco="150.00" data-id="pula-pula-medio">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Pula-pula médio" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+          Pula-pula médio
+        </div>
+        <div class="muted">R$ 150,00</div>
+      </div>
+    </div>
+    <div class="preco">R$ 150,00</div>
+  </div>
+
+  <!-- Piscina de bolinhas -->
+  <div class="item" data-preco="150.00" data-id="piscina-bolinhas">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Piscina de bolinhas" />
+      <div>
+        <div class="item-title">
+          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+          Piscina de bolinhas
+        </div>
+        <div class="muted">R$ 150,00</div>
+      </div>
+    </div>
+    <div class="preco">R$ 150,00</div>
+  </div>
 </div>
-<!-- ====== FIM DOS ITENS ====== -->
 </div>
 
 <script>
