@@ -104,149 +104,199 @@
         <h2 id="servicos-title">Serviços</h2>
 
         <div class="categoria" id="categoria-comidas">
-          <h3>Comidas e Guloseimas</h3>
-          <div class="item" data-preco="550.00" data-id="combo-completo">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Combo completo" />
-              <div>
-                <div class="item-title">Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)</div>
-                <div class="muted">R$ 550,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 550,00</div>
-          </div>
+          <!-- ===================== COMIDAS E GULOSEIMAS ===================== -->
+<div class="categoria" id="categoria-comidas">
+  <h3>Comidas e Guloseimas</h3>
 
-          <div class="item" data-preco="2.00" data-id="algodao-saquinho">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no saquinho" />
-              <div>
-                <div class="item-title">Algodão doce no saquinho</div>
-                <div class="muted">R$ 2,00 cada</div>
-              </div>
-            </div>
-            <div class="qty">
-              <button type="button" class="qty-dec">−</button>
-              <input type="number" class="qty-input" value="0" min="0" />
-              <button type="button" class="qty-inc">+</button>
-            </div>
-            <div class="preco">R$ 2,00</div>
-          </div>
-
-          <div class="item" data-preco="5.00" data-id="pipoca-gourmet">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Pipoca Gurmet, copo 300ml" />
-              <div>
-                <div class="item" data-preco="2.50" data-id="algodao-copo">
-            <div
-                </div>
-                <div class="item-title">Pipoca Gourmet (copo 300ml)</div>
-                <div class="muted">R$ 5,00 cada</div>
-              </div>
-            </div>
-            <div class="qty">
-              <button type="button" class="qty-dec">−</button>
-              <input type="number" class="qty-input" value="0" min="0" />
-              <button type="button" class="qty-inc">+</button>
-            </div>
-            <div class="preco">R$ 5,00</div>
-          </div>
-
-          <div class="item" data-preco="2.00" data-id="pipoca-caramelizada">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Pipoca caramelizada copo 300ml" />
-              <div>
-                <div class="item-title">Pipoca Caramelizada (copo 300ml)</div>
-                <div class="muted">R$ 2,00 cada</div>
-              </div>
-            </div>
-            <div class="qty">
-              <button type="button" class="qty-dec">−</button>
-              <input type="number" class="qty-input" value="0" min="0" />
-              <button type="button" class="qty-inc">+</button>
-            </div>
-            <div class="preco">R$ 2,00</div>
-          </div>
-
-          <div class="item" data-preco="399.00" data-id="cascata-pequena">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Cascata de chocolate pequena" />
-              <div>
-                <div class="item-title">Cascata de chocolate (pequena)</div>
-                <div class="muted">R$ 399,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 399,00</div>
-          </div>
-
-          <div class="item" data-preco="399.00" data-id="crepe-suico">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Crepe suíço" />
-              <div>
-                <div class="item-title">Crepe suíço</div>
-                <div class="muted">R$ 399,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 399,00</div>
-          </div>
-
-          <div class="item" data-preco="399.00" data-id="churros">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Churros" />
-              <div>
-                <div class="item-title">Churros</div>
-                <div class="muted">R$ 399,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 399,00</div>
-          </div>
-
-          <div class="item" data-preco="200.00" data-id="maquina-algodao">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
-              <div>
-                <div class="item-title">Máquina de algodão doce no evento</div>
-                <div class="muted">R$ 200,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 200,00</div>
-          </div>
+  <div class="item" data-preco="2.00" data-id="algodao-saquinho">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no saquinho" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/857/857681.png" alt="Algodão doce" width="24" height="24" />
+        <div>
+          <div class="item-title">Algodão doce no saquinho</div>
+          <div class="muted">R$ 2,00 cada</div>
         </div>
+      </div>
+    </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 2,00</div>
+  </div>
 
-        <div class="categoria" id="categoria-brinquedos">
-          <h3>Brinquedos</h3>
+  <!-- NOVO ITEM: Algodão doce no copo 300ml -->
+  <div class="item" data-preco="2.50" data-id="algodao-copo">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 300ml" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/857/857681.png" alt="Algodão doce copo" width="24" height="24" />
+        <div>
+          <div class="item-title">Algodão doce no copo (300ml)</div>
+          <div class="muted">R$ 2,50 cada</div>
+        </div>
+      </div>
+    </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 2,50</div>
+  </div>
 
-          <div class="item" data-preco="180.00" data-id="pula-pula-grande">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula grande" />
-              <div>
-                <div class="item-title">Pula-pula grande</div>
-                <div class="muted">R$ 180,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 180,00</div>
-          </div>
+  <div class="item" data-preco="5.00" data-id="pipoca-gourmet">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Pipoca gourmet 300ml" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="Pipoca" width="24" height="24" />
+        <div>
+          <div class="item-title">Pipoca Gourmet (copo 300ml)</div>
+          <div class="muted">R$ 5,00 cada</div>
+        </div>
+      </div>
+    </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 5,00</div>
+  </div>
 
-          <div class="item" data-preco="150.00" data-id="pula-pula-medio">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula médio" />
-              <div>
-                <div class="item-title">Pula-pula médio</div>
-                <div class="muted">R$ 150,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 150,00</div>
-          </div>
+  <div class="item" data-preco="2.00" data-id="pipoca-caramelizada">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Pipoca caramelizada copo 300ml" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="Pipoca caramelizada" width="24" height="24" />
+        <div>
+          <div class="item-title">Pipoca Caramelizada (copo 300ml)</div>
+          <div class="muted">R$ 2,00 cada</div>
+        </div>
+      </div>
+    </div>
+    <div class="qty">
+      <button type="button" class="qty-dec">−</button>
+      <input type="number" class="qty-input" value="0" min="0" />
+      <button type="button" class="qty-inc">+</button>
+    </div>
+    <div class="preco">R$ 2,00</div>
+  </div>
 
-          <div class="item" data-preco="150.00" data-id="piscina-bolinhas">
-            <div class="item-left">
-              <input class="item-checkbox" type="checkbox" aria-label="Piscina de bolinhas" />
-              <div>
-                <div class="item-title">Piscina de bolinhas</div>
-                <div class="muted">R$ 150,00</div>
-              </div>
-            </div>
-            <div class="preco">R$ 150,00</div>
-          </div>
+  <div class="item" data-preco="399.00" data-id="cascata-pequena">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Cascata de chocolate pequena" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/3050/3050525.png" alt="Cascata de chocolate" width="24" height="24" />
+        <div>
+          <div class="item-title">Cascata de chocolate (pequena)</div>
+          <div class="muted">R$ 399,00</div>
+        </div>
+      </div>
+    </div>
+    <div class="preco">R$ 399,00</div>
+  </div>
+
+  <div class="item" data-preco="399.00" data-id="crepe-suico">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Crepe suíço" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/3176/3176296.png" alt="Crepe suíço" width="24" height="24" />
+        <div>
+          <div class="item-title">Crepe suíço</div>
+          <div class="muted">R$ 399,00</div>
+        </div>
+      </div>
+    </div>
+    <div class="preco">R$ 399,00</div>
+  </div>
+
+  <div class="item" data-preco="399.00" data-id="churros">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Churros" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/5272/5272142.png" alt="Churros" width="24" height="24" />
+        <div>
+          <div class="item-title">Churros</div>
+          <div class="muted">R$ 399,00</div>
+        </div>
+      </div>
+    </div>
+    <div class="preco">R$ 399,00</div>
+  </div>
+
+  <div class="item" data-preco="200.00" data-id="maquina-algodao">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/3565/3565091.png" alt="Máquina algodão doce" width="24" height="24" />
+        <div>
+          <div class="item-title">Máquina de algodão doce no evento</div>
+          <div class="muted">R$ 200,00</div>
+        </div>
+      </div>
+    </div>
+    <div class="preco">R$ 200,00</div>
+  </div>
+
+  <div class="item" data-preco="550.00" data-id="combo-completo">
+    <div class="item-left">
+      <input class="item-checkbox" type="checkbox" aria-label="Combo completo" />
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/4319/4319318.png" alt="Combo completo" width="24" height="24" />
+        <div>
+          <div class="item-title">Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)</div>
+          <div class="muted">R$ 550,00</div>
+        </div>
+      </div>
+    </div>
+    <div class="preco">R$ 550,00</div>
+  </div>
+</div>
+
+<script>
+  // Atualiza o total automaticamente
+  function atualizarTotal() {
+    let total = 0;
+    document.querySelectorAll(".item").forEach(item => {
+      const checkbox = item.querySelector(".item-checkbox");
+      const qtdInput = item.querySelector(".qty-input");
+      const preco = parseFloat(item.dataset.preco);
+      if (checkbox && checkbox.checked) {
+        const qtd = qtdInput ? parseInt(qtdInput.value) || 0 : 1;
+        total += preco * qtd;
+      }
+    });
+
+    const campoTotal = document.getElementById("total_valor");
+    if (campoTotal) campoTotal.textContent = "R$ " + total.toFixed(2).replace(".", ",");
+  }
+
+  // Liga eventos aos itens
+  document.querySelectorAll(".item").forEach(item => {
+    const checkbox = item.querySelector(".item-checkbox");
+    const dec = item.querySelector(".qty-dec");
+    const inc = item.querySelector(".qty-inc");
+    const input = item.querySelector(".qty-input");
+
+    if (checkbox) checkbox.addEventListener("change", atualizarTotal);
+    if (input) input.addEventListener("input", atualizarTotal);
+
+    if (dec && input) dec.addEventListener("click", () => {
+      if (parseInt(input.value) > 0) input.value = parseInt(input.value) - 1;
+      atualizarTotal();
+    });
+    if (inc && input) inc.addEventListener("click", () => {
+      input.value = parseInt(input.value) + 1;
+      checkbox.checked = true;
+      atualizarTotal();
+    });
+  });
+</script>
+          
+   
         </div>
       </section>
 
