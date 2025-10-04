@@ -49,6 +49,9 @@
       .actions{flex-direction:row}
       .config-grid{grid-template-columns:repeat(3,1fr)}
     }
+
+    /* PIX button minor styles */
+    #pix-container a{display:flex;align-items:center;justify-content:center}
   </style>
 </head>
 <body>
@@ -103,263 +106,222 @@
       <section aria-labelledby="servicos-title">
         <h2 id="servicos-title">Serviços</h2>
 
-        <div class="categoria" id="categoria-comidas">
+        <!-- COMIDAS E GULOSEIMAS -->
+        <div class="categoria" id="categoria-comidas-guloseimas">
+          <h3>Comidas e Guloseimas</h3>
 
-  <!-- ====== COMIDAS E GULOSEIMAS ====== -->
-<div class="categoria" id="categoria-comidas-guloseimas">
-  
-</div>
-          <!-- Guloseimas Extras -->
-<h3>🍬 Guloseimas Extras</h3>
+          <div class="item" data-preco="2.50" data-id="algodao-copo-300">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 300ml" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+                  Algodão doce no copo (300ml)
+                </div>
+                <div class="muted">R$ 2,50 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 2,50</div>
+          </div>
 
-<div class="item">
-  <label>
-    <input type="checkbox" class="item-checkbox" data-name="Algodão doce no saquinho" data-price="2">
-    Algodão doce no saquinho (R$2,00)
-  </label>
-  <div class="qty-control">
-    <button type="button" class="btn-minus">-</button>
-    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
-    <button type="button" class="btn-plus">+</button>
-  </div>
-</div>
+          <div class="item" data-preco="3.50" data-id="algodao-copo-500">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 500ml" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+                  Algodão doce no copo (500ml)
+                </div>
+                <div class="muted">R$ 3,50 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 3,50</div>
+          </div>
 
-<div class="item">
-  <label>
-    <input type="checkbox" class="item-checkbox" data-name="Pipoca gourmet 300ml" data-price="5">
-    Pipoca gourmet copo 300ml (R$5,00)
-  </label>
-  <div class="qty-control">
-    <button type="button" class="btn-minus">-</button>
-    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
-    <button type="button" class="btn-plus">+</button>
-  </div>
-</div>
+          <div class="item" data-preco="200.00" data-id="maquina-algodao">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
+                  Máquina de algodão doce no evento
+                </div>
+                <div class="muted">R$ 200,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 200,00</div>
+          </div>
 
-<div class="item">
-  <label>
-    <input type="checkbox" class="item-checkbox" data-name="Pipoca caramelizada 300ml" data-price="2">
-    Pipoca caramelizada copo 300ml (R$2,00)
-  </label>
-  <div class="qty-control">
-    <button type="button" class="btn-minus">-</button>
-    <input type="number" class="item-qty" value="0" min="0" style="width:50px; text-align:center">
-    <button type="button" class="btn-plus">+</button>
-  </div>
-</div>
+          <div class="item" data-preco="399.00" data-id="combo-infantil">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Combo infantil básico" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#32cd32;margin-right:6px;"></i>
+                  Combo infantil básico (pula-pula + algodão doce + pipoca)
+                </div>
+                <div class="muted">R$ 399,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 399,00</div>
+          </div>
 
-<!-- Exibir total -->
-<p id="total" style="font-weight:bold; font-size:18px; margin-top:10px;">Total: R$ 0,00</p>
-
-<!-- Botões -->
-<button id="btn-whatsapp">📲 Enviar Orçamento via WhatsApp</button>
-<button id="btn-pdf">📄 Gerar Orçamento em PDF</button>
-
-  <!-- Algodão doce no copo 300ml -->
-  <div class="item" data-preco="2.50" data-id="algodao-copo-300">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 300ml" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
-          Algodão doce no copo (300ml)
+          <div class="item" data-preco="550.00" data-id="combo-completo">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Combo completo" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#228b22;margin-right:6px;"></i>
+                  Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)
+                </div>
+                <div class="muted">R$ 550,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 550,00</div>
+          </div>
         </div>
-        <div class="muted">R$ 2,50 cada</div>
-      </div>
-    </div>
-    <div class="qty">
-      <button type="button" class="qty-dec">−</button>
-      <input type="number" class="qty-input" value="0" min="0" />
-      <button type="button" class="qty-inc">+</button>
-    </div>
-    <div class="preco">R$ 2,50</div>
-  </div>
 
-  <!-- Algodão doce no copo 500ml -->
-  <div class="item" data-preco="3.50" data-id="algodao-copo-500">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Algodão doce no copo 500ml" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
-          Algodão doce no copo (500ml)
+        <!-- GULOSEIMAS EXTRAS (nova seção funcional) -->
+        <div class="categoria" id="categoria-guloseimas-extras">
+          <h3>Guloseimas Extras</h3>
+
+          <div class="item" data-preco="4.50" data-id="pipoca-gourmet">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pipoca gourmet" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#ff8c00;margin-right:6px;"></i>
+                  Pipoca gourmet (un)
+                </div>
+                <div class="muted">R$ 4,50 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 4,50</div>
+          </div>
+
+          <div class="item" data-preco="6.00" data-id="pipoca-tradicional">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pipoca tradicional" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#ff8c00;margin-right:6px;"></i>
+                  Pipoca tradicional (un)
+                </div>
+                <div class="muted">R$ 6,00 cada</div>
+              </div>
+            </div>
+            <div class="qty">
+              <button type="button" class="qty-dec">−</button>
+              <input type="number" class="qty-input" value="0" min="0" />
+              <button type="button" class="qty-inc">+</button>
+            </div>
+            <div class="preco">R$ 6,00</div>
+          </div>
+
+          <div class="item" data-preco="399.00" data-id="cascata-chocolate-pequena">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Cascata de chocolate pequena" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#6b3b00;margin-right:6px;"></i>
+                  Cascata de Chocolate (pequena)
+                </div>
+                <div class="muted">R$ 399,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 399,00</div>
+          </div>
         </div>
-        <div class="muted">R$ 3,50 cada</div>
-      </div>
-    </div>
-    <div class="qty">
-      <button type="button" class="qty-dec">−</button>
-      <input type="number" class="qty-input" value="0" min="0" />
-      <button type="button" class="qty-inc">+</button>
-    </div>
-    <div class="preco">R$ 3,50</div>
-  </div>
 
-  <!-- Máquina de algodão doce no evento -->
-  <div class="item" data-preco="200.00" data-id="maquina-algodao">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Máquina de algodão doce no evento" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#ff69b4;margin-right:6px;"></i>
-          Máquina de algodão doce no evento
+        <!-- BRINQUEDOS -->
+        <div class="categoria" id="categoria-brinquedos">
+          <h3>Brinquedos</h3>
+
+          <div class="item" data-preco="180.00" data-id="pula-pula-grande">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula grande" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+                  Pula-pula grande
+                </div>
+                <div class="muted">R$ 180,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 180,00</div>
+          </div>
+
+          <div class="item" data-preco="150.00" data-id="pula-pula-medio">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Pula-pula médio" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+                  Pula-pula médio
+                </div>
+                <div class="muted">R$ 150,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 150,00</div>
+          </div>
+
+          <div class="item" data-preco="150.00" data-id="piscina-bolinhas">
+            <div class="item-left">
+              <input class="item-checkbox" type="checkbox" aria-label="Piscina de bolinhas" />
+              <div>
+                <div class="item-title">
+                  <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
+                  Piscina de bolinhas
+                </div>
+                <div class="muted">R$ 150,00</div>
+              </div>
+            </div>
+            <div class="preco">R$ 150,00</div>
+          </div>
         </div>
-        <div class="muted">R$ 200,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 200,00</div>
-  </div>
 
-  <!-- Combo infantil básico -->
-  <div class="item" data-preco="499.00" data-id="combo-infantil">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Combo infantil básico" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#32cd32;margin-right:6px;"></i>
-          Combo infantil básico (pula-pula + algodão doce + pipoca)
-        </div>
-        <div class="muted">R$ 499,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 499,00</div>
-  </div>
-
-  <!-- Combo completo -->
-  <div class="item" data-preco="550.00" data-id="combo-completo">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Combo completo" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#228b22;margin-right:6px;"></i>
-          Combo completo (pula-pula, piscina de bolinhas, algodão doce e pipoca)
-        </div>
-        <div class="muted">R$ 550,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 550,00</div>
-  </div>
-</div>
-
-<!-- ====== BRINQUEDOS ====== -->
-<div class="categoria" id="categoria-brinquedos">
-  <h3>Brinquedos</h3>
-
-  <!-- Pula-pula grande -->
-  <div class="item" data-preco="180.00" data-id="pula-pula-grande">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Pula-pula grande" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
-          Pula-pula grande
-        </div>
-        <div class="muted">R$ 180,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 180,00</div>
-  </div>
-
-  <!-- Pula-pula médio -->
-  <div class="item" data-preco="150.00" data-id="pula-pula-medio">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Pula-pula médio" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
-          Pula-pula médio
-        </div>
-        <div class="muted">R$ 150,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 150,00</div>
-  </div>
-
-  <!-- Piscina de bolinhas -->
-  <div class="item" data-preco="150.00" data-id="piscina-bolinhas">
-    <div class="item-left">
-      <input class="item-checkbox" type="checkbox" aria-label="Piscina de bolinhas" />
-      <div>
-        <div class="item-title">
-          <i class="fas fa-comments" style="color:#1e90ff;margin-right:6px;"></i>
-          Piscina de bolinhas
-        </div>
-        <div class="muted">R$ 150,00</div>
-      </div>
-    </div>
-    <div class="preco">R$ 150,00</div>
-  </div>
-</div>
-</div>
-
-<script>
-  // Atualiza o total automaticamente
-  function atualizarTotal() {
-    let total = 0;
-    document.querySelectorAll(".item").forEach(item => {
-      const checkbox = item.querySelector(".item-checkbox");
-      const qtdInput = item.querySelector(".qty-input");
-      const preco = parseFloat(item.dataset.preco);
-      if (checkbox && checkbox.checked) {
-        const qtd = qtdInput ? parseInt(qtdInput.value) || 0 : 1;
-        total += preco * qtd;
-      }
-    });
-
-    const campoTotal = document.getElementById("total_valor");
-    if (campoTotal) campoTotal.textContent = "R$ " + total.toFixed(2).replace(".", ",");
-  }
-
-  // Liga eventos aos itens
-  document.querySelectorAll(".item").forEach(item => {
-    const checkbox = item.querySelector(".item-checkbox");
-    const dec = item.querySelector(".qty-dec");
-    const inc = item.querySelector(".qty-inc");
-    const input = item.querySelector(".qty-input");
-
-    if (checkbox) checkbox.addEventListener("change", atualizarTotal);
-    if (input) input.addEventListener("input", atualizarTotal);
-
-    if (dec && input) dec.addEventListener("click", () => {
-      if (parseInt(input.value) > 0) input.value = parseInt(input.value) - 1;
-      atualizarTotal();
-    });
-    if (inc && input) inc.addEventListener("click", () => {
-      input.value = parseInt(input.value) + 1;
-      checkbox.checked = true;
-      atualizarTotal();
-    });
-  });
-</script>
-          
-   
-        </div>
       </section>
 
+      <!-- Resumo e ações movidos para o final da página (não no meio) -->
       <section id="resumo" aria-live="polite">
         <h2>Resumo</h2>
         <div id="subtotais" class="muted">Nenhum serviço selecionado.</div>
         <div id="total" style="margin-top:8px;font-weight:700">Total calculado: R$ <span id="totalValue">0,00</span></div>
-        <div id="sinalInfo" style="margin-top:6px">Sinal (40%): R$ <span id="sinalValue">0,00</span> • Saldo: R$ <span id="saldoValue">0,00</span></div>
+        <div id="sinalInfo" style="margin-top:6px">Sinal (<span id="percentLabel">40%</span>): R$ <span id="sinalValue">0,00</span> • Saldo: R$ <span id="saldoValue">0,00</span></div>
+
+        <div class="actions" style="margin-top:14px">
+          <button id="gerarOrcamento" type="button">Gerar Orçamento (PDF) + Abrir WhatsApp</button>
+          <button id="gerarContrato" type="button" class="secondary">Gerar Contrato (PDF) + Abrir WhatsApp</button>
+          <button id="enviarWhats" type="button" style="background:#25d366">Enviar Resumo pelo WhatsApp</button>
+        </div>
       </section>
 
-      <div class="actions" style="margin-top:14px">
-        <button id="gerarOrcamento" type="button">Gerar Orçamento (PDF) + Abrir WhatsApp</button>
-        <button id="gerarContrato" type="button" class="secondary">Gerar Contrato (PDF) + Abrir WhatsApp</button>
-        <button id="enviarWhats" type="button" style="background:#25d366">Enviar Resumo pelo WhatsApp</button>
-      </div>
+      <section class="sigWrap" aria-labelledby="sig-title">
+        <h2 id="sig-title">Assinatura digital (cliente)</h2>
+        <canvas id="signature-pad" width="700" height="160" aria-label="Área para assinatura"></canvas>
+        <div class="sigActions">
+          <button id="clearSig" type="button" style="background:#dc3545;color:#fff">Limpar assinatura</button>
+          <button id="saveSig" type="button" style="background:#007bff;color:#fff">Salvar assinatura</button>
+          <span id="sigStatus" class="muted" style="align-self:center">Nenhuma assinatura salva.</span>
+        </div>
+      </section>
+
     </form>
-
-    <section class="sigWrap" aria-labelledby="sig-title">
-      <h2 id="sig-title">Assinatura digital (cliente)</h2>
-      <canvas id="signature-pad" width="700" height="160" aria-label="Área para assinatura"></canvas>
-      <div class="sigActions">
-        <button id="clearSig" type="button" style="background:#dc3545;color:#fff">Limpar assinatura</button>
-        <button id="saveSig" type="button" style="background:#007bff;color:#fff">Salvar assinatura</button>
-        <span id="sigStatus" class="muted" style="align-self:center">consultar frete.</span>
-      </div>
-    </section>
-
   </main>
 
   <!-- libs -->
@@ -372,6 +334,7 @@
     // número de WhatsApp alvo (formato internacional sem sinais): +55 79 9 9914 5044 => 5579999145044
     const WHATS_NUMBER = '5579999145044';
 
+    // elementos principais
     const itens = Array.from(document.querySelectorAll('.item'));
     const totalValueEl = document.getElementById('totalValue');
     const sinalValueEl = document.getElementById('sinalValue');
@@ -383,11 +346,13 @@
     const clienteTelEl = document.getElementById('clienteTelefone');
     const dataEventoEl = document.getElementById('dataEvento');
     const obsEl = document.getElementById('observacoes');
+    const percentLabel = document.getElementById('percentLabel');
 
     // SignaturePad
     const canvas = document.getElementById('signature-pad');
     const sigStatus = document.getElementById('sigStatus');
     const signaturePad = new SignaturePad(canvas, {backgroundColor: 'rgba(255,255,255,0)', penColor: 'rgb(0,0,0)'});
+    window.__sigData = null;
     document.getElementById('clearSig').addEventListener('click', () => {
       signaturePad.clear();
       window.__sigData = null;
@@ -412,11 +377,12 @@
       const preco = Number(itemEl.dataset.preco) || 0;
       const id = itemEl.dataset.id || '';
       const title = (itemEl.querySelector('.item-title') || itemEl.querySelector('label') || {textContent: id}).textContent.trim();
-      const checked = itemEl.querySelector('.item-checkbox').checked;
+      const checkbox = itemEl.querySelector('.item-checkbox');
+      const checked = checkbox ? checkbox.checked : false;
       const qtyInput = itemEl.querySelector('.qty-input');
-      const qty = qtyInput ? Math.max(0, Number(qtyInput.value || 0)) : 1;
-      const total = preco * (qtyInput ? qty : (checked ? 1 : 0));
-      return { id, title, preco, qty: qtyInput ? qty : 1, checked, total, hasQty: !!qtyInput };
+      const qty = qtyInput ? Math.max(0, Number(qtyInput.value || 0)) : (checked ? 1 : 0);
+      const total = preco * qty;
+      return { id, title, preco, qty, checked, total, hasQty: !!qtyInput };
     }
 
     // criar controles de +/-
@@ -424,13 +390,12 @@
       const inc = item.querySelector('.qty-inc');
       const dec = item.querySelector('.qty-dec');
       const qtyInput = item.querySelector('.qty-input');
-      // Se o item não tem campo qty (qtyInput undefined), esconda controles (mas no markup atual todos tem)
       if(!qtyInput){
         if(inc) inc.style.display='none';
         if(dec) dec.style.display='none';
       } else {
-        inc.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) + 1)); calcular(); });
-        dec.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) - 1)); calcular(); });
+        if(inc) inc.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) + 1)); calcular(); });
+        if(dec) dec.addEventListener('click', () => { qtyInput.value = String(Math.max(0, Number(qtyInput.value || 0) - 1)); calcular(); });
         qtyInput.addEventListener('input', () => {
           if(qtyInput.value === '') qtyInput.value = '0';
           if(Number(qtyInput.value) < 0) qtyInput.value = '0';
@@ -438,7 +403,15 @@
         });
       }
       const cb = item.querySelector('.item-checkbox');
-      if(cb) cb.addEventListener('change', calcular);
+      if(cb) cb.addEventListener('change', () => {
+        // se marcar e não tem qty, garantir qty = 1; se desmarcar, zerar qty visível
+        const qty = item.querySelector('.qty-input');
+        if(qty){
+          if(cb.checked && Number(qty.value) === 0) qty.value = '1';
+          if(!cb.checked) qty.value = '0';
+        }
+        calcular();
+      });
     });
 
     // cálculo principal
@@ -447,7 +420,7 @@
       let subtotal = 0;
       itens.forEach(item => {
         const d = getItemData(item);
-        if(d.checked){
+        if(d.checked && d.qty > 0){
           selecionados.push(d);
           subtotal += d.total;
         }
@@ -456,7 +429,6 @@
       if(selecionados.length === 0){
         subtotaisEl.textContent = 'Nenhum serviço selecionado.';
       } else {
-        // montar string de subtotais por item
         const lines = selecionados.map(s => {
           return `${s.title}${s.hasQty ? ` — ${s.qty} x R$ ${currencyBr(s.preco)} = R$ ${currencyBr(s.total)}` : ` — R$ ${currencyBr(s.preco)}`}`;
         });
@@ -470,6 +442,7 @@
       totalValueEl.textContent = currencyBr(subtotal);
       sinalValueEl.textContent = currencyBr(sinal);
       saldoValueEl.textContent = currencyBr(saldo);
+      percentLabel.textContent = percentual + '%';
     }
 
     // bind calculo a inputs fixos (mesmo que read-only)
@@ -582,22 +555,20 @@
       doc.save(filename);
 
       // após salvar, abrir WhatsApp com mensagem resumida para o número fixo
-      // montar mensagem curta com os principais dados
       const mensagem = montarMensagemWhats({tipo, clienteNome, clienteTel, dataEvento, selecionados, subtotal, sinal, saldo});
-      // abre em nova aba
       const waUrl = `https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(mensagem)}`;
       window.open(waUrl, '_blank');
     }
 
-    // helper monta mensagem
+    // helper monta mensagem (sem aviso "PDF gerado no navegador")
     function montarMensagemWhats({tipo, clienteNome, clienteTel, dataEvento, selecionados, subtotal, sinal, saldo}){
       const header = `Olá, segue ${tipo.toLowerCase()} gerado por GilFest.\n`;
       const cliente = `Cliente: ${clienteNome}\nTelefone: ${clienteTel || '---'}\nData do evento: ${dataEvento || '---'}\n\n`;
       const itensTxt = (selecionados.length > 0) ? selecionados.map(s => {
         return `${s.title}${s.hasQty ? ' x' + s.qty : ''} — R$ ${currencyBr(s.total)}`;
       }).join('\n') + '\n\n' : 'Nenhum item selecionado.\n\n';
-      const valores = `Subtotal: R$ ${currencyBr(subtotal)}\nSinal (40%): R$ ${currencyBr(sinal)}\nSaldo: R$ ${currencyBr(saldo)}\n\n`;
-      const footer = 'PDF gerado no navegador. Para enviar o PDF em anexo é necessário transferi-lo manualmente ou usar integração com API.\nAtenciosamente,\nGilFest';
+      const valores = `Subtotal: R$ ${currencyBr(subtotal)}\nSinal (${Number(percentualInput.value || 0)}%): R$ ${currencyBr(sinal)}\nSaldo: R$ ${currencyBr(saldo)}\n\n`;
+      const footer = 'Atenciosamente,\nGilFest';
       return header + cliente + itensTxt + valores + footer;
     }
 
@@ -630,6 +601,7 @@
     calcular();
   })();
   </script>
+
   <!-- Botão Instagram fixo -->
   <a href="https://www.instagram.com/invites/contact/?i=168wzlip0gszo&utm_content=kc54z9" target="_blank" 
      style="position: fixed;
@@ -646,8 +618,6 @@
             transition: transform 0.2s;">
      📸 Instagram
   </a>
-</body>
-</html>
 
 <!-- Botão PIX no canto superior esquerdo -->
 <div id="pix-container"
@@ -740,72 +710,6 @@
     });
   });
 })();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-function calcularTotal() {
-  let total = 0;
-  document.querySelectorAll('.item-checkbox').forEach((chk, i) => {
-    const qtyInput = document.querySelectorAll('.item-qty')[i];
-    const qty = parseInt(qtyInput.value) || 0;
-    if (chk.checked && qty > 0) {
-      const price = parseFloat(chk.dataset.price);
-      total += price * qty;
-    }
-  });
-  document.getElementById('total').textContent = "Total: R$ " + total.toFixed(2);
-  return total;
-}
-
-// Ações dos botões + e -
-document.querySelectorAll('.btn-plus').forEach((btn, i) => {
-  btn.addEventListener('click', () => {
-    const qtyInput = document.querySelectorAll('.item-qty')[i];
-    qtyInput.value = parseInt(qtyInput.value) + 1;
-    document.querySelectorAll('.item-checkbox')[i].checked = true;
-    calcularTotal();
-  });
-});
-
-document.querySelectorAll('.btn-minus').forEach((btn, i) => {
-  btn.addEventListener('click', () => {
-    const qtyInput = document.querySelectorAll('.item-qty')[i];
-    if (parseInt(qtyInput.value) > 0) {
-      qtyInput.value = parseInt(qtyInput.value) - 1;
-    }
-    calcularTotal();
-  });
-});
-
-// Atualizar ao marcar/desmarcar ou digitar quantidade
-document.querySelectorAll('.item-checkbox, .item-qty').forEach(el => {
-  el.addEventListener('input', calcularTotal);
-});
-
-// Enviar orçamento pelo WhatsApp
-document.getElementById('btn-whatsapp').addEventListener('click', () => {
-  let msg = "📋 *Orçamento GilFest*\n\n";
-  document.querySelectorAll('.item-checkbox').forEach((chk, i) => {
-    const qty = parseInt(document.querySelectorAll('.item-qty')[i].value) || 0;
-    if (chk.checked && qty > 0) {
-      msg += `• ${chk.dataset.name} x${qty} = R$ ${(chk.dataset.price * qty).toFixed(2)}\n`;
-    }
-  });
-  msg += "\n💰 Total: R$ " + calcularTotal().toFixed(2);
-  const url = "https://wa.me/5579999145044?text=" + encodeURIComponent(msg);
-  window.open(url, "_blank");
-});
-
-// Gerar PDF
-document.getElementById('btn-pdf').addEventListener('click', () => {
-  const element = document.body;
-  html2pdf().set({
-    margin: 10,
-    filename: 'orcamento-gilfest.pdf',
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(element).save();
-});
 </script>
 
 </body>
